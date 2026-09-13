@@ -35,6 +35,7 @@ public sealed class AtomicPreferencesStoreTests
             Assert.Null(preferences.CachedNickname);
             Assert.Null(preferences.CachedCharacterId);
             Assert.False(preferences.RequiresRightClickToThrow);
+            Assert.False(preferences.TreeMovementPaused);
             Assert.Null(preferences.Language);
             Assert.True(preferences.CharacterSoundEffectsEnabled);
             Assert.Equal(100, preferences.CharacterSoundEffectsVolume);
@@ -60,6 +61,7 @@ public sealed class AtomicPreferencesStoreTests
             CharacterSoundEffectsVolume = 0,
             ShowOfflineMembers = false,
             RequiresRightClickToThrow = true,
+            TreeMovementPaused = true,
             StartAtLogin = true,
             Language = "ja-JP",
             CachedNickname = "윈도우 테스트",

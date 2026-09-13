@@ -170,9 +170,7 @@ public sealed partial class StoreProductArtwork : UserControl
                 cancellationToken), null);
         }
 
-        string throwableId = string.IsNullOrEmpty(CatalogItemId)
-            ? SignatureObject(CharacterId)
-            : CatalogItemId;
+        string throwableId = CosmeticCatalog.ResolveThrowableAssetId(CatalogItemId);
         if (IsCannon())
         {
             ImageSource emitter = await StorePreviewImageLoader.LoadFrameAsync(
@@ -257,12 +255,4 @@ public sealed partial class StoreProductArtwork : UserControl
         cancellation.Dispose();
     }
 
-    internal static string SignatureObject(string characterId) => characterId switch
-    {
-        "pixel_guinea_pig" => "mini_paprika",
-        "pixel_monkey" => "banana",
-        "pixel_chinchilla" => "dust_bath_pouch",
-        "pixel_starlight_upalupa" => "starlight_orb",
-        _ => "patch_soft_ball",
-    };
 }

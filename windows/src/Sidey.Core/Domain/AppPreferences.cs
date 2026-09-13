@@ -23,6 +23,8 @@ public sealed record AppPreferences(
     Guid? ActiveRoomId,
     OverlayRegionPreference OverlayRegion)
 {
+    public bool TreeMovementPaused { get; init; }
+
     public string? Language { get; init; }
 
     public AppThemePreference Theme { get; init; } = AppThemePreference.System;

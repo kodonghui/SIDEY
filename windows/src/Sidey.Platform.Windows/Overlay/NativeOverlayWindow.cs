@@ -27,7 +27,7 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
     private static readonly ConcurrentDictionary<nint, NativeOverlayWindowRole> s_roles = new();
     private static readonly ConcurrentDictionary<nint, Action> s_activations = new();
     private static readonly ConcurrentDictionary<nint, Action> s_doubleClickActivations = new();
-    private static readonly ConcurrentDictionary<nint, Action> s_rightClickActivations = new();
+    private static readonly ConcurrentDictionary<nint, Action<bool>> s_rightClickActivations = new();
     private static readonly ConcurrentDictionary<nint, uint> s_ownerThreads = new();
     private static readonly ConcurrentDictionary<uint, int> s_threadWindowCounts = new();
     private static readonly WNDPROC s_windowProcedureCallback = WindowProcedure;
@@ -46,7 +46,7 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
         NativeOverlayWindowRole role,
         Action? activated,
         Action? doubleClicked,
-        Action? rightClicked)
+        Action<bool>? rightClicked)
     {
         _handle = handle;
         Role = role;
@@ -70,6 +70,8 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
         s_threadWindowCounts.AddOrUpdate(ownerThread, 1, static (_, count) => count + 1);
     }
 
+    public static double DoubleClickIntervalSeconds => NativeMethods.GetDoubleClickTime() / 1000d;
+
     public NativeOverlayWindowRole Role { get; }
     public nint Handle => (nint)_handle.Value;
     public bool IsCreated => _handle != HWND.Null;
@@ -82,7 +84,7 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
         NativePixelRect initialBounds,
         Action? activated = null,
         Action? doubleClicked = null,
-        Action? rightClicked = null)
+        Action<bool>? rightClicked = null)
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -212,6 +214,9 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
     private static class NativeMethods
     {
         [DllImport("user32.dll")]
+        internal static extern uint GetDoubleClickTime();
+
+        [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool IsWindow(nint window);
     }
@@ -318,12 +323,12 @@ public sealed unsafe class NativeOverlayWindow : IDisposable
             return default;
         }
 
-        if (message == PInvoke.WM_RBUTTONUP
-            && s_rightClickActivations.TryGetValue((nint)window.Value, out Action? rightClicked))
+        if (message is 0x0204 or 0x0206 // WM_RBUTTONDOWN / WM_RBUTTONDBLCLK
+            && s_rightClickActivations.TryGetValue((nint)window.Value, out Action<bool>? rightClicked))
         {
             try
             {
-                rightClicked();
+                rightClicked(message == 0x0206);
             }
             catch (Exception exception)
             {

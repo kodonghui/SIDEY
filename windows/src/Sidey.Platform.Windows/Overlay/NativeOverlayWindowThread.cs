@@ -15,7 +15,7 @@ public sealed class NativeOverlayWindowThread : IDisposable
     private readonly Func<nint, IDisposable?>? _initializeWorld;
     private readonly Action? _hotspotActivated;
     private readonly Action? _hotspotDoubleClicked;
-    private readonly Action? _hotspotRightClicked;
+    private readonly Action<bool>? _hotspotRightClicked;
     private readonly Action<int>? _targetHotspotActivated;
     private NativeOverlayWindow? _worldWindow;
     private NativeOverlayWindow? _hotspotWindow;
@@ -33,7 +33,7 @@ public sealed class NativeOverlayWindowThread : IDisposable
         Func<nint, IDisposable?>? initializeWorld,
         Action? hotspotActivated,
         Action? hotspotDoubleClicked,
-        Action? hotspotRightClicked,
+        Action<bool>? hotspotRightClicked,
         Action<int>? targetHotspotActivated)
     {
         _initialWorldBounds = initialWorldBounds;
@@ -60,7 +60,7 @@ public sealed class NativeOverlayWindowThread : IDisposable
         Func<nint, IDisposable?>? initializeWorld = null,
         Action? hotspotActivated = null,
         Action? hotspotDoubleClicked = null,
-        Action? hotspotRightClicked = null,
+        Action<bool>? hotspotRightClicked = null,
         Action<int>? targetHotspotActivated = null)
     {
         if (!OperatingSystem.IsWindows())

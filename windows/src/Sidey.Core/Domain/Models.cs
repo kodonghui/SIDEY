@@ -111,7 +111,9 @@ public sealed record CommerceProduct(
     int SortOrder,
     int AmountKrw,
     CommerceProductKind Kind = CommerceProductKind.Character,
-    string? CatalogItemId = null)
+    string? CatalogItemId = null,
+    string? RenderAssetId = null,
+    string? RelatedCharacterProductId = null)
 {
     public string EffectiveCatalogItemId => CatalogItemId ?? CharacterId;
 }
@@ -122,95 +124,6 @@ public sealed record CommerceProductState(
     CommercePurchaseState PurchaseState,
     bool IsWorking = false,
     string? ErrorMessage = null);
-
-public static class WindowsCommerceCatalog
-{
-    public static IReadOnlyList<CommerceProduct> Products { get; } =
-    [
-        new(
-            "character_starlight_upalupa",
-            "pixel_starlight_upalupa",
-            "character:pixel_starlight_upalupa",
-            10,
-            1_900),
-        new(
-            "character_guinea_pig",
-            "pixel_guinea_pig",
-            "character:pixel_guinea_pig",
-            20,
-            990),
-        new(
-            "character_monkey",
-            "pixel_monkey",
-            "character:pixel_monkey",
-            30,
-            990),
-        new(
-            "character_chinchilla",
-            "pixel_chinchilla",
-            "character:pixel_chinchilla",
-            40,
-            990),
-        new(
-            "bubble_bunny_pink",
-            "pixel_hamster",
-            "bubble:bubble_bunny_pink",
-            110,
-            1_900,
-            CommerceProductKind.Bubble,
-            "bubble_bunny_pink"),
-        new(
-            "bubble_butter_chick",
-            "pixel_hamster",
-            "bubble:bubble_butter_chick",
-            120,
-            1_900,
-            CommerceProductKind.Bubble,
-            "bubble_butter_chick"),
-        new(
-            "bubble_starry_cat",
-            "pixel_hamster",
-            "bubble:bubble_starry_cat",
-            130,
-            1_900,
-            CommerceProductKind.Bubble,
-            "bubble_starry_cat"),
-        new(
-            "throwable_bouncy_heart",
-            "pixel_hamster",
-            "throwable:throwable_bouncy_heart",
-            210,
-            990,
-            CommerceProductKind.Throwable,
-            "throwable_bouncy_heart"),
-        new(
-            "throwable_toy_cannon",
-            "pixel_hamster",
-            "throwable:throwable_toy_cannon",
-            220,
-            2_900,
-            CommerceProductKind.Throwable,
-            "throwable_toy_cannon"),
-        new(
-            "throwable_squeaky_duck",
-            "pixel_hamster",
-            "throwable:throwable_squeaky_duck",
-            230,
-            990,
-            CommerceProductKind.Throwable,
-            "throwable_squeaky_duck"),
-    ];
-
-    public static CommerceProduct? Find(string productId) =>
-        Products.FirstOrDefault(product =>
-            StringComparer.Ordinal.Equals(product.Id, productId));
-
-    public static IReadOnlyList<CommerceProductState> LockedStates() =>
-        [.. Products.Select(product => new CommerceProductState(
-            product,
-            GoogleConnected: false,
-            CommercePurchaseState.Unavailable))];
-}
 
 public static class CharacterThrowTargetPolicy
 {
@@ -238,6 +151,15 @@ public static class CosmeticCatalog
             .Select(product => product.EffectiveCatalogItemId),
         StringComparer.Ordinal);
 
+    private static readonly IReadOnlyDictionary<string, string> s_throwableAssets =
+        WindowsCommerceCatalog.Products.Where(product => product.Kind == CommerceProductKind.Throwable)
+            .SelectMany(product => new[] { product.EffectiveCatalogItemId, product.RenderAssetId! }
+                .Distinct(StringComparer.Ordinal).Select(id => KeyValuePair.Create(id, product.RenderAssetId!)))
+            .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+
+    public static string ResolveThrowableAssetId(string? id) =>
+        id is not null && s_throwableAssets.TryGetValue(id, out string? assetId) ? assetId : "patch_soft_ball";
+
     public static string? NormalizeBubbleStyleId(string? id) =>
         id is not null && BubbleStyleIds.Contains(id) ? id : null;
 
@@ -261,4 +183,5 @@ public sealed record WorldSnapshot(
     IReadOnlyList<CharacterPulseEvent> Pulses,
     IReadOnlyList<CharacterThrowEvent> Throws,
     OverlayEdge Edge,
-    long InstallationSeed);
+    long InstallationSeed,
+    bool TreeMovementPaused = false);

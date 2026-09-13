@@ -94,6 +94,21 @@ public static class PixelCharacterCatalog
             entitlementKey: "character:pixel_starlight_upalupa",
             mirrorsToMovementDirection: true,
             visualEffect: PixelCharacterVisualEffect.StarlightSparkles),
+        Create(
+            "pixel_otter",
+            "characters.otter",
+            "38ebed0f4588e4f776df44872c2e81e96d70056fb8c97b19c812433584e4b5db",
+            entitlementKey: "character:pixel_otter"),
+        Create(
+            "pixel_pig",
+            "characters.pig",
+            "b383c07699cc40fe21c05f18aaf21730888685f9b0874a16b95cd82bebcd6f98",
+            entitlementKey: "character:pixel_pig"),
+        Create(
+            "pixel_tree",
+            "characters.tree",
+            "ddf40aa115034c2c4fb3046673f6e20d2ca208d0b5a9ffa5737fb79c2e6cc97f",
+            entitlementKey: "character:pixel_tree"),
     ];
 
     private static readonly PixelCharacterDefinition[] s_selectableDefinitions = s_definitions[..5];

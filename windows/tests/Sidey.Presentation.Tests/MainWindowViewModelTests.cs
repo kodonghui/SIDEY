@@ -365,6 +365,12 @@ public sealed class MainWindowViewModelTests
                 Assert.Same(character, viewModel.CharacterSelections[0]);
                 Assert.Same(bubble, viewModel.BubbleSelections[0]);
                 Assert.Same(product, viewModel.StoreProducts[0]);
+                Assert.All(viewModel.StoreProducts, item =>
+                {
+                    Assert.False(string.IsNullOrWhiteSpace(item.Description));
+                    Assert.DoesNotContain("store.productDescriptions.", item.Description, StringComparison.Ordinal);
+                    Assert.DoesNotContain("store.product.", item.DisplayName, StringComparison.Ordinal);
+                });
                 Assert.Equal(PixelCharacterCatalog.Get(character.Id).DisplayName, character.DisplayName);
                 Assert.Equal(Sidey.Core.Localization.I18n.Get("profile.defaultBubble"), bubble.DisplayName);
                 Assert.Equal("draft", viewModel.Nickname);
@@ -444,7 +450,7 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
-    public void StorePreviewsAllTenCosmeticsWithoutAddingPaidCharactersToThePicker()
+    public void StorePreviewsAllTwentyFourCosmeticsWithoutAddingPaidCharactersToThePicker()
     {
         (FakeSideyCoordinator coordinator, _) = CreateRoomState();
         var viewModel = new MainWindowViewModel(
@@ -452,10 +458,10 @@ public sealed class MainWindowViewModelTests
             new FakeMainWindowDialogService(),
             new FakeUpdateService());
 
-        Assert.Equal(10, viewModel.StoreProducts.Count);
-        Assert.Equal(4, viewModel.StoreProducts.Count(product => product.Kind == CommerceProductKind.Character));
+        Assert.Equal(24, viewModel.StoreProducts.Count);
+        Assert.Equal(7, viewModel.StoreProducts.Count(product => product.Kind == CommerceProductKind.Character));
         Assert.Equal(3, viewModel.StoreProducts.Count(product => product.Kind == CommerceProductKind.Bubble));
-        Assert.Equal(3, viewModel.StoreProducts.Count(product => product.Kind == CommerceProductKind.Throwable));
+        Assert.Equal(14, viewModel.StoreProducts.Count(product => product.Kind == CommerceProductKind.Throwable));
         Assert.All(viewModel.StoreProducts, product => Assert.NotEmpty(product.Description));
         Assert.DoesNotContain(
             viewModel.StoreProducts.Where(product => product.Kind == CommerceProductKind.Character).Select(product => product.CharacterId),
@@ -477,6 +483,41 @@ public sealed class MainWindowViewModelTests
             Assert.False(product.IsActionEnabled);
             Assert.Equal("구매 준비 중", product.ActionText);
         });
+    }
+
+    [Fact]
+    public void KeepsakeOwnershipIsIndependentOfCharacterAndDisappearsAfterRevocation()
+    {
+        (FakeSideyCoordinator coordinator, CoordinatorState state) = CreateRoomState();
+        var viewModel = new MainWindowViewModel(coordinator, new FakeMainWindowDialogService(), new FakeUpdateService());
+        StoreProductPreviewViewModel otter = viewModel.StoreProducts.Single(product => product.CharacterId == "pixel_otter"
+            && product.Kind == CommerceProductKind.Character);
+        StoreProductPreviewViewModel clam = Assert.IsType<StoreProductPreviewViewModel>(otter.RelatedKeepsake);
+        Assert.True(clam.IsKeepsake);
+        Assert.Equal("throwable_clam", clam.CatalogItemId);
+
+        viewModel.ApplyState(state with
+        {
+            ActiveEntitlementKeys = new HashSet<string>(StringComparer.Ordinal) { "character:pixel_otter" },
+        });
+        Assert.True(otter.IsOwned);
+        Assert.False(clam.IsOwned);
+        Assert.Single(viewModel.ThrowableSelections);
+
+        viewModel.ApplyState(state with
+        {
+            ActiveEntitlementKeys = new HashSet<string>(StringComparer.Ordinal) { "throwable:throwable_clam" },
+        });
+        Assert.False(otter.IsOwned);
+        Assert.True(clam.IsOwned);
+        Assert.Equal(2, viewModel.ThrowableSelections.Count);
+        Assert.Equal("pixel_hamster", viewModel.SelectedCharacterId);
+        Assert.Same(clam, otter.RelatedKeepsake);
+        Assert.False(clam.IsActionEnabled);
+
+        viewModel.ApplyState(state);
+        Assert.False(clam.IsOwned);
+        Assert.Single(viewModel.ThrowableSelections);
     }
 
     [Fact]
@@ -773,14 +814,14 @@ public sealed class MainWindowViewModelTests
             new FakeMainWindowDialogService(),
             new FakeUpdateService());
 
-        Assert.Equal(4, viewModel.VisibleStoreProducts.Count);
+        Assert.Equal(7, viewModel.VisibleStoreProducts.Count);
         Assert.All(viewModel.VisibleStoreProducts, product =>
             Assert.Equal(CommerceProductKind.Character, product.Kind));
 
         viewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Throwable;
         viewModel.SelectedStoreSortIndex = 2;
         Assert.Equal(
-            [2_900, 990, 990],
+            new[] { 2_900, 1_900, 1_900 }.Concat(Enumerable.Repeat(990, 11)),
             viewModel.VisibleStoreProducts.Select(product => product.AmountKrw));
 
         viewModel.HidesOwnedStoreProducts = true;
@@ -793,7 +834,7 @@ public sealed class MainWindowViewModelTests
         Assert.Equal("throwable_squeaky_duck", throwable.ProductId);
 
         viewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Character;
-        viewModel.StoreSearchText = "진주빛";
+        viewModel.StoreSearchText = "길 잃은 별";
         StoreProductPreviewViewModel character = Assert.Single(viewModel.VisibleStoreProducts);
         Assert.Equal("character_starlight_upalupa", character.ProductId);
     }
@@ -820,7 +861,7 @@ public sealed class MainWindowViewModelTests
         Assert.Equal(0, viewModel.SelectedStoreSortIndex);
         Assert.False(viewModel.HidesOwnedStoreProducts);
         Assert.Empty(viewModel.StoreSearchText);
-        Assert.Equal(3, viewModel.VisibleStoreProducts.Count);
+        Assert.Equal(14, viewModel.VisibleStoreProducts.Count);
         Assert.All(viewModel.VisibleStoreProducts, product =>
             Assert.Equal(CommerceProductKind.Throwable, product.Kind));
     }

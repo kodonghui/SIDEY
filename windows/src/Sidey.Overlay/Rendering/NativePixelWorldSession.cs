@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Sidey.Core.Abstractions;
 using Sidey.Core.Domain;
+using Sidey.Core.Overlay;
 using Sidey.Platform.Windows;
 
 namespace Sidey.Overlay.Rendering;
@@ -15,7 +16,8 @@ public sealed record NativePixelWorldSessionOptions(
     Action<string, Exception>? DiagnosticFailure = null,
     Action<double, double, long, long>? RendererPerformanceSampled = null,
     Func<bool>? AnimationsEnabled = null,
-    Action<string, long>? CharacterImpact = null);
+    Action<string, long>? CharacterImpact = null,
+    Action<Guid?>? TreeMovementToggleRequested = null);
 
 public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
 {
@@ -23,6 +25,12 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
     private static readonly TimeSpan s_throwTargetingDuration = TimeSpan.FromSeconds(10);
 
     private readonly Lock _throwGate = new();
+    private readonly CharacterRightClickState _rightClicks = new();
+    private Action<Guid?>? _requestTreeMovementToggle;
+    private Guid? _rightClickRoomId;
+    private string? _selfCharacterId;
+    private static double NowSeconds => (double)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
+
     private readonly NativeOverlayWindowThread _windows;
     private readonly LayeredPixelWorldRenderer _renderer;
     private readonly ValidationMetricsCollector? _metrics;
@@ -187,7 +195,7 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
             },
             requestComposer,
             () => { if (session?.IsSelfStunned != true) requestPulse(); },
-            () => session?.ActivateThrowTargeting(),
+            isDoubleClick => session?.HandleRightClick(isDoubleClick),
             index => session?.ActivateTarget(index));
         session = new NativePixelWorldSession(
             windows,
@@ -201,6 +209,8 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
             realtimeConnected,
             options.Diagnostic,
             options.DiagnosticFailure);
+        session._requestTreeMovementToggle = options.TreeMovementToggleRequested;
+        session._selfCharacterId = initialSnapshot.Members.FirstOrDefault(member => member.IsCurrentUser)?.CharacterId;
         options.Diagnostic?.Invoke("overlay-window-created result=success");
         return session;
     }
@@ -208,6 +218,15 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
     public void Apply(WorldSnapshot snapshot)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+        string? selfCharacterId = snapshot.Members.FirstOrDefault(member => member.IsCurrentUser)?.CharacterId;
+        lock (_throwGate)
+        {
+            if (_roomId != snapshot.RoomId || _selfCharacterId != selfCharacterId)
+            {
+                _rightClicks.Cancel();
+            }
+            _selfCharacterId = selfCharacterId;
+        }
         if (_roomId != snapshot.RoomId)
         {
             lock (_throwGate)
@@ -258,9 +277,14 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
         lock (_throwGate)
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
+            bool changed = _requiresRightClickToThrow != requiresRightClickToThrow
+                || _realtimeConnected != realtimeConnected;
             _requiresRightClickToThrow = requiresRightClickToThrow;
             _realtimeConnected = realtimeConnected;
-            CancelThrowTargetingWithinGate();
+            if (changed)
+            {
+                CancelThrowTargetingWithinGate();
+            }
             RefreshTargetVisibilityWithinGate();
         }
     }
@@ -301,6 +325,38 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
         ValidationMetricsCollector metrics,
         CancellationToken cancellationToken) =>
         await metrics.ExportAsync(cancellationToken).ConfigureAwait(false);
+
+    private void HandleRightClick(bool isDoubleClick)
+    {
+        bool activate;
+        lock (_throwGate)
+        {
+            if (_disposed || !IsVisible || !_selfHotspotAvailable)
+            {
+                return;
+            }
+            _rightClickRoomId = _roomId;
+            activate = _rightClicks.Press(isDoubleClick, NowSeconds, NativeOverlayWindow.DoubleClickIntervalSeconds);
+        }
+        if (activate)
+        {
+            ActivateThrowTargeting();
+        }
+    }
+
+    private void DispatchPendingRightClick()
+    {
+        Guid? roomId;
+        lock (_throwGate)
+        {
+            if (_disposed || !IsVisible || !_rightClicks.TakeSingle(NowSeconds) || _selfCharacterId != "pixel_tree")
+            {
+                return;
+            }
+            roomId = _rightClickRoomId;
+        }
+        _requestTreeMovementToggle?.Invoke(roomId);
+    }
 
     private void ActivateThrowTargeting()
     {
@@ -435,6 +491,7 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
 
     private void CancelThrowTargetingWithinGate()
     {
+        _rightClicks.Cancel();
         _throwTargetingActive = false;
         _throwTargetingTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
     }
@@ -470,6 +527,7 @@ public sealed class NativePixelWorldSession : IOverlayHost, IDisposable
 
         try
         {
+            DispatchPendingRightClick();
             _renderer.SetEdgeInset(WindowsTaskbarService.VisibleInset(
                 _monitor.MonitorPixels,
                 _monitor.MonitorPixels,

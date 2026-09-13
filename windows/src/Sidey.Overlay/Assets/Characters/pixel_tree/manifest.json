@@ -1,0 +1,46 @@
+{
+  "character_id": "pixel_tree",
+  "display_name": "나무",
+  "legacy_aliases": [],
+  "frame_pixel_size": [
+    24,
+    24
+  ],
+  "render_dip_size": [
+    48,
+    48
+  ],
+  "sheet_pixel_size": [
+    240,
+    24
+  ],
+  "foot_baseline_pixel": 3,
+  "filtering": "nearest",
+  "animations": {
+    "idle": [
+      0,
+      1
+    ],
+    "walk": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "doze": [
+      6,
+      7
+    ],
+    "offline": [
+      8,
+      9
+    ]
+  },
+  "sha256": "ddf40aa115034c2c4fb3046673f6e20d2ca208d0b5a9ffa5737fb79c2e6cc97f",
+  "runtime_bgra": {
+    "byte_order": "BGRA",
+    "alpha": "straight",
+    "byte_length": 23040,
+    "sha256": "b71f159fd06b454fb00c19bbb576e4b18e7f4ba9d3457f066117977273bda019"
+  }
+}

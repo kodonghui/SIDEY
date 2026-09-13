@@ -18,6 +18,7 @@ public sealed partial class StoreProductPreviewViewModel : ObservableObject
         Action preview)
     {
         ProductId = product.Id;
+        IsKeepsake = product.RelatedCharacterProductId is not null;
         CharacterId = product.CharacterId;
         Kind = product.Kind;
         CatalogItemId = product.EffectiveCatalogItemId;
@@ -31,6 +32,10 @@ public sealed partial class StoreProductPreviewViewModel : ObservableObject
         PreviewCommand = new RelayCommand(preview);
     }
 
+    public StoreProductPreviewViewModel? RelatedKeepsake { get; internal set; }
+    public string DetailStatusText => I18n.Get(IsOwned ? "store.owned" : "store.comingSoon");
+
+    public bool IsKeepsake { get; }
     public string ProductId { get; }
     public string CharacterId { get; }
     public CommerceProductKind Kind { get; }
@@ -42,6 +47,7 @@ public sealed partial class StoreProductPreviewViewModel : ObservableObject
     [ObservableProperty]
     public partial string Description { get; set; }
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DetailStatusText))]
     public partial string FormattedPrice { get; set; }
     public IAsyncRelayCommand ActionCommand { get; }
     public IRelayCommand PreviewCommand { get; }
@@ -59,6 +65,7 @@ public sealed partial class StoreProductPreviewViewModel : ObservableObject
     public partial bool IsPreviewOnlyVisible { get; set; } = true;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DetailStatusText))]
     public partial bool IsOwned { get; set; }
 
     public void Apply(CommerceProductState state, bool commerceEnabled, bool isOwned)

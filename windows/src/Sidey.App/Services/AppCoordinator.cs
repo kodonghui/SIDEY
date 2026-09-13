@@ -130,7 +130,7 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
             await Task.Delay(150);
             if (_audio.PlaybackStartedCount != mutedCount)
                 throw new InvalidOperationException("Impact smoke: muted playback.");
-            StartupDiagnostics.Stage($"impact-audio-smoke-complete sounds=8 muted=true volume=0,37,100 {_audio.DiagnosticState}");
+            StartupDiagnostics.Stage($"impact-audio-smoke-complete sounds={ImpactSoundCatalog.Ids.Count} muted=true volume=0,37,100 {_audio.DiagnosticState}");
         }
         finally
         {
@@ -242,6 +242,7 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
     public event Action<CoordinatorState>? StateChanged;
     public event Action? ComposerRequested;
     public event Action? PulseRequested;
+    public event Action<Guid?>? TreeMovementToggleRequested;
     public event Action<Guid>? CharacterThrowRequested;
     public event Action<string, Exception>? SendFailed;
     public event Action<Exception>? RenderingFailed;
@@ -944,6 +945,18 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
         });
         await PersistPreferencesAsync(cancellationToken);
         ApplyWorldSnapshot();
+    }
+
+    public async Task ToggleTreeMovementAsync(Guid? expectedRoomId, CancellationToken cancellationToken = default)
+    {
+        WorldSnapshot world = CurrentWorldSnapshot();
+        if (world.RoomId != expectedRoomId || world.Members.FirstOrDefault(member => member.IsCurrentUser)?.CharacterId != "pixel_tree")
+        {
+            return;
+        }
+        SetState(_state with { Preferences = _state.Preferences with { TreeMovementPaused = !_state.Preferences.TreeMovementPaused } });
+        ApplyWorldSnapshot();
+        await PersistPreferencesAsync(cancellationToken);
     }
 
     public async Task SetRequiresRightClickToThrowAsync(
@@ -1827,6 +1840,7 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
                 new NativePixelWorldSessionOptions(
                     AnimationsEnabled: () => _animations.Enabled,
                     CharacterImpact: PlayOverlayImpact,
+                    TreeMovementToggleRequested: roomId => TreeMovementToggleRequested?.Invoke(roomId),
                     ValidationCharacterIds: validationIds,
                     CollectValidationMetrics: validationIds is not null,
                     MessageBubblesPresented: count => StartupDiagnostics.Stage(
@@ -1923,11 +1937,12 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
                 Throws = [.. _pendingThrows],
                 Edge = _state.Preferences.OverlayRegion.Edge,
                 InstallationSeed = _state.Preferences.InstallationSeed,
+                TreeMovementPaused = _state.Preferences.TreeMovementPaused,
             };
         }
 
         if (!_initialSnapshotReceived && CachedStartupWorld.Create(_state.Preferences) is { } cached)
-            return cached;
+            return cached with { TreeMovementPaused = _state.Preferences.TreeMovementPaused };
 
         Room? room = _state.ActiveRoomId is { } roomId
             ? _state.Rooms.FirstOrDefault(candidate => candidate.Id == roomId)
@@ -1951,7 +1966,8 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
             [.. _pendingPulses],
             [.. _pendingThrows],
             _state.Preferences.OverlayRegion.Edge,
-            _state.Preferences.InstallationSeed);
+            _state.Preferences.InstallationSeed,
+            _state.Preferences.TreeMovementPaused);
     }
 
     private static string? OwnedCosmeticOrNull(

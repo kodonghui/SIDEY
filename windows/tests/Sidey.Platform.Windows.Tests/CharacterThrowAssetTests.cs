@@ -60,7 +60,7 @@ public sealed class CharacterThrowAssetTests
     }
 
     [Fact]
-    public void PaidCharacterThrowsKeepTheirOwnActionsAndUniqueObjects()
+    public void CharacterActionsRemainDistinctAndUnequippedCharactersUseTheCommonBall()
     {
         using var cache = new CharacterThrowFrameCache(
             Path.Combine(AppContext.BaseDirectory, "Assets", "Characters"),
@@ -76,10 +76,10 @@ public sealed class CharacterThrowAssetTests
         Assert.Equal(hamsterAction, cache.ActionFrame("unknown_character", frame: 0, flipped: false).ToArray());
 
         byte[] patchBall = cache.ObjectFrame("pixel_hamster", frame: 0).ToArray();
-        Assert.False(patchBall.SequenceEqual(cache.ObjectFrame("pixel_guinea_pig", frame: 0).ToArray()));
-        Assert.False(patchBall.SequenceEqual(cache.ObjectFrame("pixel_monkey", frame: 0).ToArray()));
-        Assert.False(patchBall.SequenceEqual(cache.ObjectFrame("pixel_chinchilla", frame: 0).ToArray()));
-        Assert.False(patchBall.SequenceEqual(cache.ObjectFrame("pixel_starlight_upalupa", frame: 0).ToArray()));
+        Assert.Equal(patchBall, cache.ObjectFrame("pixel_guinea_pig", frame: 0).ToArray());
+        Assert.Equal(patchBall, cache.ObjectFrame("pixel_monkey", frame: 0).ToArray());
+        Assert.Equal(patchBall, cache.ObjectFrame("pixel_chinchilla", frame: 0).ToArray());
+        Assert.Equal(patchBall, cache.ObjectFrame("pixel_starlight_upalupa", frame: 0).ToArray());
         Assert.Equal(patchBall, cache.ObjectFrame("unknown_character", frame: 0).ToArray());
         Assert.False(patchBall.SequenceEqual(cache.ObjectFrame(
             "pixel_hamster", "throwable_bouncy_heart", frame: 0).ToArray()));
@@ -87,6 +87,14 @@ public sealed class CharacterThrowAssetTests
             "pixel_hamster", "throwable_toy_cannon", frame: 0).ToArray()));
         Assert.False(patchBall.SequenceEqual(cache.ObjectFrame(
             "pixel_hamster", "throwable_squeaky_duck", frame: 0).ToArray()));
+        foreach (CommerceProduct product in WindowsCommerceCatalog.Products.Where(product =>
+                     product.Kind == CommerceProductKind.Throwable))
+        {
+            byte[] equipped = cache.ObjectFrame("pixel_hamster", product.EffectiveCatalogItemId, 0).ToArray();
+            Assert.NotEmpty(equipped);
+            Assert.False(patchBall.SequenceEqual(equipped));
+            Assert.Equal(equipped, cache.ObjectFrame("pixel_tree", product.EffectiveCatalogItemId, 0).ToArray());
+        }
         Assert.NotEmpty(cache.CannonEmitterFrame(frame: 0, flipped: false).ToArray());
     }
 
