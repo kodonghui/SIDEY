@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIDEY · 캐릭터 5종 검토</title>
+  <link rel="stylesheet" href="review.css">
+  <script src="review.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">SIDEY / CHARACTER REVIEW</p>
+    <h1>다섯 친구, 외형부터 확인하기</h1>
+    <p>정지유 (@jungjiyu)의 원작과 수정 후보를 비교하는 로컬 검토 자료입니다. 현재 단계는 <strong>실제 외형 픽셀 검토·쿼카 물건 비교</strong>입니다.</p>
+    <p class="notice">원본을 직접 수정하는 외형 방향과 물건 4종의 기획이 선택되었습니다. 아래 실제 외형 후보·쿼카 물건은 검토 대기이며, 전체 동작·음원 승인은 별도입니다. 페이지 조작은 승인을 기록하지 않습니다.</p>
+    <nav aria-label="검토 항목"><a href="#appearance">외형 비교</a><a href="#motion">원본 움직임</a><a href="#frames">원본 90프레임</a><a href="#keepsakes">물건 기획</a></nav>
+  </header>
+
+  <section id="appearance" aria-labelledby="appearance-heading">
+    <h2 id="appearance-heading">1. 실제 외형 픽셀 비교 <span class="badge">후보 검토 대기</span></h2>
+    <p>승인된 방향에 따라 원본을 직접 수정한 <strong>24×24 PNG 후보</strong>입니다. 실제 원본·후보·각 실루엣을 같은 정수 6배로 표시합니다. 색과 표정, 귀·볼·몸통 차이를 확인해 주세요.</p>
+    <p class="detail">똥·떡볶이는 기본 0번의 원작 외형을 유지했습니다. 문제가 있는 다른 프레임의 발 연결과 동작은 전체 프레임 수정 단계에서 다룹니다.</p>
+    <div id="appearance-list" class="appearance-list"></div>
+    <details class="supplementary"><summary>참고: 승인된 외형 방향의 생성 콘셉트</summary>
+      <figure id="appearance-board" hidden><img id="appearance-board-image" alt="참고용 외형 방향 생성 콘셉트 보드"><figcaption>appearance-v1 · 방향 참고용 생성 이미지. 보드 안 ORIGINAL 열도 재생성된 그림이며 실제 원본이 아닙니다. 위의 실제 24×24 후보와 구분해 주세요. 방향 승인은 최종 픽셀·전체 동작 승인을 뜻하지 않습니다.</figcaption></figure>
+      <p id="appearance-board-pending" class="pending">참고 콘셉트 파일을 불러오지 못했습니다.</p>
+    </details>
+  </section>
+
+  <section id="motion" aria-labelledby="motion-heading">
+    <h2 id="motion-heading">2. 원본 움직임 검사</h2>
+    <p>아래 움직임과 전체 프레임은 <strong>수정 전 원본</strong>입니다. 외형 승인 후 전체 수정본을 별도로 검토합니다.</p>
+    <div class="controls">
+      <label>캐릭터<select id="character"></select></label>
+      <label>동작<select id="motion-select"><option value="idle">idle · 기본</option><option value="walk">walk · 걷기</option><option value="doze">doze · 졸기</option><option value="offline">offline · 잠</option><option value="throw">throw · 던지기</option><option value="hit">hit · 피격</option></select></label>
+      <label>정수 배율<select id="scale"><option value="2">2× · 앱 기준</option><option value="4" selected>4×</option><option value="6">6×</option><option value="8">8×</option></select></label>
+      <label>배경<select id="background"><option value="light">밝음</option><option value="dark">어둠</option><option value="checker" selected>체커</option></select></label>
+      <label>화면 가장자리<select id="edge"><option value="bottom">아래</option><option value="top">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label>
+      <label>기본 눈 깜빡임<select id="timing"><option value="current">기존 · 0.55 / 0.55초</option><option value="proposal">PR 제안 · 2.4 / 0.3초 · 미승인</option></select></label>
+      <label class="check"><input type="checkbox" id="flip">좌우 반전</label>
+      <label class="check"><input type="checkbox" id="silhouette">실루엣</label>
+      <label class="check"><input type="checkbox" id="baseline" checked>발 기준선</label>
+    </div>
+    <div class="stage-scroll"><canvas id="stage" width="720" height="320" role="img" aria-label="선택한 원본 캐릭터 움직임"></canvas></div>
+    <div class="transport"><button id="play" type="button" disabled>재생</button><button id="reset" type="button" disabled>처음으로</button><label>프레임<select id="frame" disabled></select></label><output id="frame-status" aria-live="off">원본 불러오는 중</output></div>
+    <p id="load-status" role="status"></p>
+    <p class="detail">30 FPS로 갱신합니다. 걷기 2–5번은 각 0.16초, 이동은 앱의 22pt/s × (선택 배율 ÷ 2)입니다. 24px 원본은 앱에서 48pt이므로 2×를 기준으로 환산합니다. 이동 좌표는 정수 픽셀로 표시합니다. 반전은 검사자가 직접 선택하며 자동 방향 반전 정책을 제안하지 않습니다.</p>
+    <p class="detail">졸기 0.8초/장 · 잠 1.2초/장 · 던지기 0.1초/장 · 피격 0.11초/장. 던지기·피격은 한 번 재생하고 기본 자세로 돌아갑니다. 파란 선은 원본의 위에서 y=21 경계(아래쪽 3px 여백)입니다. 화면을 숨기면 재생을 멈춥니다. 이 검사는 실제 앱 실행 검증이 아닙니다.</p>
+  </section>
+
+  <section id="frames" aria-labelledby="frames-heading">
+    <h2 id="frames-heading">3. 원본 90프레임</h2>
+    <p>캐릭터당 기본 10장 + 던지기·피격 8장. 번호는 각 시트의 0번부터 셉니다. 프레임을 누르면 위 검사 화면에서 정지 상태로 볼 수 있습니다. 파란 선은 발 기준선입니다.</p>
+    <div id="frame-list"></div>
+  </section>
+
+  <section id="keepsakes" aria-labelledby="keepsakes-heading">
+    <h2 id="keepsakes-heading">4. 애착 물건 기획 <span class="badge">4종 선택 · 쿼카 비교 대기</span></h2>
+    <p>시바견은 테니스공, 오리는 물방울, 똥은 휴지 뭉치, 떡볶이는 어묵꼬치로 기획이 선택되었습니다. 쿼카는 <strong>잎사귀와 풀 뭉치 두 안을 비교한 뒤 선택</strong>합니다.</p>
+    <p class="detail">모두 캐릭터와 별도 판매할 물건입니다. 아래 그림은 동일한 생성 콘셉트 보드의 해당 부분을 확대해 보여 주며, 최종 픽셀·회전·충돌 프레임 승인을 뜻하지 않습니다.</p>
+    <h3>쿼카 · 두 가지 예시</h3>
+    <div id="quokka-concepts" class="keepsake-grid" hidden></div>
+    <h3 class="selected-heading">기획이 선택된 네 가지</h3>
+    <div id="selected-concepts" class="keepsake-grid" hidden></div>
+    <p id="concept-pending" class="detail">콘셉트 미리보기를 불러오는 중입니다.</p>
+    <details class="supplementary"><summary>전체 A/B 콘셉트 보드 보기</summary>
+      <figure id="concept-preview" hidden><img id="concept-image" alt="캐릭터별 두 가지 애착 물건 콘셉트 전체 보드" loading="lazy"><figcaption>keepsakes-v1 · 전체 기획 참고. 현재 선택 결과는 위 카드에 표시합니다.</figcaption></figure>
+    </details>
+    <p class="detail">기획 선택 → 그림·회전·충돌 연출 → 음원 A/B → 합성 장면 순서로 검토합니다. 충돌음 방향은 카드 설명으로만 제시하며 아직 청취 가능한 음원은 없습니다.</p>
+  </section>
+  <footer>원본: 정지유 (@jungjiyu) · PR #27에서 선택한 5종. 출처·해시·승인 상태는 패키지의 기록 파일을 기준으로 확인합니다.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "tool": "image_gen.imagegen",
+  "mode": "built_in",
+  "date": "2026-09-13",
+  "status": "generation_time_record; current approvals are exclusively in approvals.json",
+  "outputs": [
+    {
+      "path": "candidates/appearance-v1/concept-board.png",
+      "prompt": "Use case: precise-object-edit. Create ONE clearly organized pixel character art-direction REVIEW BOARD, landscape 1536x1024 if possible. This is a concept review, not production sprite sheets. Five rows ordered SHIBA, DUCK, POOP, TTEOKBOKKI, QUOKKA. Input images in that order are original 240x24 spritesheets with ten 24x24 frames; use ONLY the FIRST 24x24 idle pose from each as the corresponding reference. Each row has FOUR large equally spaced columns: ORIGINAL (faithful first idle pose), PROPOSAL (refined first idle pose), ORIGINAL SILHOUETTE (solid single dark silhouette of original), PROPOSAL SILHOUETTE (solid single dark silhouette of proposal). Label columns and rows with the exact English names above, no extra text. Neutral off-white background. Use very crisp square pixel blocks on a strict 24x24 logical grid enlarged at integer scale, no smoothing, no gradient or antialias on character art. Preserve original individual palettes and facial expression, frontal standing pose, bottom foot alignment, no costume or new character. Modest, clearly readable silhouette changes only: SHIBA sharp pointed ears, taper cheeks and muzzle, slightly narrower torso, curled side tail. DUCK maintain yellow/cream and orange wide beak, round forehead, short wing stubs and webbed feet instead of mammal paws. POOP preserve brown spiral pile silhouette and face, connected feet, minimal changes. TTEOKBOKKI preserve pale rice cake pieces and red sauce distinction and existing face, connected feet, minimal changes. QUOKKA keep original gray-brown/cream palette and smiling expression, separated round ears, round cheeks, little front paws, slightly taller upright body. Original and modified silhouettes must match their corresponding colored pose. All five rows visible without cropping. Do not create animation frames, accessories, shadows or 3D. Keep identities extremely close to references; do not replace them with generic kawaii animals. Save the generated board.",
+      "reference_paths": [
+        "originals/pixel_shiba/base.png",
+        "originals/pixel_duck/base.png",
+        "originals/pixel_poop/base.png",
+        "originals/pixel_tteokbokki/base.png",
+        "originals/pixel_quokka/base.png"
+      ],
+      "limitations": [
+        "Generated ORIGINAL columns are redrawn, not byte/pixel-faithful source.",
+        "1536×1024 RGB concept board; not a 24×24 production sprite.",
+        "Palette/expression preservation must be rechecked against actual source before final appearance approval."
+      ]
+    },
+    {
+      "path": "concepts/keepsakes-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: SIDEY local review board of ten keepsake object concept options BEFORE production. Create one clean organized pixel-art concept review board 1536x1024, warm off-white plain background, five horizontal rows, two columns A and B. Exactly two objects per row, each occupies a small square 16x16 logical pixel drawing enlarged in crisp integer square blocks. No character figures. No gradients, no real shadows, no 3D, no smooth curves, use charming simple 2D game pixel icons with dark outlines, readable silhouette. Put only exact English row and option labels in clean readable font. SHIBA row: A BONE TOY — an ivory dog bone toy; B TENNIS BALL — a yellow green fuzzy tennis ball with white seam. DUCK row: A WATER DROP — sky-blue rounded water droplet; B LITTLE FISH — tiny blue/silver fish with a distinct tail. POOP row: A TISSUE BALL — crumpled white tissue ball; B MINI PLUNGER — small red rubber plunger with short wood handle. TTEOKBOKKI row: A RICE CAKE — one short white cylinder of rice cake lightly coated with red sauce; B FISH CAKE SKEWER — folded beige fish cake on a small wooden skewer. QUOKKA row: A LEAF — single fresh green oval leaf with stem; B GRASS BUNDLE — small soft tuft of green grass tied near base. Each A/B image equally sized, generous whitespace, distinct forms. This is an art planning preview, NOT animation frames or final production asset. Do not imply any option is chosen. Header: KEEPSAKE CONCEPTS / A OR B. All five rows fully visible without cropping.",
+      "limitations": [
+        "1536×1024 RGB concept board; not a 16×16 production sprite or approved item selection."
+      ]
+    }
+  ]
+}

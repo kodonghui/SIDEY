@@ -1,0 +1,26 @@
+{
+  "browser": "Chromium 151.0.7922.34",
+  "surface": "isolated local headless browser; connected Browser plugin unavailable",
+  "checks": [
+    "10 original sheets loaded; 90 frame buttons; 5 appearance comparisons",
+    "manual frame selection across all five characters pauses playback",
+    "flip and silhouette change the rendered canvas",
+    "3 backgrounds × 4 edges × 4 integer scales render successfully",
+    "walk advances pixels; pause freezes canvas",
+    "throw and hit play once and return to idle 0",
+    "proposed idle closed-eye duration; simulated hidden-document event pauses",
+    "390px layout has no document overflow"
+  ],
+  "errors": [],
+  "source_sha256": {
+    "index.html": "bda8b27acdb11c3feee22753578066f69862f4820b404197e2bdee754812c4a3",
+    "review.css": "e05c3e16194756f56b35593c5ed118b23541304946729cd256510ee5fa6f25c5",
+    "review.js": "341712c471c25f1885d5d5ef3d33cac53af0c3b3d2f5ccca2092bdfca48b7d97",
+    "package.json": "c3c8ecda381404d4eabb85f412846211f4521a78ca84ca8a6273366fcd52f47a",
+    "approvals.json": "ab6733b918c40389f1f3920e5365d375a2ebaf04e7bdc8c3d6d82fd7f2b307d2"
+  },
+  "limitations": [
+    "Visibility handler tested by a simulated document.hidden event, not OS tab minimization.",
+    "Current original motion preview only; no final animation/audio approval or app runtime verification."
+  ]
+}

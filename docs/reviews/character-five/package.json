@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "status": "awaiting_appearance_pixels_and_quokka_choice",
+  "selected_characters": [
+    {
+      "id": "pixel_shiba",
+      "name": "시바견"
+    },
+    {
+      "id": "pixel_duck",
+      "name": "오리"
+    },
+    {
+      "id": "pixel_poop",
+      "name": "똥"
+    },
+    {
+      "id": "pixel_tteokbokki",
+      "name": "떡볶이"
+    },
+    {
+      "id": "pixel_quokka",
+      "name": "쿼카"
+    }
+  ],
+  "source": {
+    "pr_url": "https://github.com/sidey-app/SIDEY/pull/27",
+    "head_sha": "ec8dc51cbc0c3eb665c0bca76e2dd7d8ec42fb27",
+    "asset_commit_sha": "f5f5e63cff7b348ab86433af9b4d72c26f05513f",
+    "import_commit_sha": "a7e0af2406ce8b1ee0b2aeae653f66c4ed35087a",
+    "author": {
+      "name": "jiyu.jung",
+      "email": "libraryofjiyu@gmail.com",
+      "github_login": "jungjiyu",
+      "authored_date": "2026-09-03T17:23:45Z"
+    },
+    "coauthors": [
+      {
+        "email": "noreply@anthropic.com",
+        "id": "MDQ6VXNlcjgxODQ3",
+        "login": "claude",
+        "name": "Claude Opus 5 (1M context)"
+      }
+    ],
+    "original_path_template": "assets/v1/characters/{id}/{sheet}.png",
+    "github_author_link_verified_from": "gh pr view 27 --json commits; authors[0].login = jungjiyu",
+    "main_inclusion_verified": false,
+    "successor_pr": null
+  },
+  "artifacts": [
+    {
+      "path": "candidates/appearance-v1/concept-board.png",
+      "sha256": "8fa8c02b23710f78e53e06263e055befc85112257ea77db702da7c980b0c8449",
+      "role": "concept_board",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "candidate_id": "candidates--appearance-v1--concept-board",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "concepts/keepsakes-v1.png",
+      "sha256": "591e97cfb32f19b986c953edbdb656e5e70944de9efd18c57a63bab58ad255d6",
+      "role": "concept_board",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "candidate_id": "concepts--keepsakes-v1",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_duck/base.png",
+      "sha256": "117b9929cf75edcbf39c904a3b471944b00af48faae55e73a3986b82ed35092f",
+      "role": "original_sheet",
+      "dimensions": [
+        240,
+        24
+      ],
+      "candidate_id": "originals--pixel_duck--base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_duck/throw_hit.png",
+      "sha256": "a5174ecf98c8249d569f0fb8230bd8414decf5e6f7713c42e968331be6076907",
+      "role": "original_sheet",
+      "dimensions": [
+        192,
+        24
+      ],
+      "candidate_id": "originals--pixel_duck--throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_poop/base.png",
+      "sha256": "4ad6f2f5e7f21530d442cdc8c2576fb3e346fa7c169c1bf2eef0a76a1dcd260a",
+      "role": "original_sheet",
+      "dimensions": [
+        240,
+        24
+      ],
+      "candidate_id": "originals--pixel_poop--base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_poop/throw_hit.png",
+      "sha256": "c12e2c24a39a5218d0d86a8b5b028fe77fe1c34f332c031635f6abe1e1a5d3d3",
+      "role": "original_sheet",
+      "dimensions": [
+        192,
+        24
+      ],
+      "candidate_id": "originals--pixel_poop--throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_quokka/base.png",
+      "sha256": "ab2778d8d2f49cfccecebfdab629507a77c5b9515c85c0884cc82233358168f6",
+      "role": "original_sheet",
+      "dimensions": [
+        240,
+        24
+      ],
+      "candidate_id": "originals--pixel_quokka--base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_quokka/throw_hit.png",
+      "sha256": "c9fcbcc9baf8be73dc6e950edabf73198d57ec2edc63502a5b315fe6274777d4",
+      "role": "original_sheet",
+      "dimensions": [
+        192,
+        24
+      ],
+      "candidate_id": "originals--pixel_quokka--throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_shiba/base.png",
+      "sha256": "298650cf84e4958a372f8e406d92365b66f2c9b185f1fc69b904ac2cd1dc5832",
+      "role": "original_sheet",
+      "dimensions": [
+        240,
+        24
+      ],
+      "candidate_id": "originals--pixel_shiba--base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_shiba/throw_hit.png",
+      "sha256": "b5c8623ba9f4e2b5fd0a83e29d7ac8aff7a9f6bc4b60981bd6e2423bdcb4a9b1",
+      "role": "original_sheet",
+      "dimensions": [
+        192,
+        24
+      ],
+      "candidate_id": "originals--pixel_shiba--throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_tteokbokki/base.png",
+      "sha256": "dd302f7eeaed14ae33a970a37672a98458537f5c41920f644d6e6a0cfb04f26c",
+      "role": "original_sheet",
+      "dimensions": [
+        240,
+        24
+      ],
+      "candidate_id": "originals--pixel_tteokbokki--base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "originals/pixel_tteokbokki/throw_hit.png",
+      "sha256": "9c7e7736bd51b089e9891bbff2fde39c62c7626ff303e5b5bb4ab25f854cd9ef",
+      "role": "original_sheet",
+      "dimensions": [
+        192,
+        24
+      ],
+      "candidate_id": "originals--pixel_tteokbokki--throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/appearance-v1/pixel_shiba.png",
+      "sha256": "9a6e1e934c9e05b05b93a958ac7356821074b3bb98c8b8a09a97898eac7e393a",
+      "role": "appearance_pose",
+      "character_id": "pixel_shiba",
+      "dimensions": [
+        24,
+        24
+      ],
+      "candidate_id": "appearance-v1-pixel_shiba",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/appearance-v1/pixel_duck.png",
+      "sha256": "9862dc6ef8ad7b7e8bfcf666ea8fc531b6b0462c48657ef45086df6a10971cae",
+      "role": "appearance_pose",
+      "character_id": "pixel_duck",
+      "dimensions": [
+        24,
+        24
+      ],
+      "candidate_id": "appearance-v1-pixel_duck",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/appearance-v1/pixel_poop.png",
+      "sha256": "2bf42d61805200ba01d04f776be62db1464a5b6cd70c960dac21d3226c3977dc",
+      "role": "appearance_pose",
+      "character_id": "pixel_poop",
+      "dimensions": [
+        24,
+        24
+      ],
+      "candidate_id": "appearance-v1-pixel_poop",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/appearance-v1/pixel_tteokbokki.png",
+      "sha256": "9c9d4da000e7ec9b150f9674a1f265cbe5d5e46816ae82978bd0f72439dbe606",
+      "role": "appearance_pose",
+      "character_id": "pixel_tteokbokki",
+      "dimensions": [
+        24,
+        24
+      ],
+      "candidate_id": "appearance-v1-pixel_tteokbokki",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/appearance-v1/pixel_quokka.png",
+      "sha256": "3d9e0375ffd77bdf87d6519dbfaa7ca6f005768312cfc0f1c335ca726a0d1868",
+      "role": "appearance_pose",
+      "character_id": "pixel_quokka",
+      "dimensions": [
+        24,
+        24
+      ],
+      "candidate_id": "appearance-v1-pixel_quokka",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    }
+  ],
+  "production_deliverables": {
+    "character_sheets": 10,
+    "character_frames": 90,
+    "keepsake_sheets": 5,
+    "keepsake_frames": 60,
+    "audio_candidates": 10,
+    "audio_selections": 5
+  },
+  "release_enabled": false
+}
