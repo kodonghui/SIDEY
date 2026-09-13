@@ -81,7 +81,7 @@ def build(write=False):
     else:
         if target.read_bytes() != png or report_path.read_bytes() != encoded_report:
             raise SystemExit("Quokka output differs; use --write to rebuild, then refresh hashes and approvals")
-    print("Verified new 24×24 quokka appearance; animation requires appearance approval")
+    print("Verified new 24×24 quokka appearance; final appearance approval remains separate")
 
 
 if __name__ == "__main__":

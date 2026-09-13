@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_quokka",
+  "character": {
+    "name": "쿼카",
+    "description": "둥근 귀와 따뜻한 갈색 털을 가진 쿼카. 환하게 웃는 얼굴 아래 작은 앞발을 모으고 있어요."
+  },
+  "keepsake": {
+    "id": "leaf",
+    "name": "잎사귀",
+    "description": "잎맥이 또렷한 초록 잎사귀. 가볍게 회전하다 닿는 순간 작은 잎 조각으로 흩어져요."
+  }
+}

@@ -1,28 +1,36 @@
 {
   "browser": "Chromium 151.0.7922.34",
-  "surface": "isolated local headless browser; connected Browser plugin unavailable",
+  "surface": "local headless Chromium; connected Browser plugin unavailable",
   "checks": [
-    "10 original sheets loaded; 90 frame buttons; 5 appearance comparisons",
-    "manual frame selection across all five characters pauses playback",
-    "72 repaired frames plus 18 original quokka frames; original toggle preserves frame and shows ankle repair",
-    "flip and silhouette change the rendered canvas",
-    "3 backgrounds × 4 edges × 4 integer scales render successfully",
-    "walk advances pixels; pause freezes canvas",
-    "throw and hit play once and return to idle 0",
-    "proposed idle closed-eye duration; simulated hidden-document event pauses",
-    "5 selected keepsakes / 60 frames; rotation and impact selection; loop advances; exclusive playback and hidden event stop both players",
-    "390px layout has no document overflow"
+    "all five current candidates walk on load, including new quokka; actual canvas changes without autoplay audio",
+    "all five senders throw their selected item at moving targets; windup is silent; collision triggers hit and exactly one sound",
+    "idle/doze/sleep/walk work for all actors; mute preserves visual impact; pausing in flight prevents a ghost impact or sound",
+    "resizing during flight cancels the shot and sound without locking the throw button; retry succeeds",
+    "clicking a different canvas character throws at that target",
+    "pause freezes the scene and resume restores motion",
+    "single, three-repeat, A/B and existing-reference playback start real decoded buffers; explicit stop clears active and pending audio",
+    "all ten A/B candidates decode and start in Chromium; all ten character/item descriptions match the pinned files",
+    "item changes and hidden-document events cancel queued and active audio; hidden scene pauses",
+    "deep links open details; all 90 current frames including quokka; explicit original comparison; integer scales/backgrounds/edges/flip; 60 item frames",
+    "390px viewport has no document overflow",
+    "missing new quokka blocks playback without original fallback; selection during delayed audio decoding cancels the stale throw and the next explicit throw works",
+    "audio context suspension during preparation reports an interruption and allows a successful retry"
   ],
   "errors": [],
+  "actual_audio_starts": 26,
   "source_sha256": {
-    "index.html": "ae4d7df07bd389a27e57bb843eb2dee29bbba6299b52f587cc4f7c8e5cd3875c",
-    "review.css": "6972002cc800385363027ee27dde3f86c454700e86521f726d592a4ba65ee1b2",
-    "review.js": "3f31c20958fcc9bb1e812401871aa07fc0dd7efd424d250b7685ac16602832ee",
-    "package.json": "8a77a03973a299709fb63cde9cef509ac3b194e319878ab1444c991d90c96751",
-    "approvals.json": "69987e12ef9f8e49bdff023ea6b9dcf2f1d9ff754c2da70189a9d1a8a1f6d0b1"
+    "index.html": "c184ebb61d758b87d03624a9a9bb7f2c5135760e443ebb2e96df3af123499a9c",
+    "review.css": "703ed906d3880d5f5dbca5728e8c5c036022cc91fc831edb906d64e49c5f43b9",
+    "review.js": "68544b8f2ce680951d4ecd966dcfed4177ba99fdb0e5b324322c6c1609b53ae3",
+    "preview-state.js": "ef1124be4826a1b58cecd136c397317ad78c5032b876610ce7fe006d928b7afc",
+    "review-audio.js": "5b2cab3d30018d97126f7161dcb947fb7fff680a3dd26f5aec8c8a645fffd13e",
+    "package.json": "3fe47dd779f92b7df161e3d1d06a935665fc24214abf35a11ee0ecf786e0934f",
+    "approvals.json": "91569c4ad121b15c93af3d0d5f4006f70e4d4590e62b3fe646e31a2c50f56059",
+    "verify_browser.cjs": "a2b162e187d0fd1a1a02f156900b0dbe55183ad22364197fdbc8a0d49619ea13"
   },
   "limitations": [
-    "Visibility handler tested by a simulated document.hidden event, not OS tab minimization.",
-    "72 repaired character frames and 60 keepsake frames are review candidates; quokka animation remains original reference. No audio or app runtime verification."
+    "Audio decoded and real Web Audio starts observed; no physical speaker or human listening certification.",
+    "Visibility tested with a simulated document.hidden event; no OS minimization or native app runtime verification.",
+    "All art and audio remain review candidates; successful interaction tests do not record user approval."
   ]
 }

@@ -27,10 +27,10 @@ from audit_frames import CHARACTERS, FRAME_NAMES, analyze_frame, frame_bytes, pa
 PACKAGE = Path(__file__).resolve().parent
 MEDIA_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif",
                   ".wav", ".mp3", ".ogg", ".flac", ".m4a", ".aac", ".mp4", ".webm"}
-FINAL_ROLES = {"appearance_pose", "character_sheet", "keepsake_sheet", "audio_candidate"}
-ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview"}
+FINAL_ROLES = {"appearance_pose", "character_sheet", "keepsake_sheet", "audio_candidate", "content_copy"}
+ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview", "audio_reference"}
 CHARACTER_STAGES = {"keepsake_plan", "appearance_pixels", "character_frames", "character_motion",
-                    "keepsake_visual", "audio", "composite"}
+                    "keepsake_visual", "audio", "composite", "descriptions"}
 EXPECTED_RECORDS = {(stage, character) for stage in CHARACTER_STAGES for character in CHARACTERS}
 EXPECTED_RECORDS |= {("appearance_direction", "all"), ("idle_timing", "all")}
 PREDECESSORS = {
@@ -156,7 +156,8 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             and approvals["contract"].get("private_documents_included") is False, "contract record incomplete")
     require(manifest.get("release_enabled") is False, "this review package must keep release disabled")
     expected_counts = {"character_sheets": 10, "character_frames": 90, "keepsake_sheets": 5,
-                       "keepsake_frames": 60, "audio_candidates": 10, "audio_selections": 5}
+                       "keepsake_frames": 60, "audio_candidates": 10, "audio_selections": 5,
+                       "content_descriptions": 10}
     require(manifest.get("production_deliverables") == expected_counts, "production counts differ from approved scope")
     artifacts, candidates, final_keys = {}, set(), set()
     for artifact in manifest["artifacts"]:
@@ -182,7 +183,17 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             key = (role, artifact["character_id"], qualifier)
             require(key not in final_keys, f"duplicate final artifact role: {key}")
             final_keys.add(key)
-        if role == "audio_candidate":
+        if role == "content_copy":
+            require(path.suffix == ".json", "content copy must be JSON")
+            copy = json.loads(path.read_text())
+            require(copy.get("language") == "ko" and copy.get("character_id") == artifact["character_id"],
+                    "content copy language/character mismatch")
+            for subject in ("character", "keepsake"):
+                require(isinstance(copy.get(subject), dict)
+                        and all(nonempty(copy[subject].get(field)) for field in ("name", "description")),
+                        f"content copy needs name and unique description: {subject}")
+            require(nonempty(copy["keepsake"].get("id")), "content copy needs keepsake ID")
+        elif role in ("audio_candidate", "audio_reference"):
             validate_audio(path, artifact)
         else:
             require(path.suffix.lower() == ".png", f"image artifacts must be PNG: {relative}")
@@ -192,7 +203,8 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
         candidates.add(candidate)
     media = {path.relative_to(root).as_posix() for path in root.rglob("*")
              if path.is_file() and path.suffix.lower() in MEDIA_SUFFIXES}
-    require(media == set(artifacts), f"unlisted/missing media: {sorted(media ^ set(artifacts))}")
+    declared_media = {path for path, artifact in artifacts.items() if artifact["role"] != "content_copy"}
+    require(media == declared_media, f"unlisted/missing media: {sorted(media ^ declared_media)}")
     expected_originals = {f"originals/{character}/{sheet}.png" for character in CHARACTERS for sheet in FRAME_NAMES}
     require({path for path, artifact in artifacts.items() if artifact["role"] == "original_sheet"}
             == expected_originals, "expected exactly ten original PNGs")
@@ -249,6 +261,7 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             "character_frames": {("character_sheet", "base"), ("character_sheet", "throw_hit")},
             "character_motion": {("character_sheet", "base"), ("character_sheet", "throw_hit")},
             "keepsake_visual": {("keepsake_sheet", None)},
+            "descriptions": {("content_copy", None)},
         }.get(stage)
         if wanted:
             available = {(item["role"], item.get("sheet")) for item in referenced_artifacts
@@ -271,6 +284,15 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             require({"character_sheet", "keepsake_sheet", "audio_candidate"} <= available,
                     f"composite must pin character, keepsake and selected audio: {key}")
     require(set(records) == EXPECTED_RECORDS, "missing approval records")
+    for artifact in artifacts.values():
+        if artifact["role"] in ("keepsake_sheet", "audio_candidate"):
+            plan = records[("keepsake_plan", artifact["character_id"])]
+            require(artifact.get("keepsake_id") == plan["selection"],
+                    "keepsake image/audio differs from selected plan")
+        if artifact["role"] == "content_copy":
+            copy = json.loads((root / artifact["path"]).read_text())
+            plan = records[("keepsake_plan", artifact["character_id"])]
+            require(copy["keepsake"]["id"] == plan["selection"], "content copy keepsake differs from selected plan")
     concept = approvals.get("concept_art_approval")
     if concept is not None:
         require(concept.get("status") == "approved_for_selected_concepts"
@@ -313,7 +335,8 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
                     f"composite selection must exactly identify both character sheets, keepsake and approved audio: {character}")
     missing = []
     for character in CHARACTERS:
-        expected = {("appearance_pose", character, None), ("keepsake_sheet", character, None)}
+        expected = {("appearance_pose", character, None), ("keepsake_sheet", character, None),
+                    ("content_copy", character, None)}
         expected |= {("character_sheet", character, sheet) for sheet in FRAME_NAMES}
         expected |= {("audio_candidate", character, variant) for variant in ("A", "B")}
         missing.extend(sorted(expected - final_keys))

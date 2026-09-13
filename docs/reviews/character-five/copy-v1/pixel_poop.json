@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_poop",
+  "character": {
+    "name": "똥",
+    "description": "뱅글뱅글 말린 갈색 몸에 작은 눈과 발이 달렸어요. 태연한 표정으로 걸어 다니는 엉뚱한 친구예요."
+  },
+  "keepsake": {
+    "id": "tissue_ball",
+    "name": "휴지 뭉치",
+    "description": "작게 구겨진 새하얀 휴지 뭉치. 가볍게 날아가 포슬포슬 흩어져요."
+  }
+}

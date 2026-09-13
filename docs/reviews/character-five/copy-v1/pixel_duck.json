@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_duck",
+  "character": {
+    "name": "오리",
+    "description": "노란 몸에 파란 목도리를 두른 오리. 납작한 부리와 짧은 발로 뒤뚱뒤뚱 존재감을 드러내요."
+  },
+  "keepsake": {
+    "id": "rubber_duck",
+    "name": "목욕 오리",
+    "description": "욕조에서 막 나온 듯한 노란 고무 오리 장난감. 작은 부리와 짧은 삑 소리가 포인트예요."
+  }
+}

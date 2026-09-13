@@ -39,6 +39,27 @@ class PackageApprovalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not approved"):
             self.run_validation(require_approved=True)
 
+    def test_complete_approval_fixture_selects_exact_assets_audio_and_copy(self):
+        # This in-memory fixture never writes an approval into the package.
+        for record in self.approvals["records"]:
+            if record["status"] == "approved":
+                continue
+            stage = record["stage"]
+            refs = [item for item in self.manifest["artifacts"]
+                    if item["path"] in {ref["path"] for ref in record["artifacts"]}]
+            if stage == "idle_timing":
+                selection = record["options"][0]
+            elif stage == "audio":
+                selection = next(item["candidate_id"] for item in refs if item.get("variant") == "A")
+            elif stage == "composite":
+                selection = [item["candidate_id"] for item in refs
+                             if item["role"] != "audio_candidate" or item["variant"] == "A"]
+            else:
+                selection = [item["candidate_id"] for item in refs]
+            record.update(status="approved", selection=selection,
+                          user_evidence="TEST FIXTURE ONLY: explicitly selected these pinned candidates.")
+        self.assertTrue(self.run_validation(require_approved=True)["ready"])
+
     def test_approved_direction_is_bound_to_current_board(self):
         self.direction()
         result = self.run_validation()
@@ -71,6 +92,44 @@ class PackageApprovalTests(unittest.TestCase):
         self.manifest["artifacts"][0]["sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "hash mismatch"):
             self.run_validation()
+
+    def test_audio_reference_cannot_fill_a_missing_candidate(self):
+        candidate = next(item for item in self.manifest["artifacts"] if item["role"] == "audio_candidate")
+        candidate["role"] = "audio_reference"
+        result = self.run_validation()
+        self.assertEqual(result["missing_final_artifacts"], 1)
+        self.assertFalse(result["ready"])
+
+    def test_keepsake_and_audio_must_match_the_character_selected_item(self):
+        original = copy.deepcopy(self.manifest)
+        for role in ("keepsake_sheet", "audio_candidate"):
+            with self.subTest(role=role):
+                self.manifest = copy.deepcopy(original)
+                item = next(item for item in self.manifest["artifacts"]
+                            if item["role"] == role and item["character_id"] == "pixel_shiba")
+                item["keepsake_id"] = "rubber_duck"
+                with self.assertRaisesRegex(ValueError, "differs from selected plan"):
+                    self.run_validation()
+
+    def test_description_approval_is_bound_to_exact_character_copy(self):
+        record = next(record for record in self.approvals["records"] if record["stage"] == "descriptions")
+        other = next(item for item in self.manifest["artifacts"] if item["role"] == "content_copy"
+                     and item["character_id"] != record["character_id"])
+        record.update(status="approved", selection=other["candidate_id"],
+                      user_evidence="TEST FIXTURE: wrong character description selected",
+                      artifacts=[{key: other[key] for key in ("path", "sha256", "candidate_id")}])
+        with self.assertRaisesRegex(ValueError, "missing relevant final artifacts"):
+            self.run_validation()
+
+    def test_description_and_audio_references_reject_stale_hashes(self):
+        original = copy.deepcopy(self.approvals)
+        for stage in ("descriptions", "audio"):
+            with self.subTest(stage=stage):
+                self.approvals = copy.deepcopy(original)
+                record = next(record for record in self.approvals["records"] if record["stage"] == stage)
+                record["artifacts"][0]["sha256"] = "0" * 64
+                with self.assertRaisesRegex(ValueError, "stale approval reference"):
+                    self.run_validation()
 
     def test_pending_selection_is_not_approval(self):
         record = next(record for record in self.approvals["records"] if record["status"] == "pending")

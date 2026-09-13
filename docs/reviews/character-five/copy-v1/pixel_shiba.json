@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_shiba",
+  "character": {
+    "name": "시바견",
+    "description": "쫑긋한 귀와 동그랗게 말린 꼬리를 가진 시바견. 빨간 목도리를 두르고 작은 발로 부지런히 걸어요."
+  },
+  "keepsake": {
+    "id": "tennis_ball",
+    "name": "테니스공",
+    "description": "초록 펠트에 하얀 곡선이 둘러진 테니스공. 빙글빙글 날아가 탄성 있게 톡 튀어요."
+  }
+}
