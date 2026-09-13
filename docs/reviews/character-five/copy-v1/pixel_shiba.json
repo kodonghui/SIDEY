@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_shiba",
+  "character": {
+    "name": "시바견",
+    "description": "산책은 다녀왔어요. 시바는 그 사실을 인정하지 않아요."
+  },
+  "keepsake": {
+    "id": "tennis_ball",
+    "name": "테니스공",
+    "description": "던질 사람은 정했어요. 주워 올 사람은 아직이요."
+  }
+}

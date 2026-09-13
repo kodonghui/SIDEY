@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_tteokbokki",
+  "character": {
+    "name": "떡볶이",
+    "description": "순한맛이라더니요. 누구 기준인지는 안 알려줬어요."
+  },
+  "keepsake": {
+    "id": "fish_cake_skewer",
+    "name": "어묵꼬치",
+    "description": "드시라고 드린 건데 왜 휘두르세요?"
+  }
+}

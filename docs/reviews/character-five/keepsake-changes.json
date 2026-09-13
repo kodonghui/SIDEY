@@ -1,0 +1,1357 @@
+{
+  "schema_version": 1,
+  "candidate_version": "keepsakes-v2",
+  "purpose": "선택된 애착 물건의 그림·회전·충돌 승인 후보; 음원·합성·출시 승인 아님",
+  "format": {
+    "cell_size": [
+      16,
+      16
+    ],
+    "sheet_size": [
+      192,
+      16
+    ],
+    "frames_per_sheet": 12,
+    "color_space": "sRGB",
+    "alpha": "hard",
+    "filtering": "nearest"
+  },
+  "license": "SIDEY Paid Asset License 1.0; review package LICENSE.md scope extension",
+  "concept_source_sha256": "591e97cfb32f19b986c953edbdb656e5e70944de9efd18c57a63bab58ad255d6",
+  "limitations": [
+    "알파 무게중심은 모양·텍스처에 따라 회전하며 고정 회전축과 동일하지 않음; 흔들림 최종 판단은 루프 검토 필요",
+    "신규 4종의 마지막 충돌 프레임은 의도된 완전 투명 소멸. 회전 프레임에는 빈 셀 없음",
+    "목욕 오리는 기존 삑삑 오리 자산의 변경 없는 후보 재사용; 별도 상품 생성·활성 manifest 변경 없음",
+    "음원 생성·복사·활성 자산 변경·앱 실행 검증은 수행하지 않음"
+  ],
+  "items": [
+    {
+      "candidate_id": "tennis_ball",
+      "character_id": "pixel_shiba",
+      "path": "candidates/keepsakes-v2/tennis_ball/sprite.png",
+      "sha256": "19c1a71275fd2e5be5be0b39ebd7be95d960f80ac65dd629aedd885b64f89fc3",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "authorship": "Codex가 이번 검토용으로 작성한 픽셀 맵·회전·충돌 후보; 정지유 원본 아님",
+      "palette_hex": {
+        "o": "46521E",
+        "g": "ABD331",
+        "l": "CBE54D",
+        "s": "81AC29",
+        "w": "FFF8D7"
+      },
+      "rotation_center": [
+        7.5,
+        7.5
+      ],
+      "rotation_method": "inverse nearest pixel, clockwise 45 degrees, fixed anchor; no per-frame recentering; tennis ball circular outline held fixed and seam rotated",
+      "impact_description": "탄성 있는 옆으로 눌림, 작은 튕김 표시, 소멸",
+      "frames": [
+        {
+          "index": 0,
+          "state": "rotation_0",
+          "rgba_sha256": "64aedd609906f83ef00a797dad3da71cedf0e0e6d0f096af95444c36b7c3540a",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 1,
+          "state": "rotation_45",
+          "rgba_sha256": "d841292af600afb8b5c47f2e6d45659ed9b814fca4bc04f91284f4f941c3620d",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 2,
+          "state": "rotation_90",
+          "rgba_sha256": "af2edfb5265a0367826dcdf6f2f63dcbedfcecf12c1fc42cda6a2120fd720f68",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 3,
+          "state": "rotation_135",
+          "rgba_sha256": "6063ad7b932094ba9b851d72abd41326f6e71e35c5fdb771a7cb6f8f2eaa6f19",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 4,
+          "state": "rotation_180",
+          "rgba_sha256": "230473c71c95de63e01a8dd287359208bf2b312f2f7ef95f2f0c73f47eb9f838",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 5,
+          "state": "rotation_225",
+          "rgba_sha256": "9cec5931d462bf03f81ce591b09500cf8e35db8471e83bb735e71f6390980900",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 6,
+          "state": "rotation_270",
+          "rgba_sha256": "527d089914709028ace77cb0accb84b558abf796728e167ca6ba9bf4b9f8cdd5",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 7,
+          "state": "rotation_315",
+          "rgba_sha256": "5de977a00d24bc04ef5f7a94ed6c036b8484f74f126fadae1f163f3dc06e435f",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 80,
+          "alpha_centroid": [
+            7.5,
+            7.5
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 8,
+          "state": "impact_contact",
+          "rgba_sha256": "a056388277f5e1d5781c2332be73214a1984bfba92e83a1d31482a156833bba3",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            11
+          ],
+          "opaque_pixels": 76,
+          "alpha_centroid": [
+            7.5,
+            7.2632
+          ],
+          "alpha_centroid_distance_from_anchor": 0.2368,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 9,
+          "state": "impact_squash",
+          "rgba_sha256": "342807f9c3c4dd4dbb3276eb667f18a363212beae7260d1be3fdb3e3223bb361",
+          "bounds_inclusive": [
+            2,
+            5,
+            13,
+            10
+          ],
+          "opaque_pixels": 59,
+          "alpha_centroid": [
+            7.6949,
+            7.7458
+          ],
+          "alpha_centroid_distance_from_anchor": 0.3137,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 10,
+          "state": "impact_bounce",
+          "rgba_sha256": "a9d6b83a0fd35d9477f0de9bc837e20c0d81e6b014365cfd3328adb7ace0ceec",
+          "bounds_inclusive": [
+            4,
+            5,
+            11,
+            12
+          ],
+          "opaque_pixels": 35,
+          "alpha_centroid": [
+            7.6857,
+            8.1429
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6691,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 11,
+          "state": "impact_recover",
+          "rgba_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "bounds_inclusive": null,
+          "opaque_pixels": 0,
+          "alpha_centroid": null,
+          "alpha_centroid_distance_from_anchor": null,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": true
+        }
+      ],
+      "exact_duplicate_pairs": [],
+      "approval_status": "pending_visual_rotation_impact_approval"
+    },
+    {
+      "candidate_id": "tissue_ball",
+      "character_id": "pixel_poop",
+      "path": "candidates/keepsakes-v2/tissue_ball/sprite.png",
+      "sha256": "ae0a3d483f6a606b4dc35bdac173044720668679f6462e36ff19720334dea975",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "authorship": "Codex가 이번 검토용으로 작성한 픽셀 맵·회전·충돌 후보; 정지유 원본 아님",
+      "palette_hex": {
+        "o": "777470",
+        "w": "FFFCF4",
+        "l": "EAE7DD",
+        "s": "C2BEB5",
+        "d": "A09C94"
+      },
+      "rotation_center": [
+        7.5,
+        7.5
+      ],
+      "rotation_method": "inverse nearest pixel, clockwise 45 degrees, fixed anchor; no per-frame recentering",
+      "impact_description": "구겨진 종이의 옆으로 눌림, 작은 종이 조각, 소멸",
+      "frames": [
+        {
+          "index": 0,
+          "state": "rotation_0",
+          "rgba_sha256": "2f2bd9278550ac70ec92b679683aa603502794826ae3fad1eac2e37df2eb0bd8",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 69,
+          "alpha_centroid": [
+            7.4638,
+            7.6812
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1847,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 1,
+          "state": "rotation_45",
+          "rgba_sha256": "b9540e2aa21ccfe5d0f3e8fa2bd6be6b6b523a9e01289fdd7e7a9f4f1e771b47",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 73,
+          "alpha_centroid": [
+            7.3425,
+            7.6027
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1881,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 2,
+          "state": "rotation_90",
+          "rgba_sha256": "9119dee7f8b8818931177e96a02817ed3c2189185de021d4ff2da73f62241dbd",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 69,
+          "alpha_centroid": [
+            7.3188,
+            7.4638
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1847,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 3,
+          "state": "rotation_135",
+          "rgba_sha256": "6d2397a808dc1bb281fc045d9922209014c5a23673baf5c47d08694db0d05d88",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 73,
+          "alpha_centroid": [
+            7.3973,
+            7.3425
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1881,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 4,
+          "state": "rotation_180",
+          "rgba_sha256": "4932edf85a94201e0e4f3efa2ec7cb0ffb82db232e1f7fd36027244858931497",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 69,
+          "alpha_centroid": [
+            7.5362,
+            7.3188
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1847,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 5,
+          "state": "rotation_225",
+          "rgba_sha256": "c0924dc26598f07cc5821b783f92245880223eade935afd9cafc0856bc0db2c0",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 73,
+          "alpha_centroid": [
+            7.6575,
+            7.3973
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1881,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 6,
+          "state": "rotation_270",
+          "rgba_sha256": "f365e4e4a5022c08cc309574cd25c64248c91f3e83eff71fd5ea6d7a7037bea7",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 69,
+          "alpha_centroid": [
+            7.6812,
+            7.5362
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1847,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 7,
+          "state": "rotation_315",
+          "rgba_sha256": "d06cc62787988a9a5bf95a65e2d0cf5d53ce2eb60dc4a4bb3a4c2cc318729506",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 73,
+          "alpha_centroid": [
+            7.6027,
+            7.6575
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1881,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 8,
+          "state": "impact_contact",
+          "rgba_sha256": "0e05df68e46faf164ce661b6f89fccc742d3aeea7ef6f313bbf84772707ee43f",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            11
+          ],
+          "opaque_pixels": 65,
+          "alpha_centroid": [
+            7.4615,
+            7.4154
+          ],
+          "alpha_centroid_distance_from_anchor": 0.0929,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 9,
+          "state": "impact_squash",
+          "rgba_sha256": "751e790b06978bfb8385275358fb3d282109288da23740026b80690407791c4f",
+          "bounds_inclusive": [
+            2,
+            5,
+            13,
+            10
+          ],
+          "opaque_pixels": 46,
+          "alpha_centroid": [
+            7.8043,
+            7.8478
+          ],
+          "alpha_centroid_distance_from_anchor": 0.4622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 10,
+          "state": "impact_bounce",
+          "rgba_sha256": "ffe54e5faea524e4fe66e55e47b706d6e48c5ccd598279fa6cde0b813ff1a710",
+          "bounds_inclusive": [
+            4,
+            5,
+            11,
+            11
+          ],
+          "opaque_pixels": 8,
+          "alpha_centroid": [
+            7.625,
+            7.0
+          ],
+          "alpha_centroid_distance_from_anchor": 0.5154,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 11,
+          "state": "impact_recover",
+          "rgba_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "bounds_inclusive": null,
+          "opaque_pixels": 0,
+          "alpha_centroid": null,
+          "alpha_centroid_distance_from_anchor": null,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": true
+        }
+      ],
+      "exact_duplicate_pairs": [],
+      "approval_status": "pending_visual_rotation_impact_approval"
+    },
+    {
+      "candidate_id": "fish_cake_skewer",
+      "character_id": "pixel_tteokbokki",
+      "path": "candidates/keepsakes-v2/fish_cake_skewer/sprite.png",
+      "sha256": "bdcfc04e33f3cf4f45305aa9fbf6c6fed70b515fe826823c890ccbb5e28340fd",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "authorship": "Codex가 이번 검토용으로 작성한 픽셀 맵·회전·충돌 후보; 정지유 원본 아님",
+      "palette_hex": {
+        "o": "6B492D",
+        "g": "DCAA65",
+        "l": "F5D293",
+        "s": "BA8349",
+        "w": "FFE7B5",
+        "k": "B78850"
+      },
+      "rotation_center": [
+        7.5,
+        7.5
+      ],
+      "rotation_method": "inverse nearest pixel, clockwise 45 degrees, fixed anchor; no per-frame recentering",
+      "impact_description": "접힌 어묵의 작은 눌림, 반동과 짧은 접촉선, 소멸",
+      "frames": [
+        {
+          "index": 0,
+          "state": "rotation_0",
+          "rgba_sha256": "430512a5a2a45c563020b7af82ed77b996158e7f9d84a722db02bcce80f180b2",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 49,
+          "alpha_centroid": [
+            7.449,
+            7.6122
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1233,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 1,
+          "state": "rotation_45",
+          "rgba_sha256": "f625a71cb63ebf1104b8498f7141e5416cbf6ef174592c317d74e564c761656d",
+          "bounds_inclusive": [
+            1,
+            5,
+            14,
+            10
+          ],
+          "opaque_pixels": 50,
+          "alpha_centroid": [
+            7.36,
+            7.42
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1612,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 2,
+          "state": "rotation_90",
+          "rgba_sha256": "06a97ff54d0adb5d18c9065e112be465b8404c11d160f27a546916dda7723f79",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 49,
+          "alpha_centroid": [
+            7.3878,
+            7.449
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1233,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 3,
+          "state": "rotation_135",
+          "rgba_sha256": "d658fe3f410d1f736c9d3530c3d4cb00ef210ad4e564bec45dffa59ed336f790",
+          "bounds_inclusive": [
+            5,
+            1,
+            10,
+            14
+          ],
+          "opaque_pixels": 50,
+          "alpha_centroid": [
+            7.58,
+            7.36
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1612,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 4,
+          "state": "rotation_180",
+          "rgba_sha256": "23b92629baee3e16e625e9002ff95076ce8117d2a0462eeee83e2a1a9450fd82",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 49,
+          "alpha_centroid": [
+            7.551,
+            7.3878
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1233,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 5,
+          "state": "rotation_225",
+          "rgba_sha256": "330e6b001914ac04126aafd19e60e0073091272f40d83dac27d8ce414566b9c2",
+          "bounds_inclusive": [
+            1,
+            5,
+            14,
+            10
+          ],
+          "opaque_pixels": 50,
+          "alpha_centroid": [
+            7.64,
+            7.58
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1612,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 6,
+          "state": "rotation_270",
+          "rgba_sha256": "0be320db3daf7a0c06291f301d0d7946a86fd3bc378c012fb2005f0e7438eda1",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 49,
+          "alpha_centroid": [
+            7.6122,
+            7.551
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1233,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 7,
+          "state": "rotation_315",
+          "rgba_sha256": "5b066deeaa64e66b5c8c66a99351af64daacfefb59401b60577275baef8b9707",
+          "bounds_inclusive": [
+            5,
+            1,
+            10,
+            14
+          ],
+          "opaque_pixels": 50,
+          "alpha_centroid": [
+            7.42,
+            7.64
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1612,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 8,
+          "state": "impact_contact",
+          "rgba_sha256": "6c0bc1a7b4636080ec9786580ad6d3e1c0daa267ba65b24e7061d542568b7230",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            11
+          ],
+          "opaque_pixels": 47,
+          "alpha_centroid": [
+            7.617,
+            7.4255
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1387,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 9,
+          "state": "impact_squash",
+          "rgba_sha256": "64cb8d43d017732095818cdb0eda0068a6c079e07852b8c9986051efbbd30c82",
+          "bounds_inclusive": [
+            2,
+            5,
+            13,
+            10
+          ],
+          "opaque_pixels": 33,
+          "alpha_centroid": [
+            7.8485,
+            7.9091
+          ],
+          "alpha_centroid_distance_from_anchor": 0.5374,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 10,
+          "state": "impact_bounce",
+          "rgba_sha256": "652c6002f7918941550806d0890cd38add79789debdd14079be79197894be4ce",
+          "bounds_inclusive": [
+            4,
+            5,
+            11,
+            12
+          ],
+          "opaque_pixels": 27,
+          "alpha_centroid": [
+            7.7037,
+            8.4444
+          ],
+          "alpha_centroid_distance_from_anchor": 0.9662,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 11,
+          "state": "impact_recover",
+          "rgba_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "bounds_inclusive": null,
+          "opaque_pixels": 0,
+          "alpha_centroid": null,
+          "alpha_centroid_distance_from_anchor": null,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": true
+        }
+      ],
+      "exact_duplicate_pairs": [],
+      "approval_status": "pending_visual_rotation_impact_approval"
+    },
+    {
+      "candidate_id": "leaf",
+      "character_id": "pixel_quokka",
+      "path": "candidates/keepsakes-v2/leaf/sprite.png",
+      "sha256": "b0a419e6659ded829130ec7d0be92d0b693ccd1cdc158aa8aabbd8b24936173e",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "authorship": "Codex가 이번 검토용으로 작성한 픽셀 맵·회전·충돌 후보; 정지유 원본 아님",
+      "palette_hex": {
+        "o": "315934",
+        "g": "5E9D37",
+        "l": "94C451",
+        "s": "447A32",
+        "w": "B4D26B"
+      },
+      "rotation_center": [
+        7.5,
+        7.5
+      ],
+      "rotation_method": "inverse nearest pixel, clockwise 45 degrees, fixed anchor; no per-frame recentering",
+      "impact_description": "잎의 짧은 접힘, 작은 잎 조각, 소멸",
+      "frames": [
+        {
+          "index": 0,
+          "state": "rotation_0",
+          "rgba_sha256": "c8f43a454aa024440b7bc3d2142bcc5428eeaf7266215e1adcf75b43ae9865bf",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 58,
+          "alpha_centroid": [
+            7.6207,
+            7.3621
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1833,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 1,
+          "state": "rotation_45",
+          "rgba_sha256": "dfca7c99051fc00eb6f36749161056d93548d0c432ad591ef23ba3f33d011232",
+          "bounds_inclusive": [
+            1,
+            5,
+            14,
+            10
+          ],
+          "opaque_pixels": 57,
+          "alpha_centroid": [
+            7.7719,
+            7.4561
+          ],
+          "alpha_centroid_distance_from_anchor": 0.2754,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 2,
+          "state": "rotation_90",
+          "rgba_sha256": "e9f74d315a4eb84951c5b4af5759892faa202da0b01a837808f3c328ec8e9440",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 58,
+          "alpha_centroid": [
+            7.6379,
+            7.6207
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1833,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 3,
+          "state": "rotation_135",
+          "rgba_sha256": "1047c1508010bed308ca5de9e547ef559767eb124b4cc4064e766f03c608e52e",
+          "bounds_inclusive": [
+            5,
+            1,
+            10,
+            14
+          ],
+          "opaque_pixels": 57,
+          "alpha_centroid": [
+            7.5439,
+            7.7719
+          ],
+          "alpha_centroid_distance_from_anchor": 0.2754,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 4,
+          "state": "rotation_180",
+          "rgba_sha256": "33594b3f828f9c09b5c5ad472962ff78e5bcd0639a49a14265006c83afea54f8",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 58,
+          "alpha_centroid": [
+            7.3793,
+            7.6379
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1833,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 5,
+          "state": "rotation_225",
+          "rgba_sha256": "b7a7617f735229c1fe47bb0936c98d0c20c79e7cc643b530febc588aacd9d7c4",
+          "bounds_inclusive": [
+            1,
+            5,
+            14,
+            10
+          ],
+          "opaque_pixels": 57,
+          "alpha_centroid": [
+            7.2281,
+            7.5439
+          ],
+          "alpha_centroid_distance_from_anchor": 0.2754,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 6,
+          "state": "rotation_270",
+          "rgba_sha256": "c6cc7f31f004fe7e2df028cc150019e8d4e4b098657f2131f0361b10d0d8c988",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 58,
+          "alpha_centroid": [
+            7.3621,
+            7.3793
+          ],
+          "alpha_centroid_distance_from_anchor": 0.1833,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 7,
+          "state": "rotation_315",
+          "rgba_sha256": "bb8439bc8b68364722a6907cf7a99e79d5b2d8d8aa453aaf41e8c574093927f9",
+          "bounds_inclusive": [
+            5,
+            1,
+            10,
+            14
+          ],
+          "opaque_pixels": 57,
+          "alpha_centroid": [
+            7.4561,
+            7.2281
+          ],
+          "alpha_centroid_distance_from_anchor": 0.2754,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 8,
+          "state": "impact_contact",
+          "rgba_sha256": "2985f05c9c290cbc026c0c0505b825b295a25c072e703f7399c26a17a35dc8f3",
+          "bounds_inclusive": [
+            4,
+            3,
+            12,
+            11
+          ],
+          "opaque_pixels": 56,
+          "alpha_centroid": [
+            7.7679,
+            7.1964
+          ],
+          "alpha_centroid_distance_from_anchor": 0.4048,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 9,
+          "state": "impact_squash",
+          "rgba_sha256": "3e36e54b0bcb27cba10cd7eaa7a583f6350ddf48ab8b63c71f2c012fdffdbcb2",
+          "bounds_inclusive": [
+            4,
+            5,
+            13,
+            10
+          ],
+          "opaque_pixels": 41,
+          "alpha_centroid": [
+            8.4146,
+            7.7317
+          ],
+          "alpha_centroid_distance_from_anchor": 0.9435,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 10,
+          "state": "impact_bounce",
+          "rgba_sha256": "8afcd524b2bf8c6501fed08aeec72294740483d173ff039c8a5625619f712970",
+          "bounds_inclusive": [
+            4,
+            5,
+            11,
+            11
+          ],
+          "opaque_pixels": 8,
+          "alpha_centroid": [
+            7.625,
+            7.0
+          ],
+          "alpha_centroid_distance_from_anchor": 0.5154,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 11,
+          "state": "impact_recover",
+          "rgba_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "bounds_inclusive": null,
+          "opaque_pixels": 0,
+          "alpha_centroid": null,
+          "alpha_centroid_distance_from_anchor": null,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": true
+        }
+      ],
+      "exact_duplicate_pairs": [],
+      "approval_status": "pending_visual_rotation_impact_approval"
+    },
+    {
+      "candidate_id": "rubber_duck",
+      "character_id": "pixel_duck",
+      "path": "candidates/keepsakes-v2/rubber_duck/sprite.png",
+      "sha256": "3b6935398d41b6d1cd5efa922392dbf4864782deb9880c5d0f10885e00906e7a",
+      "source": "assets/v1/throwables/throwable_squeaky_duck/sprite.png",
+      "source_sha256": "3b6935398d41b6d1cd5efa922392dbf4864782deb9880c5d0f10885e00906e7a",
+      "authorship": "기존 SIDEY 삑삑 오리의 변경 없는 검토용 복사; 신규 창작·정지유 기여로 표시하지 않음",
+      "palette_hex": [
+        "5A3828",
+        "663E29",
+        "67452B",
+        "684832",
+        "6F4229",
+        "6F4C2C",
+        "78552E",
+        "846131",
+        "987535",
+        "A17E37",
+        "AA8638",
+        "B38F3A",
+        "B5913B",
+        "BE993D",
+        "C9A43F",
+        "C9AA55",
+        "CA6C2E",
+        "CCA73F",
+        "D3752F",
+        "D79F3C",
+        "DDBD55",
+        "E2AA3E",
+        "E77A2F",
+        "F4CE48",
+        "F4D86B",
+        "F8CC47",
+        "F9D349",
+        "FFD94A",
+        "FFDE5B",
+        "FFE168",
+        "FFE574",
+        "FFEF9A",
+        "FFF1A2"
+      ],
+      "rotation_center": [
+        7.5,
+        7.5
+      ],
+      "rotation_method": "existing source frames unchanged",
+      "frames": [
+        {
+          "index": 0,
+          "state": "rotation_0",
+          "rgba_sha256": "980665a63f28f85cf873c7eca9e94b34eca0c3c512c3ce96f3b614b8aef6400d",
+          "bounds_inclusive": [
+            2,
+            4,
+            13,
+            12
+          ],
+          "opaque_pixels": 79,
+          "alpha_centroid": [
+            7.1519,
+            8.0633
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 1,
+          "state": "rotation_45",
+          "rgba_sha256": "e80bd1402afe9eb511c3c515070fb1aa9e372f5bb303452af3f24b059fa2a6cb",
+          "bounds_inclusive": [
+            2,
+            3,
+            12,
+            12
+          ],
+          "opaque_pixels": 83,
+          "alpha_centroid": [
+            6.8072,
+            7.6627
+          ],
+          "alpha_centroid_distance_from_anchor": 0.7116,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 2,
+          "state": "rotation_90",
+          "rgba_sha256": "427f0382c9548e91375cfa879d3bfb87cee59d0bbe5ac8d9e03b1fb9ead78b81",
+          "bounds_inclusive": [
+            3,
+            2,
+            11,
+            13
+          ],
+          "opaque_pixels": 79,
+          "alpha_centroid": [
+            6.9367,
+            7.1519
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 3,
+          "state": "rotation_135",
+          "rgba_sha256": "47baa16e77ee0d0419d10a2b3ded0a76dc305d06032c7021e5d133bf622f992c",
+          "bounds_inclusive": [
+            3,
+            2,
+            12,
+            12
+          ],
+          "opaque_pixels": 83,
+          "alpha_centroid": [
+            7.3373,
+            6.8072
+          ],
+          "alpha_centroid_distance_from_anchor": 0.7116,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 4,
+          "state": "rotation_180",
+          "rgba_sha256": "13c3c6efdb3869b73c58e9e3e2f24e9bdacbe5d0f7e499e7456b85fec4aa4c45",
+          "bounds_inclusive": [
+            2,
+            3,
+            13,
+            11
+          ],
+          "opaque_pixels": 79,
+          "alpha_centroid": [
+            7.8481,
+            6.9367
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 5,
+          "state": "rotation_225",
+          "rgba_sha256": "4b4e4ea068a9f6687eae8a0ddfcafa5a9dc14645037bbe7913f5abfadde1d273",
+          "bounds_inclusive": [
+            3,
+            3,
+            13,
+            12
+          ],
+          "opaque_pixels": 83,
+          "alpha_centroid": [
+            8.1928,
+            7.3373
+          ],
+          "alpha_centroid_distance_from_anchor": 0.7116,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 6,
+          "state": "rotation_270",
+          "rgba_sha256": "d1d5036606fbd5349e59cee59935c4fcfba85d40e878121f7d9fc328c03784aa",
+          "bounds_inclusive": [
+            4,
+            2,
+            12,
+            13
+          ],
+          "opaque_pixels": 79,
+          "alpha_centroid": [
+            8.0633,
+            7.8481
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 7,
+          "state": "rotation_315",
+          "rgba_sha256": "f828d03910847920e004286e8b3c82e2769d5e26a83c8aa88341a2c2312790d3",
+          "bounds_inclusive": [
+            3,
+            3,
+            12,
+            13
+          ],
+          "opaque_pixels": 83,
+          "alpha_centroid": [
+            7.6627,
+            8.1928
+          ],
+          "alpha_centroid_distance_from_anchor": 0.7116,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 8,
+          "state": "impact_contact",
+          "rgba_sha256": "980665a63f28f85cf873c7eca9e94b34eca0c3c512c3ce96f3b614b8aef6400d",
+          "bounds_inclusive": [
+            2,
+            4,
+            13,
+            12
+          ],
+          "opaque_pixels": 79,
+          "alpha_centroid": [
+            7.1519,
+            8.0633
+          ],
+          "alpha_centroid_distance_from_anchor": 0.6622,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 9,
+          "state": "impact_squash",
+          "rgba_sha256": "337dfe9ebb304a0b999f4b1a2d09f42e22d7bf09665de0fef54b0c6e4accf214",
+          "bounds_inclusive": [
+            2,
+            11,
+            12,
+            14
+          ],
+          "opaque_pixels": 29,
+          "alpha_centroid": [
+            6.5517,
+            12.3448
+          ],
+          "alpha_centroid_distance_from_anchor": 4.9368,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 10,
+          "state": "impact_bounce",
+          "rgba_sha256": "a4f69f185ffbc54bf739a276ae08fcbbdce88701ec864707a70a6f8759ba249c",
+          "bounds_inclusive": [
+            3,
+            3,
+            11,
+            10
+          ],
+          "opaque_pixels": 54,
+          "alpha_centroid": [
+            7.037,
+            6.6852
+          ],
+          "alpha_centroid_distance_from_anchor": 0.9372,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        },
+        {
+          "index": 11,
+          "state": "impact_recover",
+          "rgba_sha256": "bfd9be6ab0546f4ce4b7e60fe1d1976847e7a2238ff470e2a1d92da7540b75a7",
+          "bounds_inclusive": [
+            3,
+            5,
+            12,
+            11
+          ],
+          "opaque_pixels": 51,
+          "alpha_centroid": [
+            7.1373,
+            7.9608
+          ],
+          "alpha_centroid_distance_from_anchor": 0.5864,
+          "cell_boundary_contact": false,
+          "hard_alpha": true,
+          "intentional_empty": false
+        }
+      ],
+      "exact_duplicate_pairs": [
+        [
+          0,
+          8
+        ]
+      ],
+      "duplicate_rationale": "기존 자산의 정확한 복사이므로 중복을 자동 수정하지 않음; 최종 회전·충돌 승인 필요",
+      "approval_status": "pending_visual_rotation_impact_approval"
+    }
+  ]
+}

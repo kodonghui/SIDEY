@@ -1,0 +1,3371 @@
+{
+  "schema_version": 1,
+  "status": "original_appearance_selected_animation_repairs_pending_review",
+  "coordinates": "zero-based 24×24 cell; top-left origin; foot baseline row 20",
+  "scope": "시바·오리·똥·떡볶이 원본 외형 유지. 코드로 발 연결과 중복 던지기만 수정. 쿼카는 별도 작업.",
+  "limitations": [
+    "셀 경계 접촉만으로 원본 실루엣을 줄이지 않음; 실제 잘림·전체 움직임은 사용자 검토 필요",
+    "정적 무결성 통과는 동작 승인·앱 실행·출시 승인을 의미하지 않음"
+  ],
+  "summary": {
+    "characters": 4,
+    "sheet_count": 8,
+    "frame_count": 72,
+    "appearance_pose_count": 4,
+    "changed_frames": 18,
+    "changed_pixels": 133,
+    "connected_frames": 72
+  },
+  "characters": [
+    {
+      "character_id": "pixel_shiba",
+      "appearance_source": "original base:0",
+      "sheets": [
+        {
+          "path": "candidates/character-v2/pixel_shiba/base.png",
+          "sha256": "011ae19b2882a18869666641681a33c9dc41b42cf30d1404ecb08e20b9acb928",
+          "dimensions": [
+            240,
+            24
+          ],
+          "source_path": "originals/pixel_shiba/base.png",
+          "source_sha256": "298650cf84e4958a372f8e406d92365b66f2c9b185f1fc69b904ac2cd1dc5832",
+          "frames": [
+            {
+              "index": 0,
+              "state": "idle_0",
+              "source_rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 1,
+              "state": "idle_1",
+              "source_rgba_sha256": "b11091dd6b15a2d28e6607e3d83dde7a8713570cd24c781e9f576f87151a54d2",
+              "rgba_sha256": "fc98eb0ae45d889a9117cec2ba3ca93db3c0e733e1c50b5697daf15045b9344c",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 6,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  8,
+                  9,
+                  10,
+                  11
+                ]
+              }
+            },
+            {
+              "index": 2,
+              "state": "walk_0",
+              "source_rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 3,
+              "state": "walk_1",
+              "source_rgba_sha256": "3d192db32d4f3abd9a0d6f7728eca877690ad005aad12953e8f6cd9cabcb67eb",
+              "rgba_sha256": "01dfdb6b6bccf3b5c073d44cace8cd321767147807ad634c45f95227eebd20ce",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 8,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  8,
+                  9,
+                  10,
+                  11
+                ]
+              }
+            },
+            {
+              "index": 4,
+              "state": "walk_2",
+              "source_rgba_sha256": "a3a76127923bc4a7b2385daeab2188e84e62ff450eedb29966fcf27dfb376ffe",
+              "rgba_sha256": "a3a76127923bc4a7b2385daeab2188e84e62ff450eedb29966fcf27dfb376ffe",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 5,
+              "state": "walk_3",
+              "source_rgba_sha256": "cc5a2f88658e2c85e73347507c9b7b1e6f93ea4a29dcbf3b36070baf36c9f9fd",
+              "rgba_sha256": "1513da787a229f1fc09a9ca953fb133d2c20fe0455752ac4a8de57db77f169b5",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 6,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                },
+                {
+                  "x": 14,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  8,
+                  9,
+                  10,
+                  11
+                ]
+              }
+            },
+            {
+              "index": 6,
+              "state": "doze_0",
+              "source_rgba_sha256": "07cb7210b4c6f9c89400f3e97ca84c5bc205a6c6e9ec9b8243e4d48526bcdd70",
+              "rgba_sha256": "07cb7210b4c6f9c89400f3e97ca84c5bc205a6c6e9ec9b8243e4d48526bcdd70",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 7,
+              "state": "doze_1",
+              "source_rgba_sha256": "ccf0b3016fb589c2ce16437176f1488cf5275f24af657fcdc4f086a87a0a9cda",
+              "rgba_sha256": "ccf0b3016fb589c2ce16437176f1488cf5275f24af657fcdc4f086a87a0a9cda",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  10,
+                  11,
+                  12,
+                  13
+                ]
+              }
+            },
+            {
+              "index": 8,
+              "state": "offline_0",
+              "source_rgba_sha256": "02e69e8ca3176c34272be4ebe261e17a4441fc340efbbddc7533c43f8d8546f5",
+              "rgba_sha256": "02e69e8ca3176c34272be4ebe261e17a4441fc340efbbddc7533c43f8d8546f5",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 9,
+              "state": "offline_1",
+              "source_rgba_sha256": "d7cd5e327c89903088c7b0fcc4963f3169e0fa5d1e70d9f8aedc32f4217043c4",
+              "rgba_sha256": "d7cd5e327c89903088c7b0fcc4963f3169e0fa5d1e70d9f8aedc32f4217043c4",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        },
+        {
+          "path": "candidates/character-v2/pixel_shiba/throw_hit.png",
+          "sha256": "a88e049275de5059d880cb7ff1c478a2e8204d9decc0c7bf461ff9255d6dc24f",
+          "dimensions": [
+            192,
+            24
+          ],
+          "source_path": "originals/pixel_shiba/throw_hit.png",
+          "source_sha256": "b5c8623ba9f4e2b5fd0a83e29d7ac8aff7a9f6bc4b60981bd6e2423bdcb4a9b1",
+          "frames": [
+            {
+              "index": 0,
+              "state": "throw_0",
+              "source_rgba_sha256": "bcac60b5ed11eb6c178a548415dcf0afb9f639db41833ec4dc3d841d6155e163",
+              "rgba_sha256": "bcac60b5ed11eb6c178a548415dcf0afb9f639db41833ec4dc3d841d6155e163",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "throw_1",
+              "source_rgba_sha256": "1c43b8524a58be490abc7a2965d75a45c39e134e8a7bd71514a8d99a0f678db6",
+              "rgba_sha256": "1c43b8524a58be490abc7a2965d75a45c39e134e8a7bd71514a8d99a0f678db6",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "left": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              }
+            },
+            {
+              "index": 2,
+              "state": "throw_2",
+              "source_rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "rgba_sha256": "8d5bf6d4a01208421220f98f2c736e3f4b56840db6c782af95c0035452484880",
+              "changed_pixel_count": 5,
+              "reasons": [
+                "던지기 2번 방출 자세에 몸통과 연결된 작은 오른쪽 앞발을 2px 내밀고 3번은 원본 복귀 자세로 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 20,
+                  "y": 16,
+                  "from": [
+                    58,
+                    36,
+                    16,
+                    255
+                  ],
+                  "to": [
+                    232,
+                    154,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 17,
+                  "from": [
+                    58,
+                    36,
+                    16,
+                    255
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                },
+                {
+                  "x": 21,
+                  "y": 17,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    232,
+                    154,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 18,
+                  "from": [
+                    58,
+                    36,
+                    16,
+                    255
+                  ],
+                  "to": [
+                    232,
+                    154,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 18,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    232,
+                    154,
+                    74,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 3,
+              "state": "throw_3",
+              "source_rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            },
+            {
+              "index": 4,
+              "state": "hit_0",
+              "source_rgba_sha256": "af15e422910fa432a33baa75eebc47b0f3225c7eac7a0f04a84450f34e266aaf",
+              "rgba_sha256": "af15e422910fa432a33baa75eebc47b0f3225c7eac7a0f04a84450f34e266aaf",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "hit_1",
+              "source_rgba_sha256": "2645726036c1e6c49b46382e0fd5e07be5221f897a3ff802132ef64931ec1637",
+              "rgba_sha256": "2645726036c1e6c49b46382e0fd5e07be5221f897a3ff802132ef64931ec1637",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  11,
+                  12,
+                  13,
+                  14
+                ]
+              }
+            },
+            {
+              "index": 6,
+              "state": "hit_2",
+              "source_rgba_sha256": "b08e93a082aa222fdbae805928e0ff1100afd280d9300169eee88373f9b6f972",
+              "rgba_sha256": "e5303860cc7f32416929b592f2b9f412face56fbcab2194eec1bd42ec058c2bf",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 6,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    255,
+                    243,
+                    224,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  8,
+                  9,
+                  10,
+                  11
+                ]
+              }
+            },
+            {
+              "index": 7,
+              "state": "hit_3",
+              "source_rgba_sha256": "07cb7210b4c6f9c89400f3e97ca84c5bc205a6c6e9ec9b8243e4d48526bcdd70",
+              "rgba_sha256": "07cb7210b4c6f9c89400f3e97ca84c5bc205a6c6e9ec9b8243e4d48526bcdd70",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "path": "candidates/character-v2/pixel_shiba/appearance.png",
+        "sha256": "6d1677ff8e262ef980b9a4b68c42be8af6c274560a3f2e157c9fe0a9e36da0d0",
+        "dimensions": [
+          24,
+          24
+        ],
+        "rgba_sha256": "114e746a17f193e92b526a1b92ba40305c203c5cf9482aa58563ec75ad8ad62a",
+        "pixel_identical_to_original_base_0": true
+      }
+    },
+    {
+      "character_id": "pixel_duck",
+      "appearance_source": "original base:0",
+      "sheets": [
+        {
+          "path": "candidates/character-v2/pixel_duck/base.png",
+          "sha256": "09c0c4160cf143dd4a1859fe20fdbab1167d08c5b072f6cd1b7906bed429b97c",
+          "dimensions": [
+            240,
+            24
+          ],
+          "source_path": "originals/pixel_duck/base.png",
+          "source_sha256": "117b9929cf75edcbf39c904a3b471944b00af48faae55e73a3986b82ed35092f",
+          "frames": [
+            {
+              "index": 0,
+              "state": "idle_0",
+              "source_rgba_sha256": "83b57e66c3ae2209691d126a9b81c7415caebf8d9230d250f7f8a951cccd3e02",
+              "rgba_sha256": "83b57e66c3ae2209691d126a9b81c7415caebf8d9230d250f7f8a951cccd3e02",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "idle_1",
+              "source_rgba_sha256": "87fcf6875a84f2e76925d020e28c141023e9b70cad45012f6df41dec32dd09e2",
+              "rgba_sha256": "6b2d02cc812cf04948d21236112710310d5aefb830ac934ac78d91e841e55ad2",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 2,
+              "state": "walk_0",
+              "source_rgba_sha256": "83b57e66c3ae2209691d126a9b81c7415caebf8d9230d250f7f8a951cccd3e02",
+              "rgba_sha256": "83b57e66c3ae2209691d126a9b81c7415caebf8d9230d250f7f8a951cccd3e02",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 3,
+              "state": "walk_1",
+              "source_rgba_sha256": "bf604dffea553d3ce351261e2b3800847221a111584b625651f2de8bb409a27f",
+              "rgba_sha256": "1983fddab85e6c20393fe4c0246379e9d285fec5592bb2759cdb52e99c8a08e3",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 9,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "walk_2",
+              "source_rgba_sha256": "022c3ba040c687e84a6ce1a46f1ff43af8c1a5845498b3b614d30d7a6b8bf291",
+              "rgba_sha256": "022c3ba040c687e84a6ce1a46f1ff43af8c1a5845498b3b614d30d7a6b8bf291",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "walk_3",
+              "source_rgba_sha256": "c0d4fba81f006935ac3a583b6f8a0806d36e8c4bcdab99afdf918362fc57a5aa",
+              "rgba_sha256": "8e0714447faded55ca11baeb43c95da213e4b7f7f1f5eaaa8e290c0a907243ff",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                },
+                {
+                  "x": 14,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "doze_0",
+              "source_rgba_sha256": "ec6c6d57bfc6b0c1e7b4d917a4da6dd2d1c170640ff2d36a9228575632a1e07d",
+              "rgba_sha256": "ec6c6d57bfc6b0c1e7b4d917a4da6dd2d1c170640ff2d36a9228575632a1e07d",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "doze_1",
+              "source_rgba_sha256": "d8980a145b6fb51e5649ba9958992eca4d531d9ecb2b5aac47b43c956087859e",
+              "rgba_sha256": "d8980a145b6fb51e5649ba9958992eca4d531d9ecb2b5aac47b43c956087859e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 8,
+              "state": "offline_0",
+              "source_rgba_sha256": "50162628c3f1a2c6ad9f35bc2eec2cdbc2ce16084fe4d8d27959694d9a0211c6",
+              "rgba_sha256": "50162628c3f1a2c6ad9f35bc2eec2cdbc2ce16084fe4d8d27959694d9a0211c6",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 9,
+              "state": "offline_1",
+              "source_rgba_sha256": "4fa5af83a27a23df4bc047733c9fd972a4ee40257108bc29e57fd0a8e5c7c197",
+              "rgba_sha256": "4fa5af83a27a23df4bc047733c9fd972a4ee40257108bc29e57fd0a8e5c7c197",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        },
+        {
+          "path": "candidates/character-v2/pixel_duck/throw_hit.png",
+          "sha256": "a8fab6aebc7f6260e8f470e26365a45cac1a493144da36ab0665d54a38d0fc67",
+          "dimensions": [
+            192,
+            24
+          ],
+          "source_path": "originals/pixel_duck/throw_hit.png",
+          "source_sha256": "a5174ecf98c8249d569f0fb8230bd8414decf5e6f7713c42e968331be6076907",
+          "frames": [
+            {
+              "index": 0,
+              "state": "throw_0",
+              "source_rgba_sha256": "a0f757cfa2f2632217f3e5cac52b2dd9521d75d6910aaa1b30fed4564f2b781e",
+              "rgba_sha256": "a0f757cfa2f2632217f3e5cac52b2dd9521d75d6910aaa1b30fed4564f2b781e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "throw_1",
+              "source_rgba_sha256": "24c34b10c8a452cd13d8a6b7c3f29d8ae33c01c34e5a507d15018f45df0105f7",
+              "rgba_sha256": "24c34b10c8a452cd13d8a6b7c3f29d8ae33c01c34e5a507d15018f45df0105f7",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "left": [
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              }
+            },
+            {
+              "index": 2,
+              "state": "throw_2",
+              "source_rgba_sha256": "c0934796b9aedc8ac9177a4b0d6209049258cf1a35a2350c77151f07df649700",
+              "rgba_sha256": "c0934796b9aedc8ac9177a4b0d6209049258cf1a35a2350c77151f07df649700",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15
+                ]
+              }
+            },
+            {
+              "index": 3,
+              "state": "throw_3",
+              "source_rgba_sha256": "ea975ffd75ff5f7646a9e619b4b25a29a470608179f36752f963a8ce16c65c8a",
+              "rgba_sha256": "ea975ffd75ff5f7646a9e619b4b25a29a470608179f36752f963a8ce16c65c8a",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "hit_0",
+              "source_rgba_sha256": "571df9f1ead1d82571f86575f5c8124b30393ad4a22f468006a1bf2df4f60bbd",
+              "rgba_sha256": "571df9f1ead1d82571f86575f5c8124b30393ad4a22f468006a1bf2df4f60bbd",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "hit_1",
+              "source_rgba_sha256": "182eb7c92204286bcb1e4dc318a146f1d9e45bf383752dc8ace24f9681dbbf27",
+              "rgba_sha256": "182eb7c92204286bcb1e4dc318a146f1d9e45bf383752dc8ace24f9681dbbf27",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "hit_2",
+              "source_rgba_sha256": "d34c1d7f9d0c464e72bb6bf349b577ec532045a9da85b59e08a946763dba3b4e",
+              "rgba_sha256": "9b5ca8131e45b0b70d949038bc879fb5a54c9e40bb092c18630a79de698795e4",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    240,
+                    138,
+                    36,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "hit_3",
+              "source_rgba_sha256": "ec6c6d57bfc6b0c1e7b4d917a4da6dd2d1c170640ff2d36a9228575632a1e07d",
+              "rgba_sha256": "ec6c6d57bfc6b0c1e7b4d917a4da6dd2d1c170640ff2d36a9228575632a1e07d",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "path": "candidates/character-v2/pixel_duck/appearance.png",
+        "sha256": "c239e860423fe556a7ab050a667b7780ba5970fbc1a56c97bea40fd9dd2e6b43",
+        "dimensions": [
+          24,
+          24
+        ],
+        "rgba_sha256": "83b57e66c3ae2209691d126a9b81c7415caebf8d9230d250f7f8a951cccd3e02",
+        "pixel_identical_to_original_base_0": true
+      }
+    },
+    {
+      "character_id": "pixel_poop",
+      "appearance_source": "original base:0",
+      "sheets": [
+        {
+          "path": "candidates/character-v2/pixel_poop/base.png",
+          "sha256": "99ac0e9eb8c055f5663e3109d3e7cbbf95a0137f2920c8cde41fa265854188c1",
+          "dimensions": [
+            240,
+            24
+          ],
+          "source_path": "originals/pixel_poop/base.png",
+          "source_sha256": "4ad6f2f5e7f21530d442cdc8c2576fb3e346fa7c169c1bf2eef0a76a1dcd260a",
+          "frames": [
+            {
+              "index": 0,
+              "state": "idle_0",
+              "source_rgba_sha256": "e74f352ee61b8162f3a8035ace96861f4cecee72b828d003e3aad8499c76376e",
+              "rgba_sha256": "e74f352ee61b8162f3a8035ace96861f4cecee72b828d003e3aad8499c76376e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "idle_1",
+              "source_rgba_sha256": "420ae79e8903216c0bd7df97aceb095d2698aeaf47c5e35edce82b9f40ed8999",
+              "rgba_sha256": "5efa07fddf9d38f1b83619e2aaba254c6e5359ff627a2cb0b8ddee25f671440d",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 2,
+              "state": "walk_0",
+              "source_rgba_sha256": "e74f352ee61b8162f3a8035ace96861f4cecee72b828d003e3aad8499c76376e",
+              "rgba_sha256": "e74f352ee61b8162f3a8035ace96861f4cecee72b828d003e3aad8499c76376e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 3,
+              "state": "walk_1",
+              "source_rgba_sha256": "887338a540729a36821736bcb6e4733e006e67b8dc99528a5a554c9a3f5d820f",
+              "rgba_sha256": "803d94df7e41875d8760194f58a936b34d9f7056144420cffdda9df5bf058c1c",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 9,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "walk_2",
+              "source_rgba_sha256": "53e6cdf27f1b1fd5be9bd0345258fd225cb917217dbbef18239c3058ca689572",
+              "rgba_sha256": "53e6cdf27f1b1fd5be9bd0345258fd225cb917217dbbef18239c3058ca689572",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "walk_3",
+              "source_rgba_sha256": "e822552478027bd1a2985916773e50593419d87c2c727a60313e8d915633c046",
+              "rgba_sha256": "80bc93e85dde1dbde8e42833b9f26914e8acea5d214d882fb08572292680cdea",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                },
+                {
+                  "x": 14,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "doze_0",
+              "source_rgba_sha256": "0aafa4fb3d1f5a8f8506c8e75eada048e26250172e04d446a2fc6b18c9bcff50",
+              "rgba_sha256": "0aafa4fb3d1f5a8f8506c8e75eada048e26250172e04d446a2fc6b18c9bcff50",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "doze_1",
+              "source_rgba_sha256": "c3ebedf9520eb786874f8a9e0ebdc56ea426f210332839afb79fc9e79f8190a3",
+              "rgba_sha256": "c3ebedf9520eb786874f8a9e0ebdc56ea426f210332839afb79fc9e79f8190a3",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 8,
+              "state": "offline_0",
+              "source_rgba_sha256": "c9f7dc0453394f7c44196426a4602b58e0342c38c6a0d40a0ca671064586a4f0",
+              "rgba_sha256": "c9f7dc0453394f7c44196426a4602b58e0342c38c6a0d40a0ca671064586a4f0",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 9,
+              "state": "offline_1",
+              "source_rgba_sha256": "0b39bb0c0573857334bff86d778851ba0b84efcb1888f39ddb79b22db079f4ad",
+              "rgba_sha256": "0b39bb0c0573857334bff86d778851ba0b84efcb1888f39ddb79b22db079f4ad",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        },
+        {
+          "path": "candidates/character-v2/pixel_poop/throw_hit.png",
+          "sha256": "3611e29ca3a6b1efcd9533a9d56494eb8daee31bef973e7ae2c69c0f115f7e8b",
+          "dimensions": [
+            192,
+            24
+          ],
+          "source_path": "originals/pixel_poop/throw_hit.png",
+          "source_sha256": "c12e2c24a39a5218d0d86a8b5b028fe77fe1c34f332c031635f6abe1e1a5d3d3",
+          "frames": [
+            {
+              "index": 0,
+              "state": "throw_0",
+              "source_rgba_sha256": "d46e8e5f2b8388a3fbd9199856afd4af05968f8d9517958a18f260e18368b243",
+              "rgba_sha256": "d46e8e5f2b8388a3fbd9199856afd4af05968f8d9517958a18f260e18368b243",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "throw_1",
+              "source_rgba_sha256": "60ce6ecc3b3578dd744ff1d2ec2d23ffbbbc19b264bf5bcec31c598cccf496d1",
+              "rgba_sha256": "60ce6ecc3b3578dd744ff1d2ec2d23ffbbbc19b264bf5bcec31c598cccf496d1",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 2,
+              "state": "throw_2",
+              "source_rgba_sha256": "58cf775a3e14d9eeddc98098b5fc95635404dfb420899e49bb3ba137b5ec3855",
+              "rgba_sha256": "58cf775a3e14d9eeddc98098b5fc95635404dfb420899e49bb3ba137b5ec3855",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 3,
+              "state": "throw_3",
+              "source_rgba_sha256": "5fcc98f964b6aefb2e31fb2325a20bb555ad5c2da6c217b923bae817c69db247",
+              "rgba_sha256": "5fcc98f964b6aefb2e31fb2325a20bb555ad5c2da6c217b923bae817c69db247",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "hit_0",
+              "source_rgba_sha256": "83b0c8c2da39466af26f34e57c11f021e3caa0823a2e6e7066c41787612a6cee",
+              "rgba_sha256": "83b0c8c2da39466af26f34e57c11f021e3caa0823a2e6e7066c41787612a6cee",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "hit_1",
+              "source_rgba_sha256": "8c620228f1faffdee05f86c31e5a153e396c5aa29b55e6ab76789b9d22554831",
+              "rgba_sha256": "8c620228f1faffdee05f86c31e5a153e396c5aa29b55e6ab76789b9d22554831",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "hit_2",
+              "source_rgba_sha256": "2e03706660062f7548407f7d0879e097964d400cdae014b2492273739e139dae",
+              "rgba_sha256": "41008bbcd6323873c253e378b30f36653c60a1a948729041de1d762d0c6e9002",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    139,
+                    90,
+                    43,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "hit_3",
+              "source_rgba_sha256": "0aafa4fb3d1f5a8f8506c8e75eada048e26250172e04d446a2fc6b18c9bcff50",
+              "rgba_sha256": "0aafa4fb3d1f5a8f8506c8e75eada048e26250172e04d446a2fc6b18c9bcff50",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "path": "candidates/character-v2/pixel_poop/appearance.png",
+        "sha256": "2bf42d61805200ba01d04f776be62db1464a5b6cd70c960dac21d3226c3977dc",
+        "dimensions": [
+          24,
+          24
+        ],
+        "rgba_sha256": "e74f352ee61b8162f3a8035ace96861f4cecee72b828d003e3aad8499c76376e",
+        "pixel_identical_to_original_base_0": true
+      }
+    },
+    {
+      "character_id": "pixel_tteokbokki",
+      "appearance_source": "original base:0",
+      "sheets": [
+        {
+          "path": "candidates/character-v2/pixel_tteokbokki/base.png",
+          "sha256": "0a7400c8d7019602147994a75c8e0171441f7c151629cb0f5948bb75e1b7b655",
+          "dimensions": [
+            240,
+            24
+          ],
+          "source_path": "originals/pixel_tteokbokki/base.png",
+          "source_sha256": "dd302f7eeaed14ae33a970a37672a98458537f5c41920f644d6e6a0cfb04f26c",
+          "frames": [
+            {
+              "index": 0,
+              "state": "idle_0",
+              "source_rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+              "rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "idle_1",
+              "source_rgba_sha256": "ee12d5ba9fab82fc9529a0aaf55d237c315a043ac50d559aa3d7cd75ba9a6462",
+              "rgba_sha256": "ba84f23d4c587ff49c22a9df3df7cbee4f0bcac3158623eeb7566313e42c3cee",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 2,
+              "state": "walk_0",
+              "source_rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+              "rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 3,
+              "state": "walk_1",
+              "source_rgba_sha256": "c2576ad147bfe791ecc4a82e551c1e9c9aaba7c5a8d94305fa77d0759e99fefa",
+              "rgba_sha256": "0aeb1915cf235118c1ae8ef24a31afafeada0f2c8936f82b5a98f058992ed86e",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 9,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "walk_2",
+              "source_rgba_sha256": "aca0dacd119ac10a4961e8afba2ab4630a74be0d3368f99a2af40fb8e4d0d3db",
+              "rgba_sha256": "aca0dacd119ac10a4961e8afba2ab4630a74be0d3368f99a2af40fb8e4d0d3db",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 5,
+              "state": "walk_3",
+              "source_rgba_sha256": "2fcd105dd26b9e16296957759e5a34defa3a0dc91e852174418b653f9fdeca0c",
+              "rgba_sha256": "a29128b140b078daf43f46415d609270589b8d6d456d6ccb109fe3e8a49537ea",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 14,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "doze_0",
+              "source_rgba_sha256": "5957d651c571c9631a587ef6bee0f470bf8b9194e9b195958714efe8e770fe72",
+              "rgba_sha256": "5957d651c571c9631a587ef6bee0f470bf8b9194e9b195958714efe8e770fe72",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "doze_1",
+              "source_rgba_sha256": "19166eba40a06a5a9fc8fc2c5ffc57d1c9fa2eef9a07674bd842fbd295622acb",
+              "rgba_sha256": "19166eba40a06a5a9fc8fc2c5ffc57d1c9fa2eef9a07674bd842fbd295622acb",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 8,
+              "state": "offline_0",
+              "source_rgba_sha256": "7997ee02cbbfc0e46cb07110275745d037c10bbd35e0df0c0902228bff80d446",
+              "rgba_sha256": "7997ee02cbbfc0e46cb07110275745d037c10bbd35e0df0c0902228bff80d446",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 9,
+              "state": "offline_1",
+              "source_rgba_sha256": "c31f40f7a967ac2b232749b944bcd42da769c7247b3ee5f7f639ce5e7bd69aad",
+              "rgba_sha256": "c31f40f7a967ac2b232749b944bcd42da769c7247b3ee5f7f639ce5e7bd69aad",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        },
+        {
+          "path": "candidates/character-v2/pixel_tteokbokki/throw_hit.png",
+          "sha256": "b5084af74609db432e21bea117da0253aac94197e2a2ded157f7cec04465851c",
+          "dimensions": [
+            192,
+            24
+          ],
+          "source_path": "originals/pixel_tteokbokki/throw_hit.png",
+          "source_sha256": "9c7e7736bd51b089e9891bbff2fde39c62c7626ff303e5b5bb4ab25f854cd9ef",
+          "frames": [
+            {
+              "index": 0,
+              "state": "throw_0",
+              "source_rgba_sha256": "ba2da926bf4795dbc06453b37ea987d58aeea64eaca03edbd5adbe41eb3becca",
+              "rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+              "changed_pixel_count": 96,
+              "reasons": [
+                "던지기 0번 몸통 전체를 오른쪽 1px 이동해 1번보다 얕은 준비 기울기로 구분; 얼굴·떡·소스와 발 y=20 보존"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 3,
+                  "y": 6,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 11,
+                  "y": 6,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 7,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 7,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 4,
+                  "y": 7,
+                  "from": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 7,
+                  "y": 7,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 11,
+                  "y": 7,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 7,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 8,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 8,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 8,
+                  "from": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 6,
+                  "y": 8,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 9,
+                  "y": 8,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 8,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 13,
+                  "y": 8,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 9,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 9,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 8,
+                  "y": 9,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 11,
+                  "y": 9,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 9,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 13,
+                  "y": 9,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 10,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 10,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 4,
+                  "y": 10,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 18,
+                  "y": 10,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 11,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 4,
+                  "y": 11,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 5,
+                  "y": 11,
+                  "from": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 8,
+                  "y": 11,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 18,
+                  "y": 11,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 11,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 12,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 12,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 12,
+                  "from": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 6,
+                  "y": 12,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 12,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 12,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 12,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 0,
+                  "y": 13,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 13,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 13,
+                  "from": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 5,
+                  "y": 13,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    242,
+                    121,
+                    74,
+                    255
+                  ]
+                },
+                {
+                  "x": 15,
+                  "y": 13,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 13,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 13,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 21,
+                  "y": 13,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 0,
+                  "y": 14,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 14,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 5,
+                  "y": 14,
+                  "from": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 6,
+                  "y": 14,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ]
+                },
+                {
+                  "x": 7,
+                  "y": 14,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 10,
+                  "y": 14,
+                  "from": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 11,
+                  "y": 14,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 14,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 15,
+                  "y": 14,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 14,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 14,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 21,
+                  "y": 14,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 0,
+                  "y": 15,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 15,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 5,
+                  "y": 15,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 7,
+                  "y": 15,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 10,
+                  "y": 15,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 15,
+                  "from": [
+                    94,
+                    168,
+                    78,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 13,
+                  "y": 15,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    94,
+                    168,
+                    78,
+                    255
+                  ]
+                },
+                {
+                  "x": 15,
+                  "y": 15,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 15,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 15,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 21,
+                  "y": 15,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 0,
+                  "y": 16,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 16,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 8,
+                  "y": 16,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 10,
+                  "y": 16,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 15,
+                  "y": 16,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 18,
+                  "y": 16,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 16,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 16,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 21,
+                  "y": 16,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 1,
+                  "y": 17,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 17,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 4,
+                  "y": 17,
+                  "from": [
+                    94,
+                    168,
+                    78,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 5,
+                  "y": 17,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    94,
+                    168,
+                    78,
+                    255
+                  ]
+                },
+                {
+                  "x": 12,
+                  "y": 17,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 13,
+                  "y": 17,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 17,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 17,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 20,
+                  "y": 17,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 2,
+                  "y": 18,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 18,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 7,
+                  "y": 18,
+                  "from": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 8,
+                  "y": 18,
+                  "from": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ],
+                  "to": [
+                    247,
+                    236,
+                    210,
+                    255
+                  ]
+                },
+                {
+                  "x": 15,
+                  "y": 18,
+                  "from": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ],
+                  "to": [
+                    224,
+                    74,
+                    40,
+                    255
+                  ]
+                },
+                {
+                  "x": 18,
+                  "y": 18,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 19,
+                  "y": 18,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                },
+                {
+                  "x": 3,
+                  "y": 19,
+                  "from": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ],
+                  "to": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "x": 18,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    64,
+                    22,
+                    12,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 1,
+              "state": "throw_1",
+              "source_rgba_sha256": "ba2da926bf4795dbc06453b37ea987d58aeea64eaca03edbd5adbe41eb3becca",
+              "rgba_sha256": "ba2da926bf4795dbc06453b37ea987d58aeea64eaca03edbd5adbe41eb3becca",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "left": [
+                  13,
+                  14,
+                  15,
+                  16
+                ]
+              }
+            },
+            {
+              "index": 2,
+              "state": "throw_2",
+              "source_rgba_sha256": "69bac6da84ea8b3336663eff6e9eba62e978451ea486497191ef12583b2d5bef",
+              "rgba_sha256": "69bac6da84ea8b3336663eff6e9eba62e978451ea486497191ef12583b2d5bef",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "right": [
+                  13,
+                  14,
+                  15,
+                  16
+                ]
+              }
+            },
+            {
+              "index": 3,
+              "state": "throw_3",
+              "source_rgba_sha256": "a65d1dc5ed12d15c511e4a584bad0457e3ba5b2828a42850c18734bab81ffa94",
+              "rgba_sha256": "a65d1dc5ed12d15c511e4a584bad0457e3ba5b2828a42850c18734bab81ffa94",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 4,
+              "state": "hit_0",
+              "source_rgba_sha256": "72909c4df65f3e4c2f7477293c1f589794ca67d230a3900965b2950f53ad76f7",
+              "rgba_sha256": "72909c4df65f3e4c2f7477293c1f589794ca67d230a3900965b2950f53ad76f7",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {
+                "left": [
+                  13,
+                  14,
+                  15,
+                  16
+                ]
+              }
+            },
+            {
+              "index": 5,
+              "state": "hit_1",
+              "source_rgba_sha256": "2d5953a5c0637e48e69c4d7181f25849306ad3b08eccce7bb96b5cc67cd8ca50",
+              "rgba_sha256": "2d5953a5c0637e48e69c4d7181f25849306ad3b08eccce7bb96b5cc67cd8ca50",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 6,
+              "state": "hit_2",
+              "source_rgba_sha256": "525d3dd25c6469ca3d34060b22ecd469c671f5abb98df03c1374caeb4efd788c",
+              "rgba_sha256": "3e19b602900d1caebd5d7cca525799f76af9f4f6b130d28c1fcb86c59cbc93bc",
+              "changed_pixel_count": 2,
+              "reasons": [
+                "분리된 두 발의 가운데 x에 기존 발색으로 y=19 연결 픽셀을 하나씩 추가; 발 y=20 유지"
+              ],
+              "pixel_diff": [
+                {
+                  "x": 7,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                },
+                {
+                  "x": 16,
+                  "y": 19,
+                  "from": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "to": [
+                    168,
+                    47,
+                    20,
+                    255
+                  ]
+                }
+              ],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            },
+            {
+              "index": 7,
+              "state": "hit_3",
+              "source_rgba_sha256": "5957d651c571c9631a587ef6bee0f470bf8b9194e9b195958714efe8e770fe72",
+              "rgba_sha256": "5957d651c571c9631a587ef6bee0f470bf8b9194e9b195958714efe8e770fe72",
+              "changed_pixel_count": 0,
+              "reasons": [],
+              "pixel_diff": [],
+              "baseline_row": 20,
+              "alpha_components_8_connected": 1,
+              "boundary_contacts": {}
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "path": "candidates/character-v2/pixel_tteokbokki/appearance.png",
+        "sha256": "9c9d4da000e7ec9b150f9674a1f265cbe5d5e46816ae82978bd0f72439dbe606",
+        "dimensions": [
+          24,
+          24
+        ],
+        "rgba_sha256": "2e5e914771932887caffeb9f46d70c4e09fce327d1b0635545ebcf2d3156c10e",
+        "pixel_identical_to_original_base_0": true
+      }
+    }
+  ]
+}

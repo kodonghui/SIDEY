@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_duck",
+  "character": {
+    "name": "오리",
+    "description": "오리발 내미는 데는 자신 있어요. 진짜 오리발이거든요."
+  },
+  "keepsake": {
+    "id": "rubber_duck",
+    "name": "삑삑 오리",
+    "description": "오리가 오리를 던져요. 가족 문제는 아닌 것 같아요."
+  }
+}

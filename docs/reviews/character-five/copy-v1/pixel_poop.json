@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_poop",
+  "character": {
+    "name": "똥",
+    "description": "누가 불렀는지는 모르겠지만, 일단 나왔어요."
+  },
+  "keepsake": {
+    "id": "tissue_ball",
+    "name": "휴지 뭉치",
+    "description": "똥휴지인지 아닌지는 모르겠어요. 일단 피하세요!"
+  }
+}

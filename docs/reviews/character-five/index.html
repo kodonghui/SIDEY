@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIDEY · 캐릭터와 물건 검토</title>
+  <link rel="stylesheet" href="review.css?v=asset-review-final">
+  <script type="module" src="review.js?v=asset-review-final"></script>
+</head>
+<body>
+<main>
+  <header><div><p class="eyebrow">SIDEY / ASSET REVIEW</p><h1>캐릭터와 물건 검토</h1><p>걷는 모습과 물건을 보고, 소리 버튼을 눌러 비교해 주세요.</p></div><div class="page-actions"><button id="pause-all" type="button" disabled>일시정지</button><button id="stop-audio" type="button" disabled>소리 멈춤</button></div></header>
+  <p id="load-status" class="small-note" role="status">최신 자산을 불러오는 중입니다.</p>
+  <section id="appearance" aria-labelledby="characters-heading"><h2 id="characters-heading">캐릭터 5종</h2><div id="character-cards" class="review-card-grid"></div></section>
+  <section id="keepsakes" aria-labelledby="keepsakes-heading"><h2 id="keepsakes-heading">물건과 소리</h2><p class="section-note">소리 버튼은 누를 때마다 처음부터 재생됩니다. 한 번에 한 소리만 들려요.</p><div id="keepsake-cards" class="review-card-grid"></div><p id="audio-status" class="small-note" role="status"></p><p id="audio-load-status" class="small-note" role="status">음원을 준비하는 중입니다.</p></section>
+  <p class="small-note">출시 전 검토 자료입니다. 캐릭터·물건·소리·설명의 최종 승인은 별도로 기록합니다.</p>
+  <details id="review-details"><summary>프레임·원본·실루엣 자세히 보기</summary><div class="details-body"><nav aria-label="세부 검토"><a href="#original-comparison">원본 비교</a><a href="#motion">프레임 검사</a><a href="#frames">캐릭터 전체 프레임</a><a href="#keepsake-frames-section">물건 전체 프레임</a><a href="#copy">설명 모아보기</a></nav>
+    <section id="original-comparison"><h2>원본과 최신 후보</h2><p>4종은 원본 외형 유지, 쿼카는 새 갈색 체형으로 재제작한 후보입니다.</p><div id="appearance-list"></div></section>
+      <section id="motion"><h2>프레임 검사</h2><p>기본 선택은 새 쿼카를 포함한 최신 후보 90프레임입니다. 원본은 직접 선택했을 때만 표시합니다.</p>
+        <fieldset id="inspector-controls" disabled><legend class="sr-only">프레임 검사 조작</legend><div class="controls">
+          <label>캐릭터<select id="character"></select></label><label>자료<select id="source"><option value="candidate">최신 후보 · 5종</option><option value="original">수정 전 원본</option></select></label>
+          <label>동작<select id="motion-select"></select></label><label>배율<select id="scale"><option value="2">2×</option><option value="4" selected>4×</option><option value="6">6×</option></select></label>
+          <label>배경<select id="background"><option value="checker">체커</option><option value="light">밝음</option><option value="dark">어둠</option></select></label>
+          <label>가장자리<select id="edge"><option value="bottom">아래</option><option value="top">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></label>
+          <label>눈 깜빡임<select id="timing"><option value="current">기존 · 0.55 / 0.55초</option><option value="proposal">미승인 제안 · 2.4 / 0.3초</option></select></label>
+          <label class="check"><input id="flip" type="checkbox">좌우 반전</label><label class="check"><input id="silhouette" type="checkbox">실루엣</label><label class="check"><input id="baseline" type="checkbox" checked>발 기준선</label>
+        </div></fieldset>
+        <div class="stage-scroll"><canvas id="stage" width="720" height="300" role="img" aria-label="선택 프레임 검사"></canvas></div>
+        <div class="transport"><button id="play" type="button" disabled>재생</button><label>프레임<select id="frame" disabled></select></label><output id="frame-status"></output></div>
+        <p class="small-note">걷기 0.16초/장 · 22pt/s · 30 FPS. 24px 원본이 앱에서 48pt이므로 2× 배율을 기준으로 속도를 환산합니다. 발 기준선은 위에서 y=21 경계입니다. 졸기 0.8초/장, 잠 1.2초/장, 던지기 0.4초·방출 0.2초, 피격 0.44초입니다. 브라우저 미리보기는 실제 앱 실행 검증과 구분합니다.</p>
+      </section>
+      <section id="frames"><h2>캐릭터 90프레임</h2><p id="grid-status"></p><div id="frame-list"></div></section>
+      <section id="keepsake-frames-section"><h2>선택한 물건 60프레임</h2><p>테니스공 · 삑삑 오리 · 휴지 뭉치 · 어묵꼬치 · 잎사귀. 물건당 회전 8장, 충돌 4장입니다. 눌러서 정지 프레임을 크게 확인할 수 있습니다.</p><canvas id="keepsake-stage" width="160" height="160" role="img" aria-label="선택한 물건 프레임"></canvas><output id="keepsake-frame-status"></output><div id="keepsake-frames"></div></section>
+      <section id="copy"><h2>캐릭터와 물건의 이야기</h2><p>고유 설명 승인 대기 · 선택한 캐릭터와 물건의 문구를 함께 확인합니다.</p><p id="copy-load-status" role="status"></p><div id="copy-list"></div></section>
+    <details class="archive"><summary>이전 콘셉트 보관본</summary><p>이전 후보 보드입니다. 현재 카드의 최신 자산과 구분해 주세요.</p><img src="candidates/appearance-v1/concept-board.png?v=asset-review-final" alt="이전 외형 콘셉트" loading="lazy"><img src="concepts/keepsakes-v1.png?v=asset-review-final" alt="이전 물건 콘셉트" loading="lazy"></details>
+  </div></details>
+  <footer>원작 정지유 (@jungjiyu) · PR #27 선별 자산. 앱 연결·배포와 분리된 검토 패키지입니다.</footer>
+</main>
+</body>
+</html>

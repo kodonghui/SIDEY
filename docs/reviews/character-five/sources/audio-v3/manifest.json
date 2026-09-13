@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "paper-632220": {
+      "author": "golovlev.sound",
+      "title": "paper, thin, tracing, blueprint, rustle.wav",
+      "page_url": "https://freesound.org/people/golovlev.sound/sounds/632220/",
+      "download_url": "https://cdn.freesound.org/previews/632/632220_3784464-hq.mp3",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_verified_on": "2026-09-13",
+      "page_description": "얇은 종이를 움직이는 마찰 녹음; 휴지 자체의 녹음이라고 주장하지 않음",
+      "mp3_sha256": "3cb1538043c32ebd9a1b437aa2e79e899cda594a41552ba03b62e144ee6673e2",
+      "wav_sha256": "50941ab820073d0eeeeb15760f35ed12ce54c2c9623d07f420f44ce737124d20"
+    },
+    "leaf-106131": {
+      "author": "j1987",
+      "title": "leafrustle.wav",
+      "page_url": "https://freesound.org/people/j1987/sounds/106131/",
+      "download_url": "https://cdn.freesound.org/previews/106/106131_367313-hq.mp3",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_verified_on": "2026-09-13",
+      "page_description": "작은 잎더미를 뒤적이는 실제 녹음",
+      "mp3_sha256": "c0a5e079529db8cc6498612920b08ff16f173899edf5ae79391b15081569f2d1",
+      "wav_sha256": "cf50dd444ad9de1169068f1eb30973cf52687095f777d370f7acc135d01cb5a5"
+    }
+  },
+  "conversion": "FFmpeg 7.1 (imageio-ffmpeg 0.6.0 macOS arm64): -ac 1 -ar 48000 -c:a pcm_s16le",
+  "source_preservation": "Public HQ previews and exact decoded PCM are preserved. Original uploaded masters were not downloaded.",
+  "license_scope": "CC0-1.0 source conditions remain unchanged; no proprietary restriction on the original recordings.",
+  "artifacts": [
+    {
+      "role": "audio_source",
+      "candidate_id": "audio-v3-source-paper-632220-mp3",
+      "path": "sources/audio-v3/paper-632220.mp3",
+      "sha256": "3cb1538043c32ebd9a1b437aa2e79e899cda594a41552ba03b62e144ee6673e2",
+      "license": "CC0-1.0",
+      "source": "golovlev.sound · paper, thin, tracing, blueprint, rustle.wav · https://freesound.org/people/golovlev.sound/sounds/632220/",
+      "author": "golovlev.sound",
+      "page_url": "https://freesound.org/people/golovlev.sound/sounds/632220/",
+      "download_url": "https://cdn.freesound.org/previews/632/632220_3784464-hq.mp3",
+      "source_kind": "public HQ MP3 preview, not original master"
+    },
+    {
+      "role": "audio_source",
+      "candidate_id": "audio-v3-source-paper-632220-wav",
+      "path": "sources/audio-v3/paper-632220.wav",
+      "sha256": "50941ab820073d0eeeeb15760f35ed12ce54c2c9623d07f420f44ce737124d20",
+      "license": "CC0-1.0",
+      "source": "golovlev.sound · paper, thin, tracing, blueprint, rustle.wav · https://freesound.org/people/golovlev.sound/sounds/632220/",
+      "author": "golovlev.sound",
+      "page_url": "https://freesound.org/people/golovlev.sound/sounds/632220/",
+      "download_url": "https://cdn.freesound.org/previews/632/632220_3784464-hq.mp3",
+      "source_kind": "decoded HQ preview, 48000Hz mono PCM16"
+    },
+    {
+      "role": "audio_source",
+      "candidate_id": "audio-v3-source-leaf-106131-mp3",
+      "path": "sources/audio-v3/leaf-106131.mp3",
+      "sha256": "c0a5e079529db8cc6498612920b08ff16f173899edf5ae79391b15081569f2d1",
+      "license": "CC0-1.0",
+      "source": "j1987 · leafrustle.wav · https://freesound.org/people/j1987/sounds/106131/",
+      "author": "j1987",
+      "page_url": "https://freesound.org/people/j1987/sounds/106131/",
+      "download_url": "https://cdn.freesound.org/previews/106/106131_367313-hq.mp3",
+      "source_kind": "public HQ MP3 preview, not original master"
+    },
+    {
+      "role": "audio_source",
+      "candidate_id": "audio-v3-source-leaf-106131-wav",
+      "path": "sources/audio-v3/leaf-106131.wav",
+      "sha256": "cf50dd444ad9de1169068f1eb30973cf52687095f777d370f7acc135d01cb5a5",
+      "license": "CC0-1.0",
+      "source": "j1987 · leafrustle.wav · https://freesound.org/people/j1987/sounds/106131/",
+      "author": "j1987",
+      "page_url": "https://freesound.org/people/j1987/sounds/106131/",
+      "download_url": "https://cdn.freesound.org/previews/106/106131_367313-hq.mp3",
+      "source_kind": "decoded HQ preview, 48000Hz mono PCM16"
+    }
+  ]
+}

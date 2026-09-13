@@ -1,0 +1,27 @@
+{
+  "browser": "Chromium 151.0.7922.34",
+  "surface": "local headless Chromium; connected Browser plugin unavailable",
+  "checks": [
+    "five current characters walk in their cards; quokka uses scarf v3; no sender/target/collision-count interface or automatic sound",
+    "all 11 direct sound buttons play real decoded audio without throwing or choosing characters; one active sound; silent animation continues",
+    "rotation, impact and fixed composite previews work per item; pause/resume freezes and restores motion",
+    "hidden document stops playback; detailed 90-frame/original/background/edge/flip comparison remains available",
+    "390px viewport has no document overflow"
+  ],
+  "errors": [],
+  "source_sha256": {
+    "index.html": "85fc6805845f3340800b9547ff8427157b4f15db56db201be1eb9bc6798a4c1f",
+    "review.css": "527dcfa2aa2e6551de48e287fc248a2f14c8c2b81c72755df893033136e1c960",
+    "review.js": "15082ed7b29d8da9993be916211e2568ade56ef811cb7122c567df7f2a563a04",
+    "preview-state.js": "895e5b0d4dccc66e739f8b65cd8dca84ee5d01489b3a4df697e54fef4b07fd03",
+    "review-audio.js": "5b2cab3d30018d97126f7161dcb947fb7fff680a3dd26f5aec8c8a645fffd13e",
+    "package.json": "51999aa43a42498faa32b09996377f429e4ea9fd1454b8adb6b2d6d98b92b244",
+    "approvals.json": "0909322ceec82191a4a218f14f9a88d8485312623365752e2c8be062d7558f92",
+    "verify_browser.cjs": "7615b9512d5f9203e4848374b8a33e8691407a47c80693dd15a982c9a411e574"
+  },
+  "actual_audio_starts": 17,
+  "limitations": [
+    "Real Web Audio starts and decoding verified, not physical speaker quality or user listening approval.",
+    "Visibility uses a simulated document.hidden event; no native app execution."
+  ]
+}

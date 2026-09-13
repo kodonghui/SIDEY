@@ -1,0 +1,89 @@
+{
+  "character_id": "pixel_quokka",
+  "candidate_id": "appearance-v2-pixel_quokka",
+  "path": "candidates/character-v2/pixel_quokka/appearance.png",
+  "sha256": "3203ffeafdee5efd5cc9e1c357faaf1d4fd627968751754891ee7cb669e3707f",
+  "status": "awaiting_appearance_approval",
+  "authoring": "Codex native pixel map; ImageGen concept reference",
+  "reference": "concepts/quokka-v2.png",
+  "derived_from_original_pr_pixels": false,
+  "direction": "기존 목도리·회갈색 외형을 재사용하지 않고 둥근 귀·갈색 털·웃는 주둥이·작은 앞발로 쿼카 재해석",
+  "palette": {
+    ".": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "o": [
+      64,
+      39,
+      26,
+      255
+    ],
+    "b": [
+      166,
+      108,
+      65,
+      255
+    ],
+    "s": [
+      121,
+      75,
+      43,
+      255
+    ],
+    "t": [
+      207,
+      153,
+      97,
+      255
+    ],
+    "c": [
+      248,
+      221,
+      176,
+      255
+    ],
+    "p": [
+      229,
+      159,
+      125,
+      255
+    ],
+    "w": [
+      255,
+      248,
+      231,
+      255
+    ]
+  },
+  "rows": [
+    "........................",
+    "........................",
+    ".....ooo........ooo.....",
+    "....obpbo......obpbo....",
+    "....obpbo......obpbo....",
+    ".....obbbbbbbbbbbbo.....",
+    "....obbbbbbbbbbbbbbo....",
+    "...obbbbbbbbbbbbbbbbo...",
+    "...obbbwobbbbbbowbbbo...",
+    "...obbboobbbbbboobbbo...",
+    "...obtttcccooccctttbo...",
+    "...obtttoccooccotttbo...",
+    "...obtttcoccccoctttbo...",
+    "....obttccooooccttbo....",
+    "......obtcccccctbo......",
+    ".....obbtcccccctbbo.....",
+    "....obbbsooccoosbbbo....",
+    "....obbbtcccccctbbbo....",
+    "....obbbtcccccctbbbo....",
+    ".....ossbtcccctbsso.....",
+    "......oooo....oooo......",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  "frame_count": 1,
+  "baseline_bottom_opaque_row": 20
+}

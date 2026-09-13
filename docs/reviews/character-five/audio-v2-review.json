@@ -1,0 +1,568 @@
+{
+  "schema_version": 1,
+  "candidate_version": "audio-v2",
+  "generator": "build_audio_v2.py",
+  "generator_sha256": "9ab7f3dc9f1ca553bbaf40b22fd86f4623a4c29eb71c86a53398ce60679c1505",
+  "sources": {
+    "mouth-573153": {
+      "path": "docs/reviews/character-feedback/round-6/sources/mouth-573153.wav",
+      "sha256": "bfc6ccc9b619ca831e326671fcb54e05f05f791e7915e737f8bc1b6865af1dc4",
+      "author": "fleurescence",
+      "license": "CC0-1.0",
+      "page_url": "https://freesound.org/people/fleurescence/sounds/573153/",
+      "source_record": {
+        "id": "mouth-573153",
+        "title": "Mouth pop",
+        "author": "fleurescence",
+        "page_url": "https://freesound.org/people/fleurescence/sounds/573153/",
+        "download_url": "https://cdn.freesound.org/previews/573/573153_12947664-hq.mp3",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "mouth-573153.mp3",
+        "original_sha256": "d69a1f2199e95a3a33db5ecc323007972eae4c052be50be190d7e2d3df4380b7",
+        "decoded_file": "mouth-573153.wav",
+        "decoded_sha256": "bfc6ccc9b619ca831e326671fcb54e05f05f791e7915e737f8bc1b6865af1dc4",
+        "conversion": "FFmpeg 7.1 / imageio-ffmpeg 0.6.0, 48000 Hz mono PCM16"
+      }
+    },
+    "mouth-258269": {
+      "path": "docs/reviews/character-feedback/round-6/sources/mouth-258269.wav",
+      "sha256": "0b8a21824adfa8f26eea4f5d2ba4673366eb8bd4947c32e2ff5339ee9d4c96b5",
+      "author": "jcallison",
+      "license": "CC0-1.0",
+      "page_url": "https://freesound.org/people/jcallison/sounds/258269/",
+      "source_record": {
+        "id": "mouth-258269",
+        "title": "Mouth pop",
+        "author": "jcallison",
+        "page_url": "https://freesound.org/people/jcallison/sounds/258269/",
+        "download_url": "https://cdn.freesound.org/previews/258/258269_4824549-hq.mp3",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "mouth-258269.mp3",
+        "original_sha256": "7d8a262c747a1733da0b6af232a6c3e2a00a63c353d81e6eca82eef398eaf737",
+        "decoded_file": "mouth-258269.wav",
+        "decoded_sha256": "0b8a21824adfa8f26eea4f5d2ba4673366eb8bd4947c32e2ff5339ee9d4c96b5",
+        "conversion": "FFmpeg 7.1 / imageio-ffmpeg 0.6.0, 48000 Hz mono PCM16"
+      }
+    },
+    "mouth-691906": {
+      "path": "docs/reviews/character-feedback/round-6/sources/mouth-691906.wav",
+      "sha256": "830e9c612014277c961276588a922e893acb30e7d538a627d9aec9a533a74559",
+      "author": "hollandm",
+      "license": "CC0-1.0",
+      "page_url": "https://freesound.org/people/hollandm/sounds/691906/",
+      "source_record": {
+        "id": "mouth-691906",
+        "title": "Mouth pop 1",
+        "author": "hollandm",
+        "page_url": "https://freesound.org/people/hollandm/sounds/691906/",
+        "download_url": "https://cdn.freesound.org/previews/691/691906_5309408-hq.mp3",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "mouth-691906.mp3",
+        "original_sha256": "8449dfc4f7e7b1c1bcb5eb32bcf4bba0c4e2fff588185a8fed520e0fc74a11a0",
+        "decoded_file": "mouth-691906.wav",
+        "decoded_sha256": "830e9c612014277c961276588a922e893acb30e7d538a627d9aec9a533a74559",
+        "conversion": "FFmpeg 7.1 / imageio-ffmpeg 0.6.0, 48000 Hz mono PCM16"
+      }
+    },
+    "approved-pork-wet-slap": {
+      "path": "assets/v1/audio/impact-pork.wav",
+      "sha256": "fad893141f5648315a6c9cfa72d618a238d1230ce6c87b7eb0733f634663949f",
+      "author": "AfonsoSantos00",
+      "license": "CC0-1.0 source; SIDEY edited asset",
+      "page_url": "https://freesound.org/people/AfonsoSantos00/sounds/570787/",
+      "source_record": {
+        "id": "wet-slap-570787",
+        "author": "AfonsoSantos00",
+        "page_url": "https://freesound.org/people/AfonsoSantos00/sounds/570787/",
+        "download_url": "https://cdn.freesound.org/previews/570/570787_9111351-hq.mp3",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "wet-slap-570787.mp3",
+        "original_sha256": "fa9b50b984506bdeb54012421070933bde8c96e2c9596ad48bbdc143274521e6",
+        "decoded_file": "wet-slap-570787.wav",
+        "decoded_sha256": "3e0fb9607eecb7c2f886fbe8b09ac1d53a89183e2259d01efd80e5dfa6aefa63",
+        "conversion": "Public HQ MP3 preview decoded to mono PCM16 48kHz; not original master."
+      },
+      "prior_processing": {
+        "source_ids": [
+          "wet-slap-570787"
+        ],
+        "source_start_seconds": 0.56,
+        "transient_drive": 3.8,
+        "playback_rate": 0.82,
+        "bandpass_hz": [
+          140,
+          9000
+        ],
+        "echo_seconds": null,
+        "echo_level": 0,
+        "method": "Edited CC0 Foley; shell/soft meat/wood impression, not recordings of these depicted objects."
+      },
+      "note": "기존 승인된 돼지고기 소리의 젖은 slap Foley를 재편집; 실제 어묵 녹음으로 주장하지 않음"
+    }
+  },
+  "artifacts": [
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "1",
+      "candidate_id": "audio-v2-tennis_ball-1",
+      "path": "candidates/audio-v2/tennis_ball/1.wav",
+      "sha256": "19e7236673dafa5ce57f0d6c5959ed8179210aaedffdc421f3139982666a2d67",
+      "label": "톡 · 작고 말랑한 한 번의 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-573153"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.0018958333333333334,
+          "end_seconds": 0.07820833333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "1",
+          "label": "톡 · 작고 말랑한 한 번의 팝",
+          "source_id": "mouth-573153",
+          "speed": 1.2,
+          "duration": 0.105,
+          "highpass_hz": 180,
+          "lowpass_hz": 4800,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.22596805468429498
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.105,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 5040,
+      "peak": 0.194305419921875,
+      "rms": 0.033729121650962784,
+      "peak_dbfs": -14.230301701917522,
+      "rms_dbfs": -29.439899364835526,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -1.3321165054563492e-07,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.012096308887017494,
+        "above_6000hz_energy_fraction": 4.098386992529157e-06,
+        "spectral_centroid_hz": 729.9782290952611
+      },
+      "reference_peak_delta_db": -2.230355036492739,
+      "reference_rms_delta_db": -4.0682738734906,
+      "unchanged_duck_rms_delta_db": -3.7029154533740893e-06
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "2",
+      "candidate_id": "audio-v2-tennis_ball-2",
+      "path": "candidates/audio-v2/tennis_ball/2.wav",
+      "sha256": "94e9f4bb7303e9e088e7064ca6bc1e675545b81d77924ac68057319a95fdef15",
+      "label": "뽕 · 둥글고 가벼운 입술 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-258269"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.0,
+          "end_seconds": 0.21364583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "2",
+          "label": "뽕 · 둥글고 가벼운 입술 팝",
+          "source_id": "mouth-258269",
+          "speed": 1.32,
+          "duration": 0.12,
+          "highpass_hz": 230,
+          "lowpass_hz": 4000,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.6450767236472671
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.12,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 5760,
+      "peak": 0.2684326171875,
+      "rms": 0.033729181740867566,
+      "peak_dbfs": -11.423294285419303,
+      "rms_dbfs": -29.43988389055719,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -6.726582845052083e-05,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.0034149303858361465,
+        "above_6000hz_energy_fraction": 1.0643955459313431e-05,
+        "spectral_centroid_hz": 837.8244816198378
+      },
+      "reference_peak_delta_db": 0.5766523800054806,
+      "reference_rms_delta_db": -4.068258399212265,
+      "unchanged_duck_rms_delta_db": 1.1771362881773939e-05
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "3",
+      "candidate_id": "audio-v2-tennis_ball-3",
+      "path": "candidates/audio-v2/tennis_ball/3.wav",
+      "sha256": "6ea031622e2b6e47bda5f08cf316efdc52f9b92a1f32503314095f00e2a7f5f5",
+      "label": "뽁 · 빠르고 통통한 작은 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-691906"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.050666666666666665,
+          "end_seconds": 0.14639583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "3",
+          "label": "뽁 · 빠르고 통통한 작은 팝",
+          "source_id": "mouth-691906",
+          "speed": 1.08,
+          "duration": 0.1,
+          "highpass_hz": 210,
+          "lowpass_hz": 5400,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.3862325649566873
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.1,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 4800,
+      "peak": 0.269989013671875,
+      "rms": 0.030751201118949734,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.242758326783044,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -4.444122314453125e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.021959018533957445,
+        "above_6000hz_energy_fraction": 7.89355923662576e-06,
+        "spectral_centroid_hz": 698.5079953072631
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -4.871132835438118,
+      "unchanged_duck_rms_delta_db": -0.8028626648629711
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "1",
+      "candidate_id": "audio-v2-fish_cake_skewer-1",
+      "path": "candidates/audio-v2/fish_cake_skewer/1.wav",
+      "sha256": "468a9111c759ac37a0676040427cb40ee93456aacb740f4b766808fb4f0717e2",
+      "label": "췁 · 짧고 촉촉한 한 대",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "1",
+          "label": "췁 · 짧고 촉촉한 한 대",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.2,
+          "duration": 0.15,
+          "highpass_hz": 420,
+          "lowpass_hz": 6800,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.7935566053655011
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.15,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 7200,
+      "peak": 0.269989013671875,
+      "rms": 0.02811443579925638,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -31.02141254985184,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 5.794101291232639e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.00896603940685798,
+        "above_6000hz_energy_fraction": 0.019637209671955175,
+        "spectral_centroid_hz": 2546.1622647827794
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.649787058506913,
+      "unchanged_duck_rms_delta_db": -1.581516887931766
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "2",
+      "candidate_id": "audio-v2-fish_cake_skewer-2",
+      "path": "candidates/audio-v2/fish_cake_skewer/2.wav",
+      "sha256": "541358042c32583c5a4108ab73cd3fa0f5d5f15b2f144b8815417fe02bef1f5d",
+      "label": "촥 · 얇게 달라붙는 빠른 타격",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap",
+        "mouth-691906"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "2",
+          "label": "촥 · 얇게 달라붙는 빠른 타격",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.43,
+          "duration": 0.13,
+          "highpass_hz": 700,
+          "lowpass_hz": 7600,
+          "layer": {
+            "source_id": "mouth-691906",
+            "speed": 1.25,
+            "offset_seconds": 0.022,
+            "gain": 0.16
+          }
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "secondary_trim": {
+          "start_seconds": 0.050666666666666665,
+          "end_seconds": 0.14639583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "final_linear_gain": 0.9041373715374007
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.13,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 6240,
+      "peak": 0.269989013671875,
+      "rms": 0.028268955285447164,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.973804822179286,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 2.371959197215545e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.0029287527320443537,
+        "above_6000hz_energy_fraction": 0.046792525677332414,
+        "spectral_centroid_hz": 3169.1743420091407
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.60217933083436,
+      "unchanged_duck_rms_delta_db": -1.5339091602592134
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "3",
+      "candidate_id": "audio-v2-fish_cake_skewer-3",
+      "path": "candidates/audio-v2/fish_cake_skewer/3.wav",
+      "sha256": "3f8b3d832074053b34fada5ee59d3b7eace0bad341ee630e6296c06dc4dca650",
+      "label": "췁췁 · 한 충돌 안에서 찰지게 겹치는 타격",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "3",
+          "label": "췁췁 · 한 충돌 안에서 찰지게 겹치는 타격",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.03,
+          "duration": 0.19,
+          "highpass_hz": 550,
+          "lowpass_hz": 6200,
+          "layer": {
+            "source_id": "approved-pork-wet-slap",
+            "speed": 1.2,
+            "offset_seconds": 0.036,
+            "gain": 0.48
+          }
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "secondary_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "final_linear_gain": 0.8586910964106385
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.19,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 9120,
+      "peak": 0.269989013671875,
+      "rms": 0.02939373782945249,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.634903674609557,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 2.2687410053453946e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.004824353503718447,
+        "above_6000hz_energy_fraction": 0.01809447049064819,
+        "spectral_centroid_hz": 2417.2310309379377
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.263278183264632,
+      "unchanged_duck_rms_delta_db": -1.1950080126894846
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_duck",
+      "keepsake_id": "rubber_duck",
+      "variant": "original",
+      "candidate_id": "audio-v2-rubber_duck-original",
+      "path": "candidates/audio-v2/rubber_duck/original.wav",
+      "sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
+      "label": "기존 삑삑 오리 · 꽥 한 번",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "source": "기존 승인 throwable_squeaky_duck-b-v5 WAV와 macOS 실제 리소스의 바이트 동일 복사. 신규 삑 합성·리샘플·음량 변경 없음",
+      "source_path": "docs/reviews/character-feedback/round-7/audio/throwable_squeaky_duck-b-v5.wav",
+      "source_sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
+      "source_record": {
+        "id": "duck",
+        "author": "Breviceps",
+        "title": "Cartoon - Duck Quack",
+        "page_url": "https://freesound.org/people/Breviceps/sounds/445960/",
+        "download_url": "https://cdn.freesound.org/previews/445/445960_9159316-hq.mp3",
+        "archive_member": null,
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "duck.mp3",
+        "original_sha256": "c67f1a3677e4db4766c1bdd547ebb1bddbf7df2c4ae808779182fbc03c155025",
+        "decoded_file": "duck.wav",
+        "decoded_sha256": "cc09013b5b321634931214aec15c17747b5beac2e6ca632366a681aed3e4dcc8",
+        "conversion": "FFmpeg 7.1 (imageio-ffmpeg 0.6.0), 48000 Hz mono PCM16. Editing steps in ../generate_audio.py."
+      },
+      "original_approval_record": "docs/reviews/character-feedback/audio-approval.json",
+      "runtime_resource": "macos/SIDEY/Resources/DirectImpactAudio/impact-throwable_squeaky_duck.wav",
+      "runtime_mapping": "macos/SIDEY/Features/PixelWorld/CharacterImpactAudio.swift: objectIDs + impact-<id>.wav bundle lookup",
+      "prior_processing": "round-5/generate_audio.py duck variant B: one contiguous recorded quack, playback rate 1.15, linear gain and fades; then unchanged through round-7",
+      "approval_status": "existing_approved_sound_reuse_requested",
+      "duration_seconds": 0.309375,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 14850,
+      "peak": 0.19952392578125,
+      "rms": 0.03372913603015912,
+      "peak_dbfs": -14.000100374307355,
+      "rms_dbfs": -29.439895661920072,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -7.02212555239899e-06
+    }
+  ],
+  "changes": [
+    "어묵의 v1 저역 사인파 몸통을 완전히 제거하고 기존 승인된 CC0 wet-slap 녹음으로 교체",
+    "테니스공은 사인파 공명 대신 서로 다른 실제 입술 pop 녹음 3종을 짧게 편집; 전자음·멜로디 없음",
+    "오리는 이전 합성 A/B를 채택하지 않고 기존 상품의 승인된 꽥 WAV를 바이트 그대로 재사용",
+    "휴지·잎사귀 음원은 변경하지 않으며 기존 audio-v1 파일을 계속 사용"
+  ],
+  "qa": {
+    "method": "decoded PCM format/level/edge checks, source hashes, exact regeneration, FFT energy-band comparison",
+    "human_listening_performed": false,
+    "prior_v1_spectrum": {
+      "tennis_ball": {
+        "A": {
+          "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+          "below_350hz_energy_fraction": 0.0833217363287937,
+          "above_6000hz_energy_fraction": 3.697782778602059e-06,
+          "spectral_centroid_hz": 386.9668923131109
+        },
+        "B": {
+          "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+          "below_350hz_energy_fraction": 0.9690609522056859,
+          "above_6000hz_energy_fraction": 6.397592158145654e-07,
+          "spectral_centroid_hz": 241.59207337070885
+        }
+      },
+      "fish_cake_skewer": {
+        "A": {
+          "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+          "below_350hz_energy_fraction": 0.8151040536933162,
+          "above_6000hz_energy_fraction": 7.859382414719482e-05,
+          "spectral_centroid_hz": 327.73368959330406
+        },
+        "B": {
+          "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+          "below_350hz_energy_fraction": 0.9195726259786144,
+          "above_6000hz_energy_fraction": 3.140714646869385e-05,
+          "spectral_centroid_hz": 253.82148502925853
+        }
+      }
+    },
+    "level_target": "기존 승인 오리 WAV의 RMS -29.44dBFS에 맞추되 녹음 transient를 보존하도록 peak 0.27로 제한. 이전 야구공 기준 대비 차이도 개별 파일에 그대로 기록",
+    "limitation": "녹음 기반 질감과 저역 감소를 수치로 확인했으나 귀여움·찰진 정도의 청감 승인은 사용자 재생 선택이 필요함"
+  }
+}

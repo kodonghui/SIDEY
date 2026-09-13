@@ -1,0 +1,14 @@
+{
+  "language": "ko",
+  "status": "pending_user_approval",
+  "character_id": "pixel_quokka",
+  "character": {
+    "name": "쿼카",
+    "description": "항상 웃고 있어요. 방금 잎사귀를 던진 것도 얘예요."
+  },
+  "keepsake": {
+    "id": "leaf",
+    "name": "잎사귀",
+    "description": "쿼카의 도시락이에요. 던져도 되는지는 안 물어봤어요."
+  }
+}
