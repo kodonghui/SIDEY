@@ -21,6 +21,8 @@ const crypto = require('node:crypto');
     await page.waitForFunction(() => document.querySelectorAll('.frame-button').length === 90);
     assert.match(await page.locator('#load-status').textContent(), /90프레임/);
     assert.equal(await page.locator('.appearance-card').count(), 5);
+    assert.equal(await page.locator('.frame-button[data-source="candidate"]').count(), 72);
+    assert.equal(await page.locator('.frame-button[data-source="original"]').count(), 18);
     checks.push('10 original sheets loaded; 90 frame buttons; 5 appearance comparisons');
     for (const index of [0, 17, 35, 53, 71, 89]) {
       const button = page.locator('.frame-button').nth(index);
@@ -31,6 +33,16 @@ const crypto = require('node:crypto');
     checks.push('manual frame selection across all five characters pauses playback');
     const snapshot = () => page.locator('#stage').evaluate(canvas => canvas.toDataURL());
     await page.locator('#character').selectOption('pixel_shiba');
+    await page.locator('#motion-select').selectOption('idle');
+    await page.locator('#frame').selectOption('1');
+    const repaired = await snapshot();
+    await page.locator('#source').selectOption('original');
+    assert.equal(await page.locator('#frame').inputValue(), '1');
+    assert.notEqual(await snapshot(), repaired);
+    assert.equal(await page.locator('.frame-button[data-source="original"]').count(), 90);
+    await page.locator('#source').selectOption('candidate');
+    assert.equal(await snapshot(), repaired);
+    checks.push('72 repaired frames plus 18 original quokka frames; original toggle preserves frame and shows ankle repair');
     const original = await snapshot();
     await page.locator('#flip').check();
     assert.notEqual(await snapshot(), original);
@@ -83,6 +95,39 @@ const crypto = require('node:crypto');
     checks.push('proposed idle closed-eye duration; simulated hidden-document event pauses');
     await page.evaluate(() => { delete document.hidden; });
     await page.locator('#timing').selectOption('current');
+    await page.waitForFunction(() => document.querySelectorAll('.keepsake-frame-button').length === 60);
+    for (const object of ['tennis_ball', 'rubber_duck', 'tissue_ball', 'fish_cake_skewer', 'leaf']) {
+      for (const frame of [0, 7, 8, 11]) {
+        const button = page.locator(`.keepsake-frame-button[data-object="${object}"][data-frame="${frame}"]`);
+        await button.click();
+        assert.equal(await button.getAttribute('aria-pressed'), 'true');
+        assert.equal(await page.locator('#keepsake-select').inputValue(), object);
+        assert.equal(await page.locator('#keepsake-frame').inputValue(), String(frame));
+      }
+    }
+    for (const background of ['light', 'dark', 'checker']) {
+      await page.locator('#keepsake-background').selectOption(background);
+    }
+    await page.locator('#keepsake-motion').selectOption('rotation');
+    const itemSnapshot = () => page.locator('#keepsake-stage').evaluate(canvas => canvas.toDataURL());
+    const itemStopped = await itemSnapshot();
+    await page.locator('#keepsake-play').click();
+    await page.waitForTimeout(250);
+    assert.notEqual(await itemSnapshot(), itemStopped);
+    await page.locator('#play').click();
+    assert.equal(await page.locator('#keepsake-play').textContent(), '반복 재생');
+    await page.locator('#keepsake-play').click();
+    assert.equal(await page.locator('#play').textContent(), '재생');
+    await page.evaluate(() => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    assert.equal(await page.locator('#keepsake-play').textContent(), '반복 재생');
+    const itemPaused = await itemSnapshot();
+    await page.waitForTimeout(150);
+    assert.equal(await itemSnapshot(), itemPaused);
+    await page.evaluate(() => { delete document.hidden; });
+    checks.push('5 selected keepsakes / 60 frames; rotation and impact selection; loop advances; exclusive playback and hidden event stop both players');
     await page.locator('#appearance').screenshot({ path: path.join(output, 'appearance.png') });
     await page.locator('#keepsakes').screenshot({ path: path.join(output, 'keepsakes.png') });
     await page.locator('#motion').screenshot({ path: path.join(output, 'motion.png') });
@@ -99,7 +144,7 @@ const crypto = require('node:crypto');
     const report = { browser: `Chromium ${browser.version()}`, surface: 'isolated local headless browser; connected Browser plugin unavailable',
       checks, errors, source_sha256: hashes,
       limitations: ['Visibility handler tested by a simulated document.hidden event, not OS tab minimization.',
-        'Current original motion preview only; no final animation/audio approval or app runtime verification.'] };
+        '72 repaired character frames and 60 keepsake frames are review candidates; quokka animation remains original reference. No audio or app runtime verification.'] };
     fs.writeFileSync(path.join(output, 'browser-validation.json'), JSON.stringify(report, null, 2) + '\n');
     console.log(JSON.stringify(report, null, 2));
   } finally { await browser.close(); }

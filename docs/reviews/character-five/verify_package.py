@@ -271,6 +271,27 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             require({"character_sheet", "keepsake_sheet", "audio_candidate"} <= available,
                     f"composite must pin character, keepsake and selected audio: {key}")
     require(set(records) == EXPECTED_RECORDS, "missing approval records")
+    concept = approvals.get("concept_art_approval")
+    if concept is not None:
+        require(concept.get("status") == "approved_for_selected_concepts"
+                and nonempty(concept.get("user_evidence")) and nonempty(concept.get("scope")),
+                "concept approval requires status, user evidence and limited scope")
+        items = concept.get("items")
+        selected_items = {record["selection"] for (stage, _), record in records.items()
+                          if stage == "keepsake_plan" and record["status"] == "approved"}
+        require(isinstance(items, list) and items and all(nonempty(item) for item in items)
+                and len(set(items)) == len(items) and set(items) <= selected_items,
+                "concept approval items must match selected keepsake plans")
+        refs = concept.get("artifacts")
+        require(isinstance(refs, list) and refs, "concept approval requires pinned artifacts")
+        referenced = set()
+        for ref in refs:
+            artifact = artifacts.get(ref.get("path"))
+            require(artifact is not None and artifact["role"] == "concept_board"
+                    and all(ref.get(field) == artifact[field] for field in ("sha256", "candidate_id")),
+                    "stale concept approval reference")
+            require(artifact["path"] not in referenced, "duplicate concept approval reference")
+            referenced.add(artifact["path"])
     for (stage, character), record in records.items():
         if record["status"] != "approved":
             continue

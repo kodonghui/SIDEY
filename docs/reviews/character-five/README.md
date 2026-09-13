@@ -1,6 +1,6 @@
 # 캐릭터 5종 검토 패키지
 
-현재 단계는 **24×24 기본 자세 승인·쿼카 물건 선택 대기**다. 사용자는 원작 색감·표정을 유지하는 실루엣 보강 방향과 원본 픽셀의 코드 수정을 승인했다. 시바 테니스공·오리 물방울·똥 휴지 뭉치·떡볶이 어묵꼬치를 선택했고 쿼카는 잎사귀·풀 뭉치 두 안을 예시 페이지에서 비교하도록 요청했다. 출시 대기 패키지 완성이나 최종 시각 승인을 뜻하지 않는다. 시바견·오리·똥·떡볶이·쿼카의 기존 ID를 유지하며, 전 단계 승인 뒤에만 후속 PR을 main에 병합한다.
+현재 단계는 **새 쿼카 외형·4종의 보정 동작·물건 회전/충돌 승인 대기**다. 시바·오리·똥·떡볶이는 원작 외형 유지가 승인됐으며 발목 단절과 잘못된 동작은 수정한다. 쿼카는 동물 정체성만 유지해 새로 해석한다. 선택 물건은 테니스공·목욕탕 고무 오리·휴지 뭉치·어묵꼬치·잎사귀다. 물방울과 풀 뭉치는 채택하지 않는다. 현재 작업은 [초안 PR #93](https://github.com/sidey-app/SIDEY/pull/93)에 보존하며 전체 승인 전에는 main에 병합하지 않는다.
 
 ## 로컬 검토
 
@@ -17,19 +17,21 @@ python3 -m http.server 8765 --bind 127.0.0.1 --directory docs/reviews/character-
 
 브라우저 회귀 검사는 설치된 Playwright 환경에서 `node docs/reviews/character-five/verify_browser.cjs`로 실행한다. 필요하면 `NODE_PATH`로 Playwright 모듈 위치, `SIDEY_REVIEW_CHROMIUM`으로 Chromium 실행 파일, `SIDEY_REVIEW_URL`로 다른 로컬 포트를 지정한다. 화면·결과 JSON은 `SIDEY_REVIEW_OUTPUT`(기본 `/private/tmp/character-five-browser-evidence`)에 기록한다. 숨김 처리는 합성 `document.hidden` 이벤트로 검사하며 OS 창 최소화 검증과 구분한다.
 
-`candidates/appearance-v1/concept-board.png`는 ImageGen으로 만든 **외형 방향 콘셉트**다. 이미지 안의 ORIGINAL 열까지 다시 그려진 그림이며 원본 PNG의 정확한 복사나 최종 24×24 프레임이 아니다. 정확한 원본은 페이지의 canvas와 `originals/`에서 확인한다. 이 보드를 규격 자산으로 축소해 자동 채택하지 않는다. 실제 원본 픽셀의 색감·표정을 보존한 기본 자세 비교안을 다시 검토한 후 전체 프레임에 적용한다.
+현재 캐릭터 후보는 `candidates/character-v2/`에 둔다. 시바·오리·똥·떡볶이의 `appearance.png`는 원본 base 0번과 RGBA가 동일하며, 기본·동작 시트는 총 72프레임의 발 연결과 던지기 중복을 보정했다. `python3 docs/reviews/character-five/build_character_repairs.py`는 원본·수정 시트·픽셀 변경 기록을 읽기 전용으로 대조한다(`--write`는 명시적 재생성). 원본 90프레임은 `originals/`에 변경 없이 보존한다.
 
-`concepts/keepsakes-v1.png`는 아래 물건의 기획 후보이며 최종 16×16 그림이 아니다.
+쿼카는 `build_quokka.py`의 새로운 24×24 픽셀 맵이며, 목도리 없는 갈색 털·둥근 귀·웃는 주둥이·작은 앞발을 사용한다. `concepts/quokka-v2.png`는 ImageGen 방향 참고이고 실제 승인은 `candidates/character-v2/pixel_quokka/appearance.png`를 기준으로 한다. 쿼카 전체 동작은 기본 자세 승인 후 제작한다.
 
-실제 기본 자세 후보는 `candidates/appearance-v1/pixel_*.png` 5개다. `python3 docs/reviews/character-five/build_appearance.py`로 원본 0번에서 재생성하며 새 색을 추가하지 않는다. 원본·변경 좌표·해시는 `appearance-changes.json`에 기록한다. 똥·떡볶이의 기본 0번은 그대로 보존했고, 결함이 있는 다른 프레임의 발 연결과 동작 수정은 기본 자세 승인 뒤 진행한다.
+선택 물건 5종의 16×16 후보는 `candidates/keepsakes-v2/<id>/sprite.png`에 둔다. 회전 8장·충돌 4장과 소멸을 검토한다. 목욕탕 고무 오리는 기존 `throwable_squeaky_duck` 시트를 그대로 재사용한다. 나머지는 승인된 콘셉트를 명시적 픽셀 맵과 결정적 애니메이션으로 구성한 새 규격 후보이며, 콘셉트 승인만으로 새 프레임 승인을 채우지 않는다. `build_keepsakes.py`와 `keepsake-changes.json`에 생성 규칙·출처·해시·회전 중심 검사를 기록한다.
 
-| 캐릭터 | A | B |
+| 캐릭터 | 선택 물건 | 현재 상태 |
 | --- | --- | --- |
-| 시바견 | 뼈다귀 장난감 / 가벼운 장난감 톡 | 테니스공 / 탄성 있는 통 |
-| 오리 | 물방울 / 짧은 물방울 팝 | 작은 물고기 / 물기 있는 찰박 |
-| 똥 | 휴지 뭉치 / 가벼운 종이 퍽 | 미니 뚫어뻥 / 짧은 고무 뽁 |
-| 떡볶이 | 떡 한 조각 / 말랑한 찹 | 어묵꼬치 / 가벼운 촵 |
-| 쿼카 | 잎사귀 / 얇은 잎 파삭 | 풀 뭉치 / 부드러운 풀 퍽 |
+| 시바견 | 테니스공 | 콘셉트 승인, 규격 프레임 검토 |
+| 오리 | 목욕탕 고무 오리 | 사용자 요청으로 물방울 대체, 기존 삑삑 오리 시트 재사용 검토 |
+| 똥 | 휴지 뭉치 | 콘셉트 승인, 규격 프레임 검토 |
+| 떡볶이 | 어묵꼬치 | 콘셉트 승인, 규격 프레임 검토 |
+| 쿼카 | 잎사귀 | 사용자 최종 선택, 규격 프레임 검토 |
+
+`appearance-v1/`과 `concepts/keepsakes-v1.png`는 과거 비교 자료다. 생성 보드의 ORIGINAL 열도 재생성된 그림이며 정확한 원본이 아니다. 예전 선택 기록은 `history/approvals-v1.json`에 보존하고 현재 승인은 `approvals.json`에서만 판정한다.
 
 ## 원본·기여 기록
 

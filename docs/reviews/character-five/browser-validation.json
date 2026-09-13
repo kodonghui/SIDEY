@@ -4,23 +4,25 @@
   "checks": [
     "10 original sheets loaded; 90 frame buttons; 5 appearance comparisons",
     "manual frame selection across all five characters pauses playback",
+    "72 repaired frames plus 18 original quokka frames; original toggle preserves frame and shows ankle repair",
     "flip and silhouette change the rendered canvas",
     "3 backgrounds × 4 edges × 4 integer scales render successfully",
     "walk advances pixels; pause freezes canvas",
     "throw and hit play once and return to idle 0",
     "proposed idle closed-eye duration; simulated hidden-document event pauses",
+    "5 selected keepsakes / 60 frames; rotation and impact selection; loop advances; exclusive playback and hidden event stop both players",
     "390px layout has no document overflow"
   ],
   "errors": [],
   "source_sha256": {
-    "index.html": "bda8b27acdb11c3feee22753578066f69862f4820b404197e2bdee754812c4a3",
-    "review.css": "e05c3e16194756f56b35593c5ed118b23541304946729cd256510ee5fa6f25c5",
-    "review.js": "341712c471c25f1885d5d5ef3d33cac53af0c3b3d2f5ccca2092bdfca48b7d97",
-    "package.json": "c3c8ecda381404d4eabb85f412846211f4521a78ca84ca8a6273366fcd52f47a",
-    "approvals.json": "ab6733b918c40389f1f3920e5365d375a2ebaf04e7bdc8c3d6d82fd7f2b307d2"
+    "index.html": "ae4d7df07bd389a27e57bb843eb2dee29bbba6299b52f587cc4f7c8e5cd3875c",
+    "review.css": "6972002cc800385363027ee27dde3f86c454700e86521f726d592a4ba65ee1b2",
+    "review.js": "3f31c20958fcc9bb1e812401871aa07fc0dd7efd424d250b7685ac16602832ee",
+    "package.json": "8a77a03973a299709fb63cde9cef509ac3b194e319878ab1444c991d90c96751",
+    "approvals.json": "69987e12ef9f8e49bdff023ea6b9dcf2f1d9ff754c2da70189a9d1a8a1f6d0b1"
   },
   "limitations": [
     "Visibility handler tested by a simulated document.hidden event, not OS tab minimization.",
-    "Current original motion preview only; no final animation/audio approval or app runtime verification."
+    "72 repaired character frames and 60 keepsake frames are review candidates; quokka animation remains original reference. No audio or app runtime verification."
   ]
 }

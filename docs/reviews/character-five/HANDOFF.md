@@ -1,6 +1,6 @@
 # 승인 후 앱 연결 명세
 
-현재 모든 최종 자산 승인은 대기 상태다. 이 문서만으로 앱 연결이나 출시를 실행하지 않는다.
+시바·오리·똥·떡볶이는 원본 기본 외형 유지가 승인되었다. 새 쿼카 외형, 보정 동작, 물건 회전·충돌, 음원·합성 승인은 대기 상태다. 이 문서만으로 앱 연결이나 출시를 실행하지 않는다.
 
 캐릭터 ID는 `pixel_shiba`, `pixel_duck`, `pixel_poop`, `pixel_tteokbokki`, `pixel_quokka`를 유지한다. 기본 240×24 시트는 idle 0–1, walk 2–5, doze 6–7, offline 8–9이며 동작 192×24 시트는 throw 0–3, hit 4–7이다. 24×24 셀, RGBA 8-bit·sRGB·hard alpha·정수 nearest-neighbor와 y=20 발끝 기준선을 유지한다. 실시간 그림자는 추가하지 않는다.
 

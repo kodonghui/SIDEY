@@ -1,0 +1,10 @@
+{
+  "tool": "image_gen.imagegen",
+  "mode": "built_in",
+  "prompt": "Use case: stylized-concept. Create a brand-new SIDEY quokka animal pixel sprite concept, NOT a reinterpretation of any prior sprite. Single character centered, front view with a very slight 3/4 turn, no collage, no labels, no text. It must be recognizably a QUOKKA: small separated ROUND furry ears, broad rounded cheeks, dark broad small oval nose, upturned smiling mouth, tiny short forepaws held together over a cream belly, pear-shaped upright warm chestnut-brown body, little sturdy hind feet. Charming relaxed friendly expression, body fits a 24x24 logical pixel cell. Use extremely simple strict pixel art, crisp square large blocks with 24x24 underlying grid enlarged, around 8 flat colors, dark warm brown 1-pixel outline, lighter tan cheeks, cream belly, dark eyes with one bright pixel, tiny muted peach inner ears. No scarf, no clothing, no props, no leaf, no fur texture, no gradients, no shadows, no antialias, no 3D or smooth vector cartoon. Feet connected to body and on same baseline, both visible. Tail subtle and short behind side; round ears not mouse huge circles, no pointed cat ears, no teeth. Output transparent background if possible, 1024 square, large character entirely visible with margins. This is a fresh visual proposal that will be rebuilt as a deterministic 24x24 runtime candidate for approval.",
+  "output": "concepts/quokka-v2.png",
+  "role": "concept reference for native24px pose",
+  "production_candidate": "candidates/character-v2/pixel_quokka/appearance.png",
+  "production_authoring": "Codex deterministic pixel-map reconstruction in build_quokka.py",
+  "approval_status": "pending; actual approvals tracked in approvals.json"
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "awaiting_appearance_pixels_and_quokka_choice",
+  "status": "awaiting_new_quokka_and_repaired_motion_review",
   "selected_characters": [
     {
       "id": "pixel_shiba",
@@ -45,7 +45,8 @@
     "original_path_template": "assets/v1/characters/{id}/{sheet}.png",
     "github_author_link_verified_from": "gh pr view 27 --json commits; authors[0].login = jungjiyu",
     "main_inclusion_verified": false,
-    "successor_pr": null
+    "successor_pr": "https://github.com/sidey-app/SIDEY/pull/93",
+    "github_import_author_verified": "gh api commits/a7e0af2406ce8b1ee0b2aeae653f66c4ed35087a author.login=jungjiyu"
   },
   "artifacts": [
     {
@@ -183,62 +184,324 @@
     {
       "path": "candidates/appearance-v1/pixel_shiba.png",
       "sha256": "9a6e1e934c9e05b05b93a958ac7356821074b3bb98c8b8a09a97898eac7e393a",
-      "role": "appearance_pose",
+      "role": "concept_board",
       "character_id": "pixel_shiba",
       "dimensions": [
         24,
         24
       ],
       "candidate_id": "appearance-v1-pixel_shiba",
-      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true,
+      "superseded_by": "user correction: original four, new quokka"
     },
     {
       "path": "candidates/appearance-v1/pixel_duck.png",
       "sha256": "9862dc6ef8ad7b7e8bfcf666ea8fc531b6b0462c48657ef45086df6a10971cae",
-      "role": "appearance_pose",
+      "role": "concept_board",
       "character_id": "pixel_duck",
       "dimensions": [
         24,
         24
       ],
       "candidate_id": "appearance-v1-pixel_duck",
-      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true,
+      "superseded_by": "user correction: original four, new quokka"
     },
     {
       "path": "candidates/appearance-v1/pixel_poop.png",
       "sha256": "2bf42d61805200ba01d04f776be62db1464a5b6cd70c960dac21d3226c3977dc",
-      "role": "appearance_pose",
+      "role": "concept_board",
       "character_id": "pixel_poop",
       "dimensions": [
         24,
         24
       ],
       "candidate_id": "appearance-v1-pixel_poop",
-      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true,
+      "superseded_by": "user correction: original four, new quokka"
     },
     {
       "path": "candidates/appearance-v1/pixel_tteokbokki.png",
       "sha256": "9c9d4da000e7ec9b150f9674a1f265cbe5d5e46816ae82978bd0f72439dbe606",
-      "role": "appearance_pose",
+      "role": "concept_board",
       "character_id": "pixel_tteokbokki",
       "dimensions": [
         24,
         24
       ],
       "candidate_id": "appearance-v1-pixel_tteokbokki",
-      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true,
+      "superseded_by": "user correction: original four, new quokka"
     },
     {
       "path": "candidates/appearance-v1/pixel_quokka.png",
       "sha256": "3d9e0375ffd77bdf87d6519dbfaa7ca6f005768312cfc0f1c335ca726a0d1868",
-      "role": "appearance_pose",
+      "role": "concept_board",
       "character_id": "pixel_quokka",
       "dimensions": [
         24,
         24
       ],
       "candidate_id": "appearance-v1-pixel_quokka",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true,
+      "superseded_by": "user correction: original four, new quokka"
+    },
+    {
+      "path": "candidates/character-v2/pixel_shiba/appearance.png",
+      "role": "appearance_pose",
+      "character_id": "pixel_shiba",
+      "dimensions": [
+        24,
+        24
+      ],
+      "sha256": "6d1677ff8e262ef980b9a4b68c42be8af6c274560a3f2e157c9fe0a9e36da0d0",
+      "candidate_id": "appearance-v2-pixel_shiba",
       "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_shiba/base.png",
+      "role": "character_sheet",
+      "character_id": "pixel_shiba",
+      "sheet": "base",
+      "dimensions": [
+        240,
+        24
+      ],
+      "sha256": "011ae19b2882a18869666641681a33c9dc41b42cf30d1404ecb08e20b9acb928",
+      "candidate_id": "character-v2-pixel_shiba-base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_shiba/throw_hit.png",
+      "role": "character_sheet",
+      "character_id": "pixel_shiba",
+      "sheet": "throw_hit",
+      "dimensions": [
+        192,
+        24
+      ],
+      "sha256": "a88e049275de5059d880cb7ff1c478a2e8204d9decc0c7bf461ff9255d6dc24f",
+      "candidate_id": "character-v2-pixel_shiba-throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_duck/appearance.png",
+      "role": "appearance_pose",
+      "character_id": "pixel_duck",
+      "dimensions": [
+        24,
+        24
+      ],
+      "sha256": "c239e860423fe556a7ab050a667b7780ba5970fbc1a56c97bea40fd9dd2e6b43",
+      "candidate_id": "appearance-v2-pixel_duck",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_duck/base.png",
+      "role": "character_sheet",
+      "character_id": "pixel_duck",
+      "sheet": "base",
+      "dimensions": [
+        240,
+        24
+      ],
+      "sha256": "09c0c4160cf143dd4a1859fe20fdbab1167d08c5b072f6cd1b7906bed429b97c",
+      "candidate_id": "character-v2-pixel_duck-base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_duck/throw_hit.png",
+      "role": "character_sheet",
+      "character_id": "pixel_duck",
+      "sheet": "throw_hit",
+      "dimensions": [
+        192,
+        24
+      ],
+      "sha256": "a8fab6aebc7f6260e8f470e26365a45cac1a493144da36ab0665d54a38d0fc67",
+      "candidate_id": "character-v2-pixel_duck-throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_poop/appearance.png",
+      "role": "appearance_pose",
+      "character_id": "pixel_poop",
+      "dimensions": [
+        24,
+        24
+      ],
+      "sha256": "2bf42d61805200ba01d04f776be62db1464a5b6cd70c960dac21d3226c3977dc",
+      "candidate_id": "appearance-v2-pixel_poop",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_poop/base.png",
+      "role": "character_sheet",
+      "character_id": "pixel_poop",
+      "sheet": "base",
+      "dimensions": [
+        240,
+        24
+      ],
+      "sha256": "99ac0e9eb8c055f5663e3109d3e7cbbf95a0137f2920c8cde41fa265854188c1",
+      "candidate_id": "character-v2-pixel_poop-base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_poop/throw_hit.png",
+      "role": "character_sheet",
+      "character_id": "pixel_poop",
+      "sheet": "throw_hit",
+      "dimensions": [
+        192,
+        24
+      ],
+      "sha256": "3611e29ca3a6b1efcd9533a9d56494eb8daee31bef973e7ae2c69c0f115f7e8b",
+      "candidate_id": "character-v2-pixel_poop-throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_tteokbokki/appearance.png",
+      "role": "appearance_pose",
+      "character_id": "pixel_tteokbokki",
+      "dimensions": [
+        24,
+        24
+      ],
+      "sha256": "9c9d4da000e7ec9b150f9674a1f265cbe5d5e46816ae82978bd0f72439dbe606",
+      "candidate_id": "appearance-v2-pixel_tteokbokki",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_tteokbokki/base.png",
+      "role": "character_sheet",
+      "character_id": "pixel_tteokbokki",
+      "sheet": "base",
+      "dimensions": [
+        240,
+        24
+      ],
+      "sha256": "0a7400c8d7019602147994a75c8e0171441f7c151629cb0f5948bb75e1b7b655",
+      "candidate_id": "character-v2-pixel_tteokbokki-base",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_tteokbokki/throw_hit.png",
+      "role": "character_sheet",
+      "character_id": "pixel_tteokbokki",
+      "sheet": "throw_hit",
+      "dimensions": [
+        192,
+        24
+      ],
+      "sha256": "b5084af74609db432e21bea117da0253aac94197e2a2ded157f7cec04465851c",
+      "candidate_id": "character-v2-pixel_tteokbokki-throw_hit",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/character-v2/pixel_quokka/appearance.png",
+      "role": "appearance_pose",
+      "character_id": "pixel_quokka",
+      "dimensions": [
+        24,
+        24
+      ],
+      "sha256": "3203ffeafdee5efd5cc9e1c357faaf1d4fd627968751754891ee7cb669e3707f",
+      "candidate_id": "appearance-v2-pixel_quokka",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "concepts/quokka-v2.png",
+      "role": "concept_board",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "sha256": "12903497a8e0b2c58b6a6a2f1239583a09617dd18a9ac8866ef8ce3f93024e50",
+      "candidate_id": "quokka-concept-v2",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+    },
+    {
+      "path": "candidates/keepsakes-v2/tennis_ball/sprite.png",
+      "role": "keepsake_sheet",
+      "character_id": "pixel_shiba",
+      "dimensions": [
+        192,
+        16
+      ],
+      "sha256": "19c1a71275fd2e5be5be0b39ebd7be95d960f80ac65dd629aedd885b64f89fc3",
+      "candidate_id": "keepsakes-v2-tennis_ball",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "intentional_duplicate_pairs": []
+    },
+    {
+      "path": "candidates/keepsakes-v2/tissue_ball/sprite.png",
+      "role": "keepsake_sheet",
+      "character_id": "pixel_poop",
+      "dimensions": [
+        192,
+        16
+      ],
+      "sha256": "ae0a3d483f6a606b4dc35bdac173044720668679f6462e36ff19720334dea975",
+      "candidate_id": "keepsakes-v2-tissue_ball",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "intentional_duplicate_pairs": []
+    },
+    {
+      "path": "candidates/keepsakes-v2/fish_cake_skewer/sprite.png",
+      "role": "keepsake_sheet",
+      "character_id": "pixel_tteokbokki",
+      "dimensions": [
+        192,
+        16
+      ],
+      "sha256": "bdcfc04e33f3cf4f45305aa9fbf6c6fed70b515fe826823c890ccbb5e28340fd",
+      "candidate_id": "keepsakes-v2-fish_cake_skewer",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "intentional_duplicate_pairs": []
+    },
+    {
+      "path": "candidates/keepsakes-v2/leaf/sprite.png",
+      "role": "keepsake_sheet",
+      "character_id": "pixel_quokka",
+      "dimensions": [
+        192,
+        16
+      ],
+      "sha256": "b0a419e6659ded829130ec7d0be92d0b693ccd1cdc158aa8aabbd8b24936173e",
+      "candidate_id": "keepsakes-v2-leaf",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "build_keepsakes.py explicit pixel map; informed by approved concepts/keepsakes-v1.png",
+      "intentional_duplicate_pairs": []
+    },
+    {
+      "path": "candidates/keepsakes-v2/rubber_duck/sprite.png",
+      "role": "keepsake_sheet",
+      "character_id": "pixel_duck",
+      "dimensions": [
+        192,
+        16
+      ],
+      "sha256": "3b6935398d41b6d1cd5efa922392dbf4864782deb9880c5d0f10885e00906e7a",
+      "candidate_id": "keepsakes-v2-rubber_duck",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "assets/v1/throwables/throwable_squeaky_duck/sprite.png",
+      "intentional_duplicate_pairs": [],
+      "source_sha256": "3b6935398d41b6d1cd5efa922392dbf4864782deb9880c5d0f10885e00906e7a",
+      "intentional_cross_state_duplicate_pairs": [
+        [
+          0,
+          8
+        ]
+      ]
     }
   ],
   "production_deliverables": {

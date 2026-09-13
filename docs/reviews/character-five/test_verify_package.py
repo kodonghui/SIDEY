@@ -149,6 +149,24 @@ class PackageApprovalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "stale approval reference"):
             self.run_validation()
 
+    def test_concept_approval_rejects_stale_hash_and_candidate(self):
+        original = copy.deepcopy(self.approvals)
+        for field, wrong in (("sha256", "0" * 64), ("candidate_id", "different-concept")):
+            with self.subTest(field=field):
+                self.approvals = copy.deepcopy(original)
+                self.approvals["concept_art_approval"]["artifacts"][0][field] = wrong
+                with self.assertRaisesRegex(ValueError, "stale concept approval"):
+                    self.run_validation()
+
+    def test_concept_approval_requires_selected_items_and_evidence(self):
+        original = copy.deepcopy(self.approvals)
+        for field, wrong in (("items", ["grass_bundle"]), ("user_evidence", ""), ("artifacts", [])):
+            with self.subTest(field=field):
+                self.approvals = copy.deepcopy(original)
+                self.approvals["concept_art_approval"][field] = wrong
+                with self.assertRaisesRegex(ValueError, "concept approval"):
+                    self.run_validation()
+
     def test_path_escape_rejected(self):
         for relative in ("../secret.png", "/tmp/secret.png", "originals/../secret.png", "C:\\secret.png"):
             with self.subTest(relative=relative), self.assertRaisesRegex(ValueError, "unsafe"):
