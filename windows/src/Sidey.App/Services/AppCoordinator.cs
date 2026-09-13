@@ -130,7 +130,7 @@ public sealed class AppCoordinator : IMainWindowCoordinator, IHistoryCoordinator
             await Task.Delay(150);
             if (_audio.PlaybackStartedCount != mutedCount)
                 throw new InvalidOperationException("Impact smoke: muted playback.");
-            StartupDiagnostics.Stage($"impact-audio-smoke-complete sounds=8 muted=true volume=0,37,100 {_audio.DiagnosticState}");
+            StartupDiagnostics.Stage($"impact-audio-smoke-complete sounds={ImpactSoundCatalog.Ids.Count} muted=true volume=0,37,100 {_audio.DiagnosticState}");
         }
         finally
         {
