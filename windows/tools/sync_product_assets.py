@@ -76,7 +76,9 @@ def main():
         else:
             assert existing == entry, source
     outputs[audio_root / 'manifest.json'] = (json.dumps(audio_manifest, indent=2) + '\n').encode()
-    outputs[WINDOWS / 'src/Sidey.Core/Domain/commerce-catalog.json'] = (SOURCE / 'commerce-catalog.json').read_bytes()
+    # The shared source can be checked out as CRLF; Windows JSON is explicitly LF.
+    outputs[WINDOWS / 'src/Sidey.Core/Domain/commerce-catalog.json'] = (
+        SOURCE / 'commerce-catalog.json').read_text(encoding='utf-8').encode('utf-8')
     mismatches = []
     for destination, data in outputs.items():
         assert destination.resolve().is_relative_to(WINDOWS.resolve())
