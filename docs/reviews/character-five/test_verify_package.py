@@ -97,7 +97,8 @@ class PackageApprovalTests(unittest.TestCase):
             self.run_validation()
 
     def test_audio_reference_cannot_fill_a_missing_candidate(self):
-        candidate = next(item for item in self.manifest["artifacts"] if item["role"] == "audio_candidate")
+        candidate = next(item for item in self.manifest["artifacts"]
+                         if item["role"] == "audio_candidate" and item["character_id"] == "pixel_poop")
         candidate["role"] = "audio_reference"
         result = self.run_validation()
         self.assertEqual(result["missing_final_artifacts"], 1)

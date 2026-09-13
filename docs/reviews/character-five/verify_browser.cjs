@@ -12,10 +12,10 @@ const crypto = require('node:crypto');
   const source_sha256 = hashes();
   const browser = await chromium.launch({headless: true, ...(process.env.SIDEY_REVIEW_CHROMIUM ? {executablePath: process.env.SIDEY_REVIEW_CHROMIUM} : {})});
   const page = await browser.newPage({viewport: {width: 1280, height: 900}});
-  const errors = [], checks = [];
+  const errors = [], checks = [], audioPaths = new Set();
   page.on('pageerror', error => errors.push(error.message));
   page.on('requestfailed', request => errors.push(request.url()));
-  page.on('response', response => { if(response.status() >= 400) errors.push(response.url()); });
+  page.on('response', response => { if (response.url().includes('/candidates/audio-')) audioPaths.add(new URL(response.url()).pathname); if(response.status() >= 400) errors.push(response.url()); });
   await page.addInitScript(() => {
     const observed = [];
     const byNode = new WeakMap();
@@ -64,6 +64,10 @@ const crypto = require('node:crypto');
     }
     await page.screenshot({path: path.join(output, 'characters.png')});
     assert.equal(await page.locator('.sound-button').count(), 11);
+    for (const item of ['tissue_ball', 'leaf']) {
+      for (const variant of ['A', 'B']) assert.ok(audioPaths.has(`/candidates/audio-v3/${item}/${variant}.wav`));
+      assert.ok(![...audioPaths].some(path => path.includes(`/audio-v1/${item}/`)));
+    }
     for (const button of await page.locator('.sound-button').all()) {
       const starts = await audioCount();
       await button.click();

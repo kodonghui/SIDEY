@@ -28,7 +28,7 @@ PACKAGE = Path(__file__).resolve().parent
 MEDIA_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif",
                   ".wav", ".mp3", ".ogg", ".flac", ".m4a", ".aac", ".mp4", ".webm"}
 FINAL_ROLES = {"appearance_pose", "character_sheet", "keepsake_sheet", "audio_candidate", "content_copy"}
-ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview", "audio_reference", "audio_archive", "archived_sprite"}
+ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview", "audio_reference", "audio_archive", "archived_sprite", "audio_source"}
 AUDIO_VARIANTS = {"pixel_shiba": ("1", "2", "3"), "pixel_duck": ("original",),
                   "pixel_poop": ("A", "B"), "pixel_tteokbokki": ("1", "2", "3"), "pixel_quokka": ("A", "B")}
 CHARACTER_STAGES = {"keepsake_plan", "appearance_pixels", "character_frames", "character_motion",
@@ -197,6 +197,12 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
                         and all(nonempty(copy[subject].get(field)) for field in ("name", "description")),
                         f"content copy needs name and unique description: {subject}")
             require(nonempty(copy["keepsake"].get("id")), "content copy needs keepsake ID")
+        elif role == "audio_source":
+            # Preserve recorded source bytes; production PCM requirements apply
+            # to edited candidates, not compressed originals or their decodes.
+            require(path.suffix.lower() in (".mp3", ".wav") and relative.startswith("sources/"),
+                    f"audio source must be a recorded file under sources/: {relative}")
+            require(nonempty(artifact.get("source")), f"audio source needs provenance: {relative}")
         elif role in ("audio_candidate", "audio_reference", "audio_archive"):
             validate_audio(path, artifact)
         else:

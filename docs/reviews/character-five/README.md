@@ -2,6 +2,8 @@
 
 현재 단계는 **전체 동작·충돌음·고유 설명을 체험하며 승인하는 자산 패키지 검토**다. 사용자 요청에 따라 목도리를 착용한 새 쿼카 18프레임과 물건별 충돌음까지 먼저 제작했다. 앱·상품 연결 코드는 이번 범위에 포함하지 않는다. 시바·오리·똥·떡볶이는 원작 외형 유지가 승인됐으며 발목 단절과 잘못된 동작은 수정한다. 쿼카는 동물 정체성만 유지해 새로 해석한다. 선택 물건은 테니스공·목욕탕 고무 오리·휴지 뭉치·어묵꼬치·잎사귀다. 물방울과 풀 뭉치는 채택하지 않는다. 현재 작업은 [초안 PR #93](https://github.com/sidey-app/SIDEY/pull/93)에 보존하며 전체 승인 전에는 main에 병합하지 않는다.
 
+캐릭터 5종·물건 5종의 외형/동작과 설명 10개는 승인되었다. 테니스공·어묵꼬치는 소리 1, 오리는 기존 소리로 확정했다. 휴지·잎사귀 새 소리와 해당 합성만 검토 중이다. idle은 미리보기 기본값인 기존 0.55/0.55초를 유지한다.
+
 ## 로컬 검토
 
 ```sh
@@ -10,7 +12,7 @@ python3 docs/reviews/character-five/test_verify_package.py
 python3 docs/reviews/character-five/serve_review.py
 ```
 
-<http://127.0.0.1:8765/?v=asset-review-v4>에서 최신 후보를 확인한다. 캐릭터 카드에서 걷기·기본·졸기·잠·던지기·피격을 고르고, 물건 카드의 소리 버튼을 바로 누른다. 소리를 듣기 위해 캐릭터나 상대를 선택하거나 던질 필요가 없다. 소리는 한 번에 하나씩 재생하며 멈춤·페이지 숨김 시 중단한다. 물건 회전·충돌·고정된 합성 장면도 카드 안에서 비교한다. 원본·90프레임·60프레임·실루엣·배경·가장자리 검사는 접힌 상세 영역에 둔다.
+<http://127.0.0.1:8765/?v=asset-review-v5>에서 최신 후보를 확인한다. 캐릭터 카드에서 걷기·기본·졸기·잠·던지기·피격을 고르고, 물건 카드의 소리 버튼을 바로 누른다. 소리를 듣기 위해 캐릭터나 상대를 선택하거나 던질 필요가 없다. 소리는 한 번에 하나씩 재생하며 멈춤·페이지 숨김 시 중단한다. 물건 회전·충돌·고정된 합성 장면도 카드 안에서 비교한다. 원본·90프레임·60프레임·실루엣·배경·가장자리 검사는 접힌 상세 영역에 둔다.
 
 브라우저 검사는 설치된 Playwright에서 `node docs/reviews/character-five/verify_browser.cjs`로 실행한다. `NODE_PATH`, `SIDEY_REVIEW_CHROMIUM`, `SIDEY_REVIEW_URL`을 지정할 수 있다. 결과와 화면은 `SIDEY_REVIEW_OUTPUT`(기본 `/private/tmp/character-five-browser-evidence`)에 기록한다. 실제 Web Audio 디코딩·재생은 검사하지만 물리 스피커 청취나 앱 실행을 검증한 것으로 보고하지 않는다.
 
@@ -19,14 +21,14 @@ python3 docs/reviews/character-five/serve_review.py
 - 시바·오리·똥·떡볶이: `candidates/character-v2/<캐릭터 ID>/{appearance,base,throw_hit}.png`. 원본 기본 외형을 유지하고 발 연결·던지기 결함을 보정한 72프레임이다.
 - 쿼카: `candidates/character-v3/pixel_quokka/{appearance,base,throw_hit}.png`. 작은 눈·파란 목도리·짧은 팔다리로 다시 만든 18프레임이다. v2의 큰 입과 엇갈린 눈 후보는 보관본이다.
 - 물건: `candidates/keepsakes-v2/<물건 ID>/sprite.png`. 테니스공·삑삑 오리·휴지 뭉치·어묵꼬치·잎사귀, 총 60프레임이다.
-- 테니스공·어묵꼬치 소리: `candidates/audio-v2/<물건 ID>/{1,2,3}.wav`. 실제 팝·젖은 타격 녹음을 편집한 각 3개 후보이며, `audio-v2-review.json`에 출처·편집·레벨·SHA-256을 기록한다.
+- 테니스공·어묵꼬치 소리: `candidates/audio-v2/<물건 ID>/{1,2,3}.wav`. 실제 팝·젖은 타격 녹음을 편집한 각 3개 후보 중 두 물건 모두 소리 1로 확정했으며, `audio-v2-review.json`에 출처·편집·레벨·SHA-256을 기록한다.
 - 삑삑 오리: `candidates/audio-v2/rubber_duck/original.wav`. 기존 승인된 꽥 소리와 동일 파일을 재사용한다. 그림도 기존 `throwable_squeaky_duck`와 동일하다. 사용자 요청에 따라 이 물건·기존 소리 재사용은 확정했다.
-- 휴지·잎사귀 소리: 기존 `candidates/audio-v1/<물건 ID>/{A,B}.wav`를 유지하고 화면에는 소리 1·2로 표시한다. 현재 청취 대상은 총 11개이며 출시 시에는 물건별 선택된 한 파일만 사용한다.
-- 고유 설명: `copy-v1/<캐릭터 ID>.json` 5개에 캐릭터와 물건 설명 총 10개를 담는다. 외형 나열 대신 사용자 요청의 짧은 유머로 수정했으며 문구 승인은 별도다.
+- 휴지·잎사귀 소리: `candidates/audio-v3/<물건 ID>/{A,B}.wav`에서 얇은 종이·잎 마찰 소리를 비교하고 화면에는 소리 1·2로 표시한다. 현재 청취 대상은 총 11개이며 출시 시에는 물건별 선택된 한 파일만 사용한다.
+- 고유 설명: `copy-v1/<캐릭터 ID>.json` 5개에 캐릭터와 물건 설명 총 10개를 담는다. 외형 나열 대신 사용자 요청의 짧은 유머로 수정했으며 사용자의 “나머지 다 ok” 응답으로 현재 문구를 승인했다.
 
 원본 `originals/`, 과거 외형·음원·콘셉트와 `history/`는 보존한다. 현재 `package.json`에서 `archived_sprite`·`audio_archive`로 분류한 과거 후보는 출시 자산으로 선택할 수 없다. `references/impact-baseball.wav`도 기존 음량 비교용이며 새 물건 소리가 아니다.
 
-현재 생성기 `build_character_repairs.py`, `build_quokka_v3.py`, `build_keepsakes.py`, `build_audio_v2.py`는 기본 실행 시 읽기 전용 재현 검사를 수행한다. `--write`로 다시 제작해 승인된 파일이 바뀌면 해당 승인을 새로 받아야 한다. 이전 생성기도 과거 후보 재현용으로 보존한다.
+현재 생성기 `build_character_repairs.py`, `build_quokka_v3.py`, `build_keepsakes.py`, `build_audio_v2.py`, `build_audio_v3.py`는 기본 실행 시 읽기 전용 재현 검사를 수행한다. `--write`로 다시 제작해 승인된 파일이 바뀌면 해당 승인을 새로 받아야 한다. 이전 생성기도 과거 후보 재현용으로 보존한다.
 
 ## 원본·기여 기록
 

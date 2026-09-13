@@ -1,8 +1,8 @@
-import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=asset-review-v4';
-import { createReviewAudio } from './review-audio.js?v=asset-review-v4';
+import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=asset-review-v5';
+import { createReviewAudio } from './review-audio.js?v=asset-review-v5';
 
 const $ = id => document.getElementById(id);
-const url = path => `${path}?v=asset-review-v4`;
+const url = path => `${path}?v=asset-review-v5`;
 const sheets = new Map(), objects = new Map(), copy = new Map(), spriteCache = new Map();
 const cards = new Map();
 const loadedCurrentPaths = [];
@@ -12,7 +12,7 @@ const SOUND_OPTIONS = {
 };
 function soundPath(item, sound) {
   if (['tennis_ball', 'fish_cake_skewer', 'rubber_duck'].includes(item)) return `candidates/audio-v2/${item}/${sound}.wav`;
-  return `candidates/audio-v1/${item}/${sound === '1' ? 'A' : 'B'}.wav`;
+  return `candidates/audio-v3/${item}/${sound === '1' ? 'A' : 'B'}.wav`;
 }
 const state = { ready: false, playing: false, owner: 'paused', epoch: 0, errors: [] };
 const inspector = { character: CHARACTERS[0].id, source: 'candidate', motion: 'walk', frame: 2,
@@ -232,6 +232,7 @@ function renderCards() {
     if (!objects.has(item.id)) continue;
     const card = makeCard(item.id, 'item', item.name, 'keepsake-cards');
     const controls = element('div', null, 'card-controls'); const sounds = element('div', null, 'sound-buttons');
+    card.element.append(element('p', ['tennis_ball', 'fish_cake_skewer'].includes(item.id) ? '소리 1 확정' : item.id === 'rubber_duck' ? '기존 소리 확정' : '새 소리 1 · 2 비교', 'sound-selection'));
     for (const sound of SOUND_OPTIONS[item.id]) {
       const button = element('button', sound === 'original' ? '기존 소리 재생' : `소리 ${sound}`, 'sound-button');
       button.type = 'button'; button.dataset.sound = sound; button.disabled = !audio.has(`${item.id}/${sound}`);

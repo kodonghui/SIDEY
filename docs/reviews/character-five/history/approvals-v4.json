@@ -202,8 +202,8 @@
     {
       "stage": "appearance_pixels",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": "appearance-v3-pixel_quokka",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v3/pixel_quokka/appearance.png",
@@ -211,17 +211,13 @@
           "candidate_id": "appearance-v3-pixel_quokka"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_frames",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_shiba-base",
-        "character-v2-pixel_shiba-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_shiba/base.png",
@@ -234,17 +230,13 @@
           "candidate_id": "character-v2-pixel_shiba-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_frames",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_duck-base",
-        "character-v2-pixel_duck-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_duck/base.png",
@@ -257,17 +249,13 @@
           "candidate_id": "character-v2-pixel_duck-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_frames",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_poop-base",
-        "character-v2-pixel_poop-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_poop/base.png",
@@ -280,17 +268,13 @@
           "candidate_id": "character-v2-pixel_poop-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_frames",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_tteokbokki-base",
-        "character-v2-pixel_tteokbokki-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_tteokbokki/base.png",
@@ -303,17 +287,13 @@
           "candidate_id": "character-v2-pixel_tteokbokki-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_frames",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": [
-        "character-v3-pixel_quokka-base",
-        "character-v3-pixel_quokka-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v3/pixel_quokka/base.png",
@@ -326,17 +306,13 @@
           "candidate_id": "character-v3-pixel_quokka-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_motion",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_shiba-base",
-        "character-v2-pixel_shiba-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_shiba/base.png",
@@ -349,17 +325,13 @@
           "candidate_id": "character-v2-pixel_shiba-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_motion",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_duck-base",
-        "character-v2-pixel_duck-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_duck/base.png",
@@ -372,17 +344,13 @@
           "candidate_id": "character-v2-pixel_duck-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_motion",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_poop-base",
-        "character-v2-pixel_poop-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_poop/base.png",
@@ -395,17 +363,13 @@
           "candidate_id": "character-v2-pixel_poop-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_motion",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_tteokbokki-base",
-        "character-v2-pixel_tteokbokki-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_tteokbokki/base.png",
@@ -418,17 +382,13 @@
           "candidate_id": "character-v2-pixel_tteokbokki-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "character_motion",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": [
-        "character-v3-pixel_quokka-base",
-        "character-v3-pixel_quokka-throw_hit"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v3/pixel_quokka/base.png",
@@ -441,14 +401,13 @@
           "candidate_id": "character-v3-pixel_quokka-throw_hit"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "keepsake_visual",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": "keepsakes-v2-tennis_ball",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/tennis_ball/sprite.png",
@@ -456,8 +415,7 @@
           "candidate_id": "keepsakes-v2-tennis_ball"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "keepsake_visual",
@@ -476,8 +434,8 @@
     {
       "stage": "keepsake_visual",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": "keepsakes-v2-tissue_ball",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/tissue_ball/sprite.png",
@@ -485,14 +443,13 @@
           "candidate_id": "keepsakes-v2-tissue_ball"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "keepsake_visual",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": "keepsakes-v2-fish_cake_skewer",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/fish_cake_skewer/sprite.png",
@@ -500,14 +457,13 @@
           "candidate_id": "keepsakes-v2-fish_cake_skewer"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "keepsake_visual",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": "keepsakes-v2-leaf",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/leaf/sprite.png",
@@ -515,14 +471,13 @@
           "candidate_id": "keepsakes-v2-leaf"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "audio",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": "audio-v2-tennis_ball-1",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/audio-v2/tennis_ball/1.wav",
@@ -540,8 +495,7 @@
           "candidate_id": "audio-v2-tennis_ball-3"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "audio",
@@ -564,14 +518,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/audio-v3/tissue_ball/A.wav",
-          "sha256": "0e334e37b83429566a5a23f4dd2e67e1dad4d76b142e7555d83383e4d47ad1dc",
-          "candidate_id": "audio-v3-tissue_ball-A"
+          "path": "candidates/audio-v1/tissue_ball/A.wav",
+          "sha256": "6dcf99f50109d0c55f36f1fb33c5fcdbc21a46ef0e6f57ea272ea8a6d88819e8",
+          "candidate_id": "audio-v1-tissue_ball-A"
         },
         {
-          "path": "candidates/audio-v3/tissue_ball/B.wav",
-          "sha256": "0c9c04c4ea096358598dd9cf24744b369249947a1c35a856a51a52d6fd2762c7",
-          "candidate_id": "audio-v3-tissue_ball-B"
+          "path": "candidates/audio-v1/tissue_ball/B.wav",
+          "sha256": "5dc948a46c88f3d5523e86a1ad1b2eb4dd194aafd444c53499c7c456e09b7b37",
+          "candidate_id": "audio-v1-tissue_ball-B"
         }
       ],
       "user_evidence": null
@@ -579,8 +533,8 @@
     {
       "stage": "audio",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": "audio-v2-fish_cake_skewer-1",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/audio-v2/fish_cake_skewer/1.wav",
@@ -598,8 +552,7 @@
           "candidate_id": "audio-v2-fish_cake_skewer-3"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "audio",
@@ -608,14 +561,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/audio-v3/leaf/A.wav",
-          "sha256": "99e72647b9bec270e1183bde9aa00b737ea7f164b16109930b475badc2a82dd2",
-          "candidate_id": "audio-v3-leaf-A"
+          "path": "candidates/audio-v1/leaf/A.wav",
+          "sha256": "82de81531fab30958dee9bd4d12eeedb8041e704f7ba405db8cfae6432746a57",
+          "candidate_id": "audio-v1-leaf-A"
         },
         {
-          "path": "candidates/audio-v3/leaf/B.wav",
-          "sha256": "111b3dfa9c20907228e8723ce50a55c8342c5539dbfc0d0aee5f57f243d8927d",
-          "candidate_id": "audio-v3-leaf-B"
+          "path": "candidates/audio-v1/leaf/B.wav",
+          "sha256": "f1f471c3b67f505bede999cbd1733aa9ccdf8dc077f4c7be24b60ec06d885364",
+          "candidate_id": "audio-v1-leaf-B"
         }
       ],
       "user_evidence": null
@@ -623,13 +576,8 @@
     {
       "stage": "composite",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_shiba-base",
-        "character-v2-pixel_shiba-throw_hit",
-        "keepsakes-v2-tennis_ball",
-        "audio-v2-tennis_ball-1"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_shiba/base.png",
@@ -662,19 +610,13 @@
           "candidate_id": "audio-v2-tennis_ball-3"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "composite",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_duck-base",
-        "character-v2-pixel_duck-throw_hit",
-        "keepsakes-v2-rubber_duck",
-        "audio-v2-rubber_duck-original"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_duck/base.png",
@@ -697,8 +639,7 @@
           "candidate_id": "audio-v2-rubber_duck-original"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "composite",
@@ -722,14 +663,14 @@
           "candidate_id": "keepsakes-v2-tissue_ball"
         },
         {
-          "path": "candidates/audio-v3/tissue_ball/A.wav",
-          "sha256": "0e334e37b83429566a5a23f4dd2e67e1dad4d76b142e7555d83383e4d47ad1dc",
-          "candidate_id": "audio-v3-tissue_ball-A"
+          "path": "candidates/audio-v1/tissue_ball/A.wav",
+          "sha256": "6dcf99f50109d0c55f36f1fb33c5fcdbc21a46ef0e6f57ea272ea8a6d88819e8",
+          "candidate_id": "audio-v1-tissue_ball-A"
         },
         {
-          "path": "candidates/audio-v3/tissue_ball/B.wav",
-          "sha256": "0c9c04c4ea096358598dd9cf24744b369249947a1c35a856a51a52d6fd2762c7",
-          "candidate_id": "audio-v3-tissue_ball-B"
+          "path": "candidates/audio-v1/tissue_ball/B.wav",
+          "sha256": "5dc948a46c88f3d5523e86a1ad1b2eb4dd194aafd444c53499c7c456e09b7b37",
+          "candidate_id": "audio-v1-tissue_ball-B"
         }
       ],
       "user_evidence": null
@@ -737,13 +678,8 @@
     {
       "stage": "composite",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_tteokbokki-base",
-        "character-v2-pixel_tteokbokki-throw_hit",
-        "keepsakes-v2-fish_cake_skewer",
-        "audio-v2-fish_cake_skewer-1"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_tteokbokki/base.png",
@@ -776,8 +712,7 @@
           "candidate_id": "audio-v2-fish_cake_skewer-3"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "composite",
@@ -791,6 +726,16 @@
           "candidate_id": "keepsakes-v2-leaf"
         },
         {
+          "path": "candidates/audio-v1/leaf/A.wav",
+          "sha256": "82de81531fab30958dee9bd4d12eeedb8041e704f7ba405db8cfae6432746a57",
+          "candidate_id": "audio-v1-leaf-A"
+        },
+        {
+          "path": "candidates/audio-v1/leaf/B.wav",
+          "sha256": "f1f471c3b67f505bede999cbd1733aa9ccdf8dc077f4c7be24b60ec06d885364",
+          "candidate_id": "audio-v1-leaf-B"
+        },
+        {
           "path": "candidates/character-v3/pixel_quokka/base.png",
           "sha256": "e301cb83b48761c1bb5b83f82a6525638d973eb7e337ebe378dea88d370e2a7c",
           "candidate_id": "character-v3-pixel_quokka-base"
@@ -799,16 +744,6 @@
           "path": "candidates/character-v3/pixel_quokka/throw_hit.png",
           "sha256": "fc01c484c98651c5da3e32888122070af04091d57a514199da6019ca73b753a7",
           "candidate_id": "character-v3-pixel_quokka-throw_hit"
-        },
-        {
-          "path": "candidates/audio-v3/leaf/A.wav",
-          "sha256": "99e72647b9bec270e1183bde9aa00b737ea7f164b16109930b475badc2a82dd2",
-          "candidate_id": "audio-v3-leaf-A"
-        },
-        {
-          "path": "candidates/audio-v3/leaf/B.wav",
-          "sha256": "111b3dfa9c20907228e8723ce50a55c8342c5539dbfc0d0aee5f57f243d8927d",
-          "candidate_id": "audio-v3-leaf-B"
         }
       ],
       "user_evidence": null
@@ -816,12 +751,12 @@
     {
       "stage": "idle_timing",
       "character_id": "all",
-      "status": "approved",
+      "status": "pending",
       "options": [
         "existing_0.55_0.55",
         "proposed_2.4_0.3"
       ],
-      "selection": "existing_0.55_0.55",
+      "selection": null,
       "artifacts": [
         {
           "path": "originals/pixel_duck/base.png",
@@ -849,15 +784,13 @@
           "candidate_id": "originals--pixel_tteokbokki--base"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "scope": "나머지 다 ok는 현재 검토 페이지 기본값인 기존 0.55/0.55초에 적용한다. 선택하지 않은 제안 타이밍은 채택하지 않는다.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "descriptions",
       "character_id": "pixel_shiba",
-      "status": "approved",
-      "selection": "copy-v1-pixel_shiba",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "copy-v1/pixel_shiba.json",
@@ -865,14 +798,13 @@
           "candidate_id": "copy-v1-pixel_shiba"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "descriptions",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": "copy-v1-pixel_duck",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "copy-v1/pixel_duck.json",
@@ -880,14 +812,13 @@
           "candidate_id": "copy-v1-pixel_duck"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "descriptions",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": "copy-v1-pixel_poop",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "copy-v1/pixel_poop.json",
@@ -895,14 +826,13 @@
           "candidate_id": "copy-v1-pixel_poop"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "descriptions",
       "character_id": "pixel_tteokbokki",
-      "status": "approved",
-      "selection": "copy-v1-pixel_tteokbokki",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "copy-v1/pixel_tteokbokki.json",
@@ -910,14 +840,13 @@
           "candidate_id": "copy-v1-pixel_tteokbokki"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     },
     {
       "stage": "descriptions",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": "copy-v1-pixel_quokka",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "copy-v1/pixel_quokka.json",
@@ -925,8 +854,7 @@
           "candidate_id": "copy-v1-pixel_quokka"
         }
       ],
-      "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-      "approved_revision": "6e088b8e4f6c03bb32ac158e35cd4705fb4b2a88"
+      "user_evidence": null
     }
   ],
   "history": [
@@ -959,7 +887,8 @@
     "asset_package_clarification": "아그리고 코드작업할것도 없이 그냥 애샛들 캐릭터 5종, 투척물 5종 + 소리, 캐릭터, 투척물 고유 설명 같은거 허락밭고 그거 나중에 추후 5종 배포바로 할 수 있게 에셋들 저장및 문서화만 해놓고 pr승인 하는식으로 하면됨"
   },
   "revision_request": {
-    "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
-    "scope": "테니스공1·어묵1, 기존 오리 음원, 캐릭터5종·물건5종·설명10개와 현재 기본 타이밍 확정. 휴지·잎사귀 새 음원과 변경 음원을 포함한 합성만 재검토."
+    "user_evidence": "오리는 기존 투척템인 꽥괙오리를 오리의애착템으로 ㄱㄱ. 오뎅은 북소리 대신 췁췁 찰진소리. 쿼카 눈·목도리·귀여움 재작업. 테니스공 소리 재작업. 에셋 검증용으로 물건별 소리 1 2 3 직접 재생 버튼, 충돌 횟수와 던지는/받는 친구 설정 제거.",
+    "scope": "새 후보 제작 요청이며 비평하지 않은 자산·설명을 자동 승인하지 않음. 기존 삑삑 오리 그림·승인 소리 재사용은 명시 선택.",
+    "description_direction": "사용자: 설명에 센스 있는 유머 요청. 기존 돼지의 옆집 꿀꿀이 문구와 휴지의 똥휴지인지 아닌지는 모르겠어요! 같은 짧은 농담을 예시로 제시. 새 유머 문구 10개는 승인 대기."
   }
 }
