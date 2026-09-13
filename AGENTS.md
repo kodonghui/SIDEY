@@ -15,6 +15,8 @@ If the documents conflict, confirmed decisions in `docs/DECISIONS.md` win.
 
 ## Work lifecycle
 
+Before creating a commit, use [.agents/skills/sidey-commit/SKILL.md](.agents/skills/sidey-commit/SKILL.md). Write commit subjects as `type(scope): 한국어 설명`, using the skill's distribution scopes; descriptions and optional bodies must be in Korean.
+
 Use [.agents/skills/sidey-workflow/SKILL.md](.agents/skills/sidey-workflow/SKILL.md) and `scripts/workflow.py` for task start, resume, integration and app opening. Default completion includes reviewed PR integration and refreshing the primary main checkout; app-affecting changes also require build/run provenance verification. Public releases, store uploads and production deployments remain separate.
 
 ## Branch and platform isolation
