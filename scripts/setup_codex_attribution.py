@@ -3,7 +3,7 @@
 from pathlib import Path
 import subprocess
 
-MARKER = b'# SIDEY Codex attribution hook v1\n'
+MARKER = b'# SIDEY Codex attribution hook v1'
 
 
 def install():
@@ -15,7 +15,7 @@ def install():
         raise SystemExit('기존 core.hooksPath를 보존합니다. 해당 훅 관리자에서 SIDEY 훅을 명시적으로 연결하세요.')
     common = Path(subprocess.check_output(['git', 'rev-parse', '--git-common-dir'], text=True).strip()).resolve()
     destination = common / 'hooks/prepare-commit-msg'
-    if destination.is_symlink() or (destination.exists() and MARKER not in destination.read_bytes().splitlines(keepends=True)[:3]):
+    if destination.is_symlink() or (destination.exists() and MARKER not in destination.read_bytes().splitlines()[:3]):
         raise SystemExit('기존 prepare-commit-msg 훅을 보존합니다. 먼저 두 훅의 연결 방식을 검토하세요.')
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(source.read_bytes())
