@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "interactive_preview_candidates_pending_final_approval",
+  "status": "simple_asset_cards_with_revised_quokka_audio_and_humor_pending_approval",
   "selected_characters": [
     {
       "id": "pixel_shiba",
@@ -405,7 +405,7 @@
     },
     {
       "path": "candidates/character-v2/pixel_quokka/appearance.png",
-      "role": "appearance_pose",
+      "role": "archived_sprite",
       "character_id": "pixel_quokka",
       "dimensions": [
         24,
@@ -413,7 +413,8 @@
       ],
       "sha256": "3203ffeafdee5efd5cc9e1c357faaf1d4fd627968751754891ee7cb669e3707f",
       "candidate_id": "appearance-v2-pixel_quokka",
-      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)"
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "archived": true
     },
     {
       "path": "concepts/quokka-v2.png",
@@ -515,12 +516,13 @@
         240,
         24
       ],
-      "role": "character_sheet",
+      "role": "archived_sprite",
       "character_id": "pixel_quokka",
       "sheet": "base",
       "candidate_id": "character-v2-pixel_quokka-base",
       "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
-      "source": "Codex native frames based on new quokka appearance; see quokka-motion.json"
+      "source": "Codex native frames based on new quokka appearance; see quokka-motion.json",
+      "archived": true
     },
     {
       "path": "candidates/character-v2/pixel_quokka/throw_hit.png",
@@ -529,12 +531,13 @@
         192,
         24
       ],
-      "role": "character_sheet",
+      "role": "archived_sprite",
       "character_id": "pixel_quokka",
       "sheet": "throw_hit",
       "candidate_id": "character-v2-pixel_quokka-throw_hit",
       "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
-      "source": "Codex native frames based on new quokka appearance; see quokka-motion.json"
+      "source": "Codex native frames based on new quokka appearance; see quokka-motion.json",
+      "archived": true
     },
     {
       "role": "audio_reference",
@@ -562,7 +565,7 @@
       "dc_offset": -5.6432088216145835e-06
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_shiba",
       "keepsake_id": "tennis_ball",
       "variant": "A",
@@ -595,10 +598,11 @@
       "last_sample": 0,
       "dc_offset": -0.0007002400416953891,
       "reference_peak_delta_db": 0.6268685116596355,
-      "reference_rms_delta_db": -0.10680457640977536
+      "reference_rms_delta_db": -0.10680457640977536,
+      "archived": true
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_shiba",
       "keepsake_id": "tennis_ball",
       "variant": "B",
@@ -631,10 +635,11 @@
       "last_sample": 0,
       "dc_offset": -0.0006635914678158967,
       "reference_peak_delta_db": 0.03265177904177108,
-      "reference_rms_delta_db": 2.1432091600104286e-05
+      "reference_rms_delta_db": 2.1432091600104286e-05,
+      "archived": true
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_duck",
       "keepsake_id": "rubber_duck",
       "variant": "A",
@@ -667,10 +672,11 @@
       "last_sample": 0,
       "dc_offset": 1.704692840576172e-06,
       "reference_peak_delta_db": -8.798533732983959,
-      "reference_rms_delta_db": 1.751001626715265e-05
+      "reference_rms_delta_db": 1.751001626715265e-05,
+      "archived": true
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_duck",
       "keepsake_id": "rubber_duck",
       "variant": "B",
@@ -703,7 +709,8 @@
       "last_sample": 0,
       "dc_offset": -1.934991366621377e-07,
       "reference_peak_delta_db": -8.746383471759223,
-      "reference_rms_delta_db": 8.519305030318947e-06
+      "reference_rms_delta_db": 8.519305030318947e-06,
+      "archived": true
     },
     {
       "role": "audio_candidate",
@@ -778,7 +785,7 @@
       "reference_rms_delta_db": -9.25705676380062e-06
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_tteokbokki",
       "keepsake_id": "fish_cake_skewer",
       "variant": "A",
@@ -811,10 +818,11 @@
       "last_sample": 0,
       "dc_offset": -0.0007171750068664551,
       "reference_peak_delta_db": -2.678252661650742,
-      "reference_rms_delta_db": 3.520496179021393e-07
+      "reference_rms_delta_db": 3.520496179021393e-07,
+      "archived": true
     },
     {
-      "role": "audio_candidate",
+      "role": "audio_archive",
       "character_id": "pixel_tteokbokki",
       "keepsake_id": "fish_cake_skewer",
       "variant": "B",
@@ -847,7 +855,8 @@
       "last_sample": 0,
       "dc_offset": -5.5824626575816764e-05,
       "reference_peak_delta_db": -3.1217396006510008,
-      "reference_rms_delta_db": -2.110986927661429e-05
+      "reference_rms_delta_db": -2.110986927661429e-05,
+      "archived": true
     },
     {
       "role": "audio_candidate",
@@ -923,7 +932,7 @@
     },
     {
       "path": "copy-v1/pixel_shiba.json",
-      "sha256": "1b1cffe38ce43b326f4224153edfc0af842a7c9ddf152f12fd4ea102664d537c",
+      "sha256": "3b56d0da1c57e8976664b000334c33d6f0e3cccbe4ab43018bfa622cc3d78c19",
       "candidate_id": "copy-v1-pixel_shiba",
       "role": "content_copy",
       "character_id": "pixel_shiba",
@@ -932,7 +941,7 @@
     },
     {
       "path": "copy-v1/pixel_duck.json",
-      "sha256": "849f41ce7ed5edbbebf86f574b32d2e04e13cfa473007e73e72eaf1e62460b69",
+      "sha256": "c4dbcb30406d0feb1f4796c67c262aea78d87d0f8efaab3d261a207e367a8d44",
       "candidate_id": "copy-v1-pixel_duck",
       "role": "content_copy",
       "character_id": "pixel_duck",
@@ -941,7 +950,7 @@
     },
     {
       "path": "copy-v1/pixel_poop.json",
-      "sha256": "bee33e09f5f145d6416179f6ddeada15742b0206c72aebc9abbb3c69e1845e46",
+      "sha256": "da7ab7d64a23324103bb72ee6831f4fc1deef9c34ada04fae31d2452c1aae694",
       "candidate_id": "copy-v1-pixel_poop",
       "role": "content_copy",
       "character_id": "pixel_poop",
@@ -950,7 +959,7 @@
     },
     {
       "path": "copy-v1/pixel_tteokbokki.json",
-      "sha256": "aefc1b399a9f64cf0ade39ccfc1055123917c92dec360b892465982d95c5bb73",
+      "sha256": "a1439db70db61a7aaa0d8e91eea9d838ba7e798cca47b27277a983abe60d1d3d",
       "candidate_id": "copy-v1-pixel_tteokbokki",
       "role": "content_copy",
       "character_id": "pixel_tteokbokki",
@@ -959,12 +968,470 @@
     },
     {
       "path": "copy-v1/pixel_quokka.json",
-      "sha256": "b173f5ea9be86b343cb3a4ca8ac5cad3328bfe6014751713ea77f1af2882bcee",
+      "sha256": "6a1d342e8a18db6e408abf1d9b705e6b148928b4227927546e310a0f6f7ecc40",
       "candidate_id": "copy-v1-pixel_quokka",
       "role": "content_copy",
       "character_id": "pixel_quokka",
       "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
       "source": "Codex-authored Korean display names and descriptions; user approval pending"
+    },
+    {
+      "path": "candidates/character-v3/pixel_quokka/appearance.png",
+      "sha256": "9fb65c2c9a0c497b940efbfd56b42e0d35b7598e83033f33ca906787b6e9e21c",
+      "role": "appearance_pose",
+      "character_id": "pixel_quokka",
+      "candidate_id": "appearance-v3-pixel_quokka",
+      "dimensions": [
+        24,
+        24
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "Codex native pixel edit using SIDEY original quokka/hamster/shiba style; see quokka-v3.json"
+    },
+    {
+      "path": "candidates/character-v3/pixel_quokka/base.png",
+      "sha256": "e301cb83b48761c1bb5b83f82a6525638d973eb7e337ebe378dea88d370e2a7c",
+      "role": "character_sheet",
+      "character_id": "pixel_quokka",
+      "sheet": "base",
+      "candidate_id": "character-v3-pixel_quokka-base",
+      "dimensions": [
+        240,
+        24
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "Codex native pixel edit using SIDEY original quokka/hamster/shiba style; see quokka-v3.json"
+    },
+    {
+      "path": "candidates/character-v3/pixel_quokka/throw_hit.png",
+      "sha256": "fc01c484c98651c5da3e32888122070af04091d57a514199da6019ca73b753a7",
+      "role": "character_sheet",
+      "character_id": "pixel_quokka",
+      "sheet": "throw_hit",
+      "candidate_id": "character-v3-pixel_quokka-throw_hit",
+      "dimensions": [
+        192,
+        24
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md)",
+      "source": "Codex native pixel edit using SIDEY original quokka/hamster/shiba style; see quokka-v3.json"
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "1",
+      "candidate_id": "audio-v2-tennis_ball-1",
+      "path": "candidates/audio-v2/tennis_ball/1.wav",
+      "sha256": "19e7236673dafa5ce57f0d6c5959ed8179210aaedffdc421f3139982666a2d67",
+      "label": "톡 · 작고 말랑한 한 번의 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-573153"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.0018958333333333334,
+          "end_seconds": 0.07820833333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "1",
+          "label": "톡 · 작고 말랑한 한 번의 팝",
+          "source_id": "mouth-573153",
+          "speed": 1.2,
+          "duration": 0.105,
+          "highpass_hz": 180,
+          "lowpass_hz": 4800,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.22596805468429498
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.105,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 5040,
+      "peak": 0.194305419921875,
+      "rms": 0.033729121650962784,
+      "peak_dbfs": -14.230301701917522,
+      "rms_dbfs": -29.439899364835526,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -1.3321165054563492e-07,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.012096308887017494,
+        "above_6000hz_energy_fraction": 4.098386992529157e-06,
+        "spectral_centroid_hz": 729.9782290952611
+      },
+      "reference_peak_delta_db": -2.230355036492739,
+      "reference_rms_delta_db": -4.0682738734906,
+      "unchanged_duck_rms_delta_db": -3.7029154533740893e-06
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "2",
+      "candidate_id": "audio-v2-tennis_ball-2",
+      "path": "candidates/audio-v2/tennis_ball/2.wav",
+      "sha256": "94e9f4bb7303e9e088e7064ca6bc1e675545b81d77924ac68057319a95fdef15",
+      "label": "뽕 · 둥글고 가벼운 입술 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-258269"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.0,
+          "end_seconds": 0.21364583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "2",
+          "label": "뽕 · 둥글고 가벼운 입술 팝",
+          "source_id": "mouth-258269",
+          "speed": 1.32,
+          "duration": 0.12,
+          "highpass_hz": 230,
+          "lowpass_hz": 4000,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.6450767236472671
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.12,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 5760,
+      "peak": 0.2684326171875,
+      "rms": 0.033729181740867566,
+      "peak_dbfs": -11.423294285419303,
+      "rms_dbfs": -29.43988389055719,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -6.726582845052083e-05,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.0034149303858361465,
+        "above_6000hz_energy_fraction": 1.0643955459313431e-05,
+        "spectral_centroid_hz": 837.8244816198378
+      },
+      "reference_peak_delta_db": 0.5766523800054806,
+      "reference_rms_delta_db": -4.068258399212265,
+      "unchanged_duck_rms_delta_db": 1.1771362881773939e-05
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_shiba",
+      "keepsake_id": "tennis_ball",
+      "variant": "3",
+      "candidate_id": "audio-v2-tennis_ball-3",
+      "path": "candidates/audio-v2/tennis_ball/3.wav",
+      "sha256": "6ea031622e2b6e47bda5f08cf316efdc52f9b92a1f32503314095f00e2a7f5f5",
+      "label": "뽁 · 빠르고 통통한 작은 팝",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "mouth-691906"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.050666666666666665,
+          "end_seconds": 0.14639583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "parameters": {
+          "variant": "3",
+          "label": "뽁 · 빠르고 통통한 작은 팝",
+          "source_id": "mouth-691906",
+          "speed": 1.08,
+          "duration": 0.1,
+          "highpass_hz": 210,
+          "lowpass_hz": 5400,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.3862325649566873
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.1,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 4800,
+      "peak": 0.269989013671875,
+      "rms": 0.030751201118949734,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.242758326783044,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -4.444122314453125e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.021959018533957445,
+        "above_6000hz_energy_fraction": 7.89355923662576e-06,
+        "spectral_centroid_hz": 698.5079953072631
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -4.871132835438118,
+      "unchanged_duck_rms_delta_db": -0.8028626648629711
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "1",
+      "candidate_id": "audio-v2-fish_cake_skewer-1",
+      "path": "candidates/audio-v2/fish_cake_skewer/1.wav",
+      "sha256": "468a9111c759ac37a0676040427cb40ee93456aacb740f4b766808fb4f0717e2",
+      "label": "췁 · 짧고 촉촉한 한 대",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "1",
+          "label": "췁 · 짧고 촉촉한 한 대",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.2,
+          "duration": 0.15,
+          "highpass_hz": 420,
+          "lowpass_hz": 6800,
+          "layer": null
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "final_linear_gain": 0.7935566053655011
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.15,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 7200,
+      "peak": 0.269989013671875,
+      "rms": 0.02811443579925638,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -31.02141254985184,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 5.794101291232639e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.00896603940685798,
+        "above_6000hz_energy_fraction": 0.019637209671955175,
+        "spectral_centroid_hz": 2546.1622647827794
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.649787058506913,
+      "unchanged_duck_rms_delta_db": -1.581516887931766
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "2",
+      "candidate_id": "audio-v2-fish_cake_skewer-2",
+      "path": "candidates/audio-v2/fish_cake_skewer/2.wav",
+      "sha256": "541358042c32583c5a4108ab73cd3fa0f5d5f15b2f144b8815417fe02bef1f5d",
+      "label": "촥 · 얇게 달라붙는 빠른 타격",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap",
+        "mouth-691906"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "2",
+          "label": "촥 · 얇게 달라붙는 빠른 타격",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.43,
+          "duration": 0.13,
+          "highpass_hz": 700,
+          "lowpass_hz": 7600,
+          "layer": {
+            "source_id": "mouth-691906",
+            "speed": 1.25,
+            "offset_seconds": 0.022,
+            "gain": 0.16
+          }
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "secondary_trim": {
+          "start_seconds": 0.050666666666666665,
+          "end_seconds": 0.14639583333333334,
+          "threshold_of_source_peak": 0.03
+        },
+        "final_linear_gain": 0.9041373715374007
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.13,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 6240,
+      "peak": 0.269989013671875,
+      "rms": 0.028268955285447164,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.973804822179286,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 2.371959197215545e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.0029287527320443537,
+        "above_6000hz_energy_fraction": 0.046792525677332414,
+        "spectral_centroid_hz": 3169.1743420091407
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.60217933083436,
+      "unchanged_duck_rms_delta_db": -1.5339091602592134
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_tteokbokki",
+      "keepsake_id": "fish_cake_skewer",
+      "variant": "3",
+      "candidate_id": "audio-v2-fish_cake_skewer-3",
+      "path": "candidates/audio-v2/fish_cake_skewer/3.wav",
+      "sha256": "3f8b3d832074053b34fada5ee59d3b7eace0bad341ee630e6296c06dc4dca650",
+      "label": "췁췁 · 한 충돌 안에서 찰지게 겹치는 타격",
+      "source": "Recorded CC0 Foley from pinned local repository sources; crop/resample/filter/layer and linear gain only; no synthesized sine/drum/launch/flight layer",
+      "source_ids": [
+        "approved-pork-wet-slap"
+      ],
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "processing": {
+        "main_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "parameters": {
+          "variant": "3",
+          "label": "췁췁 · 한 충돌 안에서 찰지게 겹치는 타격",
+          "source_id": "approved-pork-wet-slap",
+          "speed": 1.03,
+          "duration": 0.19,
+          "highpass_hz": 550,
+          "lowpass_hz": 6200,
+          "layer": {
+            "source_id": "approved-pork-wet-slap",
+            "speed": 1.2,
+            "offset_seconds": 0.036,
+            "gain": 0.48
+          }
+        },
+        "gain_method": "linear RMS match to unchanged approved duck, constrained by peak 0.27; recorded transients are not compressed",
+        "secondary_trim": {
+          "start_seconds": 0.03395833333333333,
+          "end_seconds": 0.14333333333333334,
+          "threshold_of_source_peak": 0.16
+        },
+        "final_linear_gain": 0.8586910964106385
+      },
+      "approval_status": "pending_user_audio_and_composite_approval",
+      "duration_seconds": 0.19,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 9120,
+      "peak": 0.269989013671875,
+      "rms": 0.02939373782945249,
+      "peak_dbfs": -11.373078153765148,
+      "rms_dbfs": -30.634903674609557,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": 2.2687410053453946e-06,
+      "spectrum": {
+        "method": "zero-padded PCM FFT, positive-frequency energy fractions; not perceived loudness",
+        "below_350hz_energy_fraction": 0.004824353503718447,
+        "above_6000hz_energy_fraction": 0.01809447049064819,
+        "spectral_centroid_hz": 2417.2310309379377
+      },
+      "reference_peak_delta_db": 0.6268685116596355,
+      "reference_rms_delta_db": -5.263278183264632,
+      "unchanged_duck_rms_delta_db": -1.1950080126894846
+    },
+    {
+      "role": "audio_candidate",
+      "character_id": "pixel_duck",
+      "keepsake_id": "rubber_duck",
+      "variant": "original",
+      "candidate_id": "audio-v2-rubber_duck-original",
+      "path": "candidates/audio-v2/rubber_duck/original.wav",
+      "sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
+      "label": "기존 삑삑 오리 · 꽥 한 번",
+      "license": "SIDEY Paid Asset License 1.0 (package scope: LICENSE.md); underlying recorded Foley CC0-1.0 remains CC0",
+      "source": "기존 승인 throwable_squeaky_duck-b-v5 WAV와 macOS 실제 리소스의 바이트 동일 복사. 신규 삑 합성·리샘플·음량 변경 없음",
+      "source_path": "docs/reviews/character-feedback/round-7/audio/throwable_squeaky_duck-b-v5.wav",
+      "source_sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
+      "source_record": {
+        "id": "duck",
+        "author": "Breviceps",
+        "title": "Cartoon - Duck Quack",
+        "page_url": "https://freesound.org/people/Breviceps/sounds/445960/",
+        "download_url": "https://cdn.freesound.org/previews/445/445960_9159316-hq.mp3",
+        "archive_member": null,
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "original_file": "duck.mp3",
+        "original_sha256": "c67f1a3677e4db4766c1bdd547ebb1bddbf7df2c4ae808779182fbc03c155025",
+        "decoded_file": "duck.wav",
+        "decoded_sha256": "cc09013b5b321634931214aec15c17747b5beac2e6ca632366a681aed3e4dcc8",
+        "conversion": "FFmpeg 7.1 (imageio-ffmpeg 0.6.0), 48000 Hz mono PCM16. Editing steps in ../generate_audio.py."
+      },
+      "original_approval_record": "docs/reviews/character-feedback/audio-approval.json",
+      "runtime_resource": "macos/SIDEY/Resources/DirectImpactAudio/impact-throwable_squeaky_duck.wav",
+      "runtime_mapping": "macos/SIDEY/Features/PixelWorld/CharacterImpactAudio.swift: objectIDs + impact-<id>.wav bundle lookup",
+      "prior_processing": "round-5/generate_audio.py duck variant B: one contiguous recorded quack, playback rate 1.15, linear gain and fades; then unchanged through round-7",
+      "approval_status": "existing_approved_sound_reuse_requested",
+      "duration_seconds": 0.309375,
+      "sample_rate": 48000,
+      "channels": 1,
+      "bit_depth": 16,
+      "encoding": "PCM signed little-endian",
+      "sample_count": 14850,
+      "peak": 0.19952392578125,
+      "rms": 0.03372913603015912,
+      "peak_dbfs": -14.000100374307355,
+      "rms_dbfs": -29.439895661920072,
+      "clipped_samples": 0,
+      "first_sample": 0,
+      "last_sample": 0,
+      "dc_offset": -7.02212555239899e-06
     }
   ],
   "production_deliverables": {
@@ -972,7 +1439,7 @@
     "character_frames": 90,
     "keepsake_sheets": 5,
     "keepsake_frames": 60,
-    "audio_candidates": 10,
+    "audio_candidates": 11,
     "audio_selections": 5,
     "content_descriptions": 10
   },

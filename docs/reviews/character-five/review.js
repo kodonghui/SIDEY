@@ -1,24 +1,25 @@
-import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=playground-v3';
-import { createReviewAudio } from './review-audio.js?v=playground-v3';
+import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=asset-review-v4';
+import { createReviewAudio } from './review-audio.js?v=asset-review-v4';
 
 const $ = id => document.getElementById(id);
-const url = path => `${path}?v=playground-v3`;
-const sheets = new Map();
-const objects = new Map();
-const copy = new Map();
-const spriteCache = new Map();
-const state = { ready: false, owner: 'paused', playing: false, time: 0, epoch: 0,
-  sender: CHARACTERS[0].id, target: CHARACTERS[1].id, item: CHARACTERS[0].item,
-  variant: 'A', soundEnabled: true, preparingThrow: false, motion: 'walk', actors: [], projectile: null,
-  impactCount: 0, errors: [] };
+const url = path => `${path}?v=asset-review-v4`;
+const sheets = new Map(), objects = new Map(), copy = new Map(), spriteCache = new Map();
+const cards = new Map();
+const loadedCurrentPaths = [];
+const SOUND_OPTIONS = {
+  tennis_ball: ['1', '2', '3'], rubber_duck: ['original'], tissue_ball: ['1', '2'],
+  fish_cake_skewer: ['1', '2', '3'], leaf: ['1', '2'],
+};
+function soundPath(item, sound) {
+  if (['tennis_ball', 'fish_cake_skewer', 'rubber_duck'].includes(item)) return `candidates/audio-v2/${item}/${sound}.wav`;
+  return `candidates/audio-v1/${item}/${sound === '1' ? 'A' : 'B'}.wav`;
+}
+const state = { ready: false, playing: false, owner: 'paused', epoch: 0, errors: [] };
 const inspector = { character: CHARACTERS[0].id, source: 'candidate', motion: 'walk', frame: 2,
   scale: 4, background: 'checker', edge: 'bottom', timing: 'current', flip: false,
   silhouette: false, baseline: true, elapsed: 0 };
-let request = null;
-let lastTick = null;
-let lastPaint = null;
+let request = null, lastTick = null, lastPaint = null;
 const audio = createReviewAudio(message => { $('audio-status').textContent = message; $('audio-status').classList.add('error'); });
-
 function element(tag, text, className) {
   const node = document.createElement(tag);
   if (text !== undefined && text !== null) node.textContent = text;
@@ -65,122 +66,40 @@ function backdrop(context, width, height, name) {
     }
   }
 }
+function cancelTransient() {
+  state.epoch += 1; audio.stop();
+  for (const card of cards.values()) {
+    if (card.composite) { card.composite = null; card.motion = 'rotation'; card.elapsed = 0; updateViewButtons(card); }
+  }
+}
 function stopWork(owner = 'paused') {
-  state.epoch += 1;
+  cancelTransient();
   if (request !== null) cancelAnimationFrame(request);
-  request = null; lastTick = lastPaint = null;
-  audio.stop(); state.playing = false; state.owner = owner; state.projectile = null; state.preparingThrow = false;
-  for (const actor of state.actors) actor.action = null;
+  request = null; lastTick = lastPaint = null; state.playing = false; state.owner = owner;
   updatePlaybackUI();
 }
-function start(owner) {
+function start(owner = 'cards') {
   if (!state.ready || document.hidden) return;
   state.owner = owner; state.playing = true; lastTick = lastPaint = null;
   if (request !== null) cancelAnimationFrame(request);
   request = requestAnimationFrame(tick); updatePlaybackUI();
 }
 function updatePlaybackUI() {
-  $('playground-play').textContent = state.playing && state.owner === 'playground' ? '일시정지' : '다시 걷기';
+  $('pause-all').textContent = state.playing && state.owner === 'cards' ? '일시정지' : '다시 재생';
   $('play').textContent = state.playing && state.owner === 'inspector' ? '일시정지' : '재생';
-  $('throw').disabled = !state.ready || state.preparingThrow || !!state.projectile || state.sender === state.target || (state.soundEnabled && !audio.has(currentAudioKey()));
-  $('playground-status').textContent = !state.ready ? '최신 후보를 불러오는 중' : state.playing && state.owner === 'playground'
-    ? `${MOTIONS[state.motion].name} · 다른 친구를 누르면 던져요` : '잠시 멈춤 · 다시 걷기를 눌러 주세요';
-}
-function resetActors() {
-  const width = $('playground').width;
-  state.actors = CHARACTERS.map((character, i) => ({ id: character.id,
-    x: 30 + (width - 60) * (i + 0.5) / CHARACTERS.length,
-    y: 214, direction: i % 2 ? -1 : 1, motion: state.motion, frame: frameAt(state.motion, 0),
-    sheet: 'base', action: null }));
-}
-function resizePlayground() {
-  const canvas = $('playground'); const width = Math.max(240, Math.floor(canvas.clientWidth));
-  if (canvas.width !== width) {
-    const ratio = width / canvas.width; canvas.width = width;
-    for (const actor of state.actors) actor.x *= ratio;
-    if (state.projectile || state.preparingThrow) {
-      const resume = state.playing && state.owner === 'playground';
-      stopWork('playground'); updateActors(0);
-      if (resume) start('playground');
-    }
-    updatePlaybackUI();
-  }
-  drawPlayground();
-}
-function updateActors(dt) {
-  for (const actor of state.actors) {
-    if (actor.action && state.time - actor.action.at >= (actor.action.motion === 'hit' ? TIMING.hit : TIMING.throwing)) actor.action = null;
-    actor.motion = actor.action?.motion ?? state.motion;
-    const elapsed = actor.action ? state.time - actor.action.at : state.time;
-    if (actor.motion === 'walk') Object.assign(actor, advanceWalk(actor, dt, $('playground').width, 2));
-    actor.frame = frameAt(actor.motion, elapsed); actor.sheet = MOTIONS[actor.motion].sheet;
-  }
-}
-function actorPoint(id) {
-  const actor = state.actors.find(item => item.id === id);
-  return { x: actor.x, y: actor.y - 5 };
-}
-function updateProjectile() {
-  const shot = state.projectile;
-  if (!shot) return;
-  if (shot.phase === 'windup' && state.time - shot.at >= TIMING.release) {
-    shot.phase = 'flight'; shot.start = actorPoint(shot.source); shot.releasedAt = shot.at + TIMING.release;
-    shot.duration = flightDuration(Math.abs(actorPoint(shot.target).x - shot.start.x));
-  }
-  if (shot.phase === 'flight') {
-    const elapsed = state.time - shot.releasedAt;
-    Object.assign(shot, projectilePoint(shot.start, actorPoint(shot.target), elapsed / shot.duration));
-    if (elapsed >= shot.duration) {
-      shot.phase = 'impact'; shot.impactAt = state.time;
-      const target = state.actors.find(actor => actor.id === shot.target);
-      target.action = { motion: 'hit', at: state.time }; target.motion = 'hit'; target.sheet = 'throw_hit'; target.frame = 4;
-      state.impactCount += 1;
-      $('interaction-count').textContent = `충돌 ${state.impactCount}회`;
-      if (state.soundEnabled) {
-        if (!audio.playPrepared(`${shot.item}/${shot.variant}`)) $('audio-status').textContent = '충돌음이 준비되지 않았습니다. 소리 켜기를 다시 눌러 주세요.';
-      }
-    }
-  }
-  if (shot.phase === 'impact' && state.time - shot.impactAt >= TIMING.impact) state.projectile = null;
-  updatePlaybackUI();
-}
-function drawPlayground() {
-  const canvas = $('playground'); const context = canvas.getContext('2d');
-  context.fillStyle = '#eef1e4'; context.fillRect(0, 0, canvas.width, canvas.height);
-  context.fillStyle = '#d4dfc4'; context.fillRect(0, 232, canvas.width, 2);
-  context.fillStyle = '#e3ead7'; context.fillRect(0, 234, canvas.width, 66);
-  context.imageSmoothingEnabled = false;
-  for (const actor of state.actors) {
-    const entry = sheets.get(actor.id)?.candidate; if (!entry) continue;
-    const x = Math.round(actor.x); const y = Math.round(actor.y);
-    context.save(); context.translate(x, y);
-    if (actor.id === state.sender) {
-      context.strokeStyle = '#6c8c51'; context.lineWidth = 2; context.strokeRect(-27, -27, 54, 54);
-    }
-    // Manual inspector flip is separate; the playground faces the direction of travel/throw.
-    context.scale(actor.direction < 0 ? -1 : 1, 1);
-    context.drawImage(sprite(entry[actor.sheet], actor.frame), -24, -24); context.restore();
-    context.textAlign = 'center'; context.font = '11px -apple-system, sans-serif'; context.fillStyle = '#66745a';
-    context.fillText(CHARACTERS.find(item => item.id === actor.id).name, x, y + 42);
-  }
-  const shot = state.projectile;
-  if (shot && shot.phase !== 'windup') {
-    const frame = shot.phase === 'flight' ? Math.floor((state.time - shot.releasedAt) / TIMING.rotation) % 8
-      : 8 + Math.min(3, Math.floor((state.time - shot.impactAt) / (TIMING.impact / 4)));
-    const size = shot.phase === 'impact' ? 3 : 2;
-    const bitmap = sprite(objects.get(shot.item), frame, 16, size);
-    context.drawImage(bitmap, Math.round(shot.x - bitmap.width / 2), Math.round(shot.y - bitmap.height / 2));
-  }
-  canvas.dataset.phase = shot?.phase ?? 'none'; canvas.dataset.impacts = String(state.impactCount);
 }
 function tick(now) {
   if (!state.playing) return;
-  const dt = lastTick === null ? 0 : Math.min(0.1, (now - lastTick) / 1000); lastTick = now;
-  if (state.owner === 'playground') { state.time += dt; updateActors(dt); updateProjectile(); }
-  else if (state.owner === 'inspector') inspector.elapsed += dt;
-  if (lastPaint === null || now - lastPaint >= 1000 / 30 - 0.5) {
+  const dt = lastTick === null ? 0 : Math.min(.1, (now - lastTick) / 1000); lastTick = now;
+  if (state.owner === 'cards') {
+    for (const card of cards.values()) {
+      card.elapsed += dt;
+      if (card.type === 'character' && card.motion === 'walk') Object.assign(card, advanceWalk(card, dt, card.canvas.width, 2));
+    }
+  } else if (state.owner === 'inspector') inspector.elapsed += dt;
+  if (lastPaint === null || now - lastPaint >= 1000 / 30 - .5) {
     lastPaint = now;
-    if (state.owner === 'playground') drawPlayground();
+    if (state.owner === 'cards') drawCards();
     else if (state.owner === 'inspector') {
       const motion = MOTIONS[inspector.motion];
       if (['throw', 'hit'].includes(inspector.motion) && inspector.elapsed >= motion.frames.length * motion.step) {
@@ -192,90 +111,141 @@ function tick(now) {
   }
   if (state.playing) request = requestAnimationFrame(tick);
 }
-async function throwAt(target) {
-  if (!state.ready || state.projectile || state.preparingThrow || target === state.sender) return;
-  stopWork('playground'); state.target = target; $('target').value = target;
-  const epoch = state.epoch;
-  if (state.soundEnabled) {
-    state.preparingThrow = true; updatePlaybackUI();
-    try {
-      const unlocked = await audio.unlock([currentAudioKey()]);
-      if (epoch !== state.epoch) return;
-      if (!unlocked) {
-        state.preparingThrow = false; updatePlaybackUI();
-        $('audio-status').textContent = '소리 준비가 중단됐습니다. 던지기를 다시 눌러 주세요.';
-        $('audio-status').classList.add('error');
-        return;
-      }
-    } catch (error) {
-      if (epoch === state.epoch) {
-        state.preparingThrow = false; updatePlaybackUI();
-        $('audio-status').textContent = `충돌음 준비 오류: ${error.message} 소리를 끄면 무음으로 던질 수 있습니다.`;
-        $('audio-status').classList.add('error');
-      }
-      return;
-    }
+function cardBackdrop(card) {
+  const context = card.canvas.getContext('2d');
+  context.fillStyle = '#eff3e7'; context.fillRect(0, 0, card.canvas.width, 112);
+  context.imageSmoothingEnabled = false;
+  return context;
+}
+function drawComposite(card, context) {
+  const scene = card.composite;
+  const elapsed = card.elapsed;
+  const left = 27, right = card.canvas.width - 27, y = 67;
+  const flight = flightDuration(right - left);
+  const collisionAt = TIMING.release + flight;
+  const throwFrame = elapsed < TIMING.throwing ? frameAt('throw', elapsed) : 0;
+  const sourceSheet = elapsed < TIMING.throwing ? 'throw_hit' : 'base';
+  const hit = elapsed >= collisionAt && elapsed < collisionAt + TIMING.hit;
+  const targetFrame = hit ? frameAt('hit', elapsed - collisionAt) : 0;
+  context.drawImage(sprite(sheets.get(scene.source).candidate[sourceSheet], throwFrame), left - 24, y - 24);
+  context.drawImage(sprite(sheets.get(scene.target).candidate[hit ? 'throw_hit' : 'base'], targetFrame), right - 24, y - 24);
+  if (elapsed >= TIMING.release && elapsed < collisionAt) {
+    const point = projectilePoint({ x: left, y: y - 5 }, { x: right, y: y - 5 }, (elapsed - TIMING.release) / flight);
+    const frame = Math.floor((elapsed - TIMING.release) / TIMING.rotation) % 8;
+    context.drawImage(sprite(objects.get(card.id), frame, 16, 2), Math.round(point.x - 16), Math.round(point.y - 16));
+    card.frame = frame; card.x = point.x; card.y = point.y;
   }
-  if (epoch !== state.epoch) return;
-  state.preparingThrow = false;
-  const sender = state.actors.find(actor => actor.id === state.sender);
-  sender.direction = actorPoint(target).x < sender.x ? -1 : 1;
-  sender.action = { motion: 'throw', at: state.time };
-  sender.motion = 'throw'; sender.frame = 0; sender.sheet = 'throw_hit';
-  state.projectile = { phase: 'windup', source: state.sender, target, item: state.item,
-    variant: state.variant, at: state.time, x: sender.x, y: sender.y };
-  start('playground'); drawPlayground();
+  if (elapsed >= collisionAt && !scene.collided) {
+    scene.collided = true; audio.playPrepared(`${card.id}/${scene.sound}`);
+  }
+  if (elapsed >= collisionAt && elapsed < collisionAt + TIMING.impact) {
+    card.frame = 8 + Math.min(3, Math.floor((elapsed - collisionAt) / (TIMING.impact / 4)));
+    context.drawImage(sprite(objects.get(card.id), card.frame, 16, 2), right - 16, y - 21);
+  }
+  if (elapsed >= collisionAt + TIMING.hit) {
+    card.composite = null; card.motion = 'rotation'; card.elapsed = 0;
+    updateViewButtons(card);
+  }
 }
-function currentAudioKey() { return `${state.item}/${state.variant}`; }
-function updateAudioControls() {
-  const available = state.ready && audio.has(currentAudioKey());
-  $('sound-toggle').disabled = !state.ready;
-  $('variant').disabled = !state.ready;
-  $('sound-once').disabled = $('sound-three').disabled = !available;
-  $('sound-ab').disabled = !state.ready || !audio.has(`${state.item}/A`) || !audio.has(`${state.item}/B`);
-  $('sound-reference').disabled = !state.ready || !audio.has('reference');
-  $('stop-audio').disabled = !state.ready;
-  updatePlaybackUI();
+function drawCards() {
+  for (const card of cards.values()) {
+    const context = cardBackdrop(card);
+    if (card.type === 'character') {
+      const spec = MOTIONS[card.motion];
+      const elapsed = ['throw', 'hit'].includes(card.motion) ? card.elapsed % (spec.frames.length * spec.step) : card.elapsed;
+      card.frame = frameAt(card.motion, elapsed);
+      const x = card.motion === 'walk' ? Math.round(card.x) : Math.round(card.canvas.width / 2);
+      card.y = 65;
+      context.fillStyle = '#d8e4cb'; context.fillRect(0, 84, card.canvas.width, 1);
+      context.save(); context.translate(x, card.y); context.scale(card.direction < 0 ? -1 : 1, 1);
+      context.drawImage(sprite(sheets.get(card.id).candidate[spec.sheet], card.frame), -24, -24); context.restore();
+      card.renderX = x;
+    } else if (card.composite) drawComposite(card, context);
+    else {
+      card.frame = card.motion === 'impact' ? 8 + Math.floor(card.elapsed / .06) % 4 : Math.floor(card.elapsed / TIMING.rotation) % 8;
+      card.x = card.canvas.width / 2; card.y = 56;
+      context.drawImage(sprite(objects.get(card.id), card.frame, 16, 4), Math.round(card.x - 32), 24);
+    }
+    card.canvas.dataset.frame = String(card.frame); card.canvas.dataset.motion = card.motion;
+  }
 }
-function updateSoundPreference() {
-  $('sound-toggle').checked = state.soundEnabled;
+function resizeCards() {
+  for (const card of cards.values()) {
+    const width = Math.max(104, Math.floor(card.canvas.clientWidth));
+    if (width !== card.canvas.width) { card.x = card.x * width / card.canvas.width; card.canvas.width = width; }
+  }
+  drawCards();
+}
+function setCardMode(card, mode) {
+  cancelTransient(); card.motion = mode; card.elapsed = 0;
+  if (card.type === 'item') updateViewButtons(card);
+  if (state.owner !== 'cards' || !state.playing) { stopWork('cards'); start('cards'); }
+  drawCards();
+}
+function updateViewButtons(card) {
+  card.element.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === card.motion)));
+}
+async function playSound(card, sound) {
+  // Sound comparisons replace audio only; the muted walking cards keep moving.
+  cancelTransient(); card.sound = sound; updateAudioButtons();
+  const epoch = state.epoch;
+  card.element.querySelectorAll('.sound-button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.sound === sound)));
   $('audio-status').classList.remove('error');
-  $('audio-status').textContent = state.soundEnabled ? '던질 때 충돌 소리 · 자동 산책은 무음' : '충돌 소리 꺼짐';
-  updateAudioControls();
+  $('audio-status').textContent = `${ITEMS.find(item => item.id === card.id).name} · ${sound === 'original' ? '기존 소리' : `소리 ${sound}`}`;
+  const played = await audio.compare([`${card.id}/${sound}`]);
+  if (!played && epoch === state.epoch) $('audio-status').classList.add('error');
 }
-function selectionChanged(fn) {
-  const resume = state.playing && state.owner === 'playground';
-  stopWork('playground'); fn(); updateSoundPreference(); renderSelection(); drawPlayground();
-  if (resume) start('playground');
+async function playComposite(card) {
+  cancelTransient(); const epoch = state.epoch;
+  try {
+    if (!await audio.unlock([`${card.id}/${card.sound}`]) || epoch !== state.epoch) return;
+    const index = CHARACTERS.findIndex(character => character.item === card.id);
+    card.composite = { source: CHARACTERS[index].id, target: CHARACTERS[(index + 1) % CHARACTERS.length].id, sound: card.sound, collided: false };
+    card.motion = 'composite'; card.elapsed = 0; updateViewButtons(card);
+    if (state.owner !== 'cards' || !state.playing) start('cards');
+  } catch (error) {
+    if (epoch === state.epoch) { $('audio-status').textContent = error.message; $('audio-status').classList.add('error'); }
+  }
 }
-function selectSender(id) {
-  selectionChanged(() => {
-    state.sender = id; state.item = CHARACTERS.find(item => item.id === id).item;
-    if (state.target === id) state.target = CHARACTERS.find(item => item.id !== id).id;
-  });
+function makeCard(id, type, name, parent) {
+  const node = element('article', null, `review-card ${type === 'character' ? 'character' : 'keepsake'}-review-card`);
+  node.dataset[type === 'character' ? 'character' : 'item'] = id;
+  const canvas = element('canvas', null, `card-preview ${type === 'character' ? 'character' : 'keepsake'}-preview`);
+  canvas.width = 180; canvas.height = 112; canvas.setAttribute('role', 'img'); canvas.setAttribute('aria-label', `${name} 움직임 미리보기`);
+  const description = element('p', '설명을 불러오는 중입니다.', 'card-description');
+  node.append(canvas, element('h3', name), description);
+  const card = { id, type, element: node, canvas, description, elapsed: 0, x: 90, y: 65, renderX: 90, direction: 1,
+    motion: type === 'character' ? 'walk' : 'rotation', frame: type === 'character' ? 2 : 0,
+    sound: type === 'item' ? SOUND_OPTIONS[id][0] : null, composite: null };
+  cards.set(id, card); $(parent).append(node); return card;
 }
-function renderSelection() {
-  $('sender').value = state.sender; $('target').value = state.target; $('item').value = state.item;
-  for (const option of $('target').options) option.disabled = option.value === state.sender;
-  document.querySelectorAll('.character-card').forEach(card => card.setAttribute('aria-pressed', String(card.dataset.character === state.sender)));
-  const selected = copy.get(state.sender);
-  const itemCopy = [...copy.values()].find(entry => entry.keepsake.id === state.item);
-  $('selected-character-copy').textContent = selected ? `${selected.character.name} · ${selected.character.description}` : '캐릭터 설명을 준비하는 중입니다.';
-  $('selected-item-copy').textContent = itemCopy ? `${itemCopy.keepsake.name} · ${itemCopy.keepsake.description}` : '물건 설명을 준비하는 중입니다.';
-  updateAudioControls(); updatePlaybackUI();
-}
-function enableSound() {
-  const resume = state.playing && state.owner === 'playground';
-  stopWork('playground'); state.soundEnabled = $('sound-toggle').checked;
-  updateSoundPreference();
-  if (resume) start('playground');
-}
-async function compareSound(keys, label) {
-  stopWork('audio');
-  const epoch = state.epoch; $('audio-status').textContent = `${label} · 소리 비교 중에는 놀이터가 멈춥니다.`;
-  const played = await audio.compare(keys);
-  if (epoch !== state.epoch) return;
-  if (!played) $('audio-status').classList.add('error');
+function renderCards() {
+  for (const character of CHARACTERS) {
+    if (!sheets.get(character.id)?.candidate) continue;
+    const card = makeCard(character.id, 'character', character.name, 'character-cards');
+    const label = element('label', null, 'card-controls'); label.append(element('span', '동작'));
+    const select = element('select', null, 'character-motion'); select.setAttribute('aria-label', `${character.name} 동작`);
+    select.append(...Object.entries(MOTIONS).map(([key, spec]) => new Option(spec.name, key)));
+    select.addEventListener('change', event => setCardMode(card, event.target.value)); label.append(select); card.element.append(label);
+  }
+  for (const item of ITEMS) {
+    if (!objects.has(item.id)) continue;
+    const card = makeCard(item.id, 'item', item.name, 'keepsake-cards');
+    const controls = element('div', null, 'card-controls'); const sounds = element('div', null, 'sound-buttons');
+    for (const sound of SOUND_OPTIONS[item.id]) {
+      const button = element('button', sound === 'original' ? '기존 소리 재생' : `소리 ${sound}`, 'sound-button');
+      button.type = 'button'; button.dataset.sound = sound; button.disabled = !audio.has(`${item.id}/${sound}`);
+      button.setAttribute('aria-label', `${item.name} ${sound === 'original' ? '기존 소리 재생' : `소리 ${sound} 재생`}`); button.setAttribute('aria-pressed', 'false');
+      button.addEventListener('click', () => playSound(card, sound)); sounds.append(button);
+    }
+    const views = element('div', null, 'view-buttons');
+    for (const [view, label] of [['rotation', '회전'], ['impact', '충돌'], ['composite', '던지는 모습']]) {
+      const button = element('button', label); button.type = 'button'; button.dataset.view = view;
+      button.addEventListener('click', () => view === 'composite' ? playComposite(card) : setCardMode(card, view)); views.append(button);
+    }
+    controls.append(sounds, views); card.element.append(controls); updateViewButtons(card);
+  }
+  resizeCards();
 }
 function drawInspector() {
   const canvas = $('stage'); const context = canvas.getContext('2d');
@@ -399,57 +369,39 @@ async function loadCopy() {
   }));
   for (const character of CHARACTERS) {
     const entry = copy.get(character.id); if (!entry) continue;
-    const card = element('article', null, 'copy-card');
-    card.append(element('h3', `${entry.character.name} · ${entry.keepsake.name}`), element('p', entry.character.description), element('p', entry.keepsake.description, 'item-description'));
-    $('copy-list').append(card);
+    const characterCard = cards.get(character.id); const itemCard = cards.get(character.item);
+    if (characterCard) characterCard.description.textContent = entry.character.description;
+    if (itemCard) itemCard.description.textContent = entry.keepsake.description;
+    const group = element('article', null, 'copy-card');
+    group.append(element('h3', `${entry.character.name} · ${entry.keepsake.name}`), element('p', entry.character.description), element('p', entry.keepsake.description, 'item-description'));
+    $('copy-list').append(group);
   }
-  if (failures.length) $('copy-load-status').textContent = failures.join(' / ');
-  renderSelection();
+  if (failures.length) { $('copy-load-status').textContent = failures.join(' / '); $('copy-load-status').classList.add('error'); }
 }
 function openHash() {
   const id = location.hash.slice(1);
-  if (['appearance', 'motion', 'frames', 'keepsakes', 'copy'].includes(id)) {
-    $('review-details').open = true;
-    stopWork('inspector');
+  if (['original-comparison', 'motion', 'frames', 'keepsake-frames-section', 'copy'].includes(id)) {
+    $('review-details').open = true; stopWork('inspector');
+    requestAnimationFrame(() => $(id).scrollIntoView({ block: 'start' }));
+  } else if (['appearance', 'keepsakes'].includes(id)) {
     requestAnimationFrame(() => $(id).scrollIntoView({ block: 'start' }));
   }
 }
+function updateAudioButtons() {
+  for (const item of ITEMS) {
+    const card = cards.get(item.id); if (!card) continue;
+    card.element.querySelectorAll('.sound-button').forEach(button => { button.disabled = !audio.has(`${item.id}/${button.dataset.sound}`); });
+    card.element.querySelector('[data-view="composite"]').disabled = !state.ready || !audio.has(`${item.id}/${card.sound}`);
+  }
+}
 function bind() {
-  for (const id of ['sender', 'target', 'character']) $(id).append(...CHARACTERS.map(item => new Option(item.name, item.id)));
-  $('target').value = state.target;
-  $('item').append(...ITEMS.map(item => new Option(item.name, item.id)));
+  $('character').append(...CHARACTERS.map(item => new Option(item.name, item.id)));
   $('motion-select').append(...Object.entries(MOTIONS).map(([key, spec]) => new Option(spec.name, key)));
-  $('sender').addEventListener('change', event => selectSender(event.target.value));
-  $('target').addEventListener('change', event => selectionChanged(() => { state.target = event.target.value; }));
-  $('item').addEventListener('change', event => selectionChanged(() => { state.item = event.target.value; }));
-  $('variant').addEventListener('change', event => selectionChanged(() => { state.variant = event.target.value; }));
-  $('playground-motion').addEventListener('change', event => {
-    stopWork('playground'); state.motion = event.target.value; updateActors(0); start('playground'); drawPlayground();
+  $('pause-all').addEventListener('click', () => {
+    const paused = !state.playing || state.owner !== 'cards'; stopWork('cards');
+    if (paused) start('cards'); drawCards();
   });
-  $('throw').addEventListener('click', () => throwAt(state.target));
-  $('playground').addEventListener('click', event => {
-    const rect = $('playground').getBoundingClientRect();
-    const x = (event.clientX - rect.left) * $('playground').width / rect.width;
-    const y = (event.clientY - rect.top) * $('playground').height / rect.height;
-    const target = state.actors.filter(actor => actor.id !== state.sender && Math.abs(actor.x - x) <= 30 && Math.abs(actor.y - y) <= 30)
-      .sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))[0];
-    if (target) throwAt(target.id);
-  });
-  $('playground-play').addEventListener('click', () => {
-    const wasPlaying = state.playing && state.owner === 'playground'; stopWork('playground');
-    if (!wasPlaying) start('playground'); drawPlayground();
-  });
-  $('reset').addEventListener('click', () => {
-    stopWork('playground'); state.time = 0; state.impactCount = 0; state.motion = 'walk';
-    $('playground-motion').value = 'walk'; $('interaction-count').textContent = '충돌 0회';
-    resetActors(); start('playground'); drawPlayground();
-  });
-  $('sound-toggle').addEventListener('change', enableSound);
-  $('sound-once').addEventListener('click', () => compareSound([currentAudioKey()], `후보 ${state.variant}`));
-  $('sound-three').addEventListener('click', () => compareSound(Array(3).fill(currentAudioKey()), `후보 ${state.variant} 3회 반복`));
-  $('sound-ab').addEventListener('click', () => compareSound([`${state.item}/A`, `${state.item}/B`], 'A 다음 B'));
-  $('sound-reference').addEventListener('click', () => compareSound(['reference'], '기존 야구공'));
-  $('stop-audio').addEventListener('click', () => { stopWork(); $('audio-status').textContent = '모든 재생을 멈췄습니다.'; drawPlayground(); });
+  $('stop-audio').addEventListener('click', () => { cancelTransient(); $('audio-status').textContent = '소리를 멈췄습니다.'; drawCards(); });
   $('character').addEventListener('change', event => { inspector.character = event.target.value; resetInspector(); });
   $('source').addEventListener('change', event => { inspector.source = event.target.value; renderCharacterGrids(); resetInspector(true); });
   $('motion-select').addEventListener('change', event => { inspector.motion = event.target.value; resetInspector(); });
@@ -468,67 +420,55 @@ function bind() {
   });
   $('review-details').addEventListener('toggle', () => {
     if ($('review-details').open) { stopWork('inspector'); drawInspector(); }
-    else { stopWork('playground'); start('playground'); }
+    else { stopWork('cards'); start('cards'); }
   });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopWork(); drawPlayground(); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopWork(); drawCards(); } });
   window.addEventListener('pagehide', () => stopWork());
   window.addEventListener('hashchange', openHash);
-  new ResizeObserver(resizePlayground).observe($('playground'));
+  new ResizeObserver(resizeCards).observe($('character-cards'));
 }
 async function initialize() {
   bind();
-  const audioEntries = ITEMS.flatMap(item => ['A', 'B'].map(variant => [`${item.id}/${variant}`, url(`candidates/audio-v1/${item.id}/${variant}.wav`)]));
-  audioEntries.push(['reference', url('references/impact-baseball.wav')]);
+  const audioEntries = ITEMS.flatMap(item => SOUND_OPTIONS[item.id].map(sound => [`${item.id}/${sound}`, url(soundPath(item.id, sound))]));
   const audioLoading = audio.preload(audioEntries).then(errors => {
-    $('audio-load-status').textContent = errors.length ? `음원 로딩 오류: ${errors.join(' / ')}` : '물건별 A/B 10개와 기존 야구공 음원 1개가 준비됐습니다. 버튼을 눌렀을 때만 소리를 냅니다.';
-    $('audio-load-status').classList.toggle('error', errors.length > 0); updateAudioControls();
+    $('audio-load-status').textContent = errors.length ? `음원 로딩 오류: ${errors.join(' / ')}` : '';
+    $('audio-load-status').classList.toggle('error', errors.length > 0); updateAudioButtons();
   });
   const failures = [];
   await Promise.all([
     ...CHARACTERS.map(async character => {
       const entry = { candidate: null, original: null }; sheets.set(character.id, entry);
       for (const source of ['candidate', 'original']) {
-        const prefix = source === 'candidate' ? `candidates/character-v2/${character.id}` : `originals/${character.id}`;
+        const version = character.id === 'pixel_quokka' ? 'character-v3' : 'character-v2';
+        const prefix = source === 'candidate' ? `candidates/${version}/${character.id}` : `originals/${character.id}`;
         try {
           const [base, throwHit] = await Promise.all([image(`${prefix}/base.png`, 240, 24), image(`${prefix}/throw_hit.png`, 192, 24)]);
           entry[source] = { base, throw_hit: throwHit };
+          if (source === 'candidate') loadedCurrentPaths.push(`${prefix}/base.png`, `${prefix}/throw_hit.png`);
         } catch (error) { failures.push(`${source === 'candidate' ? '최신 후보' : '원본'} ${character.name}: ${error.message}`); }
       }
     }),
     ...ITEMS.map(async item => {
-      try { objects.set(item.id, await image(`candidates/keepsakes-v2/${item.id}/sprite.png`, 192, 16)); }
+      const path = `candidates/keepsakes-v2/${item.id}/sprite.png`;
+      try { objects.set(item.id, await image(path, 192, 16)); loadedCurrentPaths.push(path); }
       catch (error) { failures.push(`${item.name}: ${error.message}`); }
     }),
   ]);
   state.errors = failures;
-  for (const character of CHARACTERS) {
-    const button = element('button', null, 'character-card'); button.type = 'button'; button.dataset.character = character.id;
-    const image = sheets.get(character.id)?.candidate?.base;
-    if (image) button.append(spriteCopy(image, 0, 24, 3));
-    else { button.append(element('small', '파일 오류')); button.disabled = true; }
-    button.append(element('span', character.name), element('small', character.id === 'pixel_quokka' ? '새 쿼카' : '원본 외형'));
-    button.setAttribute('aria-pressed', String(state.sender === character.id));
-    button.addEventListener('click', () => selectSender(character.id)); $('sender-cards').append(button);
-  }
   state.ready = CHARACTERS.every(character => sheets.get(character.id)?.candidate) && ITEMS.every(item => objects.has(item.id));
-  $('load-status').textContent = failures.length ? failures.join('\n') + '\n누락한 최신 후보를 원본으로 대체하지 않습니다.' : '새 쿼카를 포함한 최신 캐릭터 90프레임 · 물건 60프레임이 준비됐습니다.';
+  $('load-status').textContent = failures.length ? failures.join('\n') + '\n최신 후보가 없으면 원본으로 대체하지 않습니다.' : '';
   $('load-status').classList.toggle('error', failures.length > 0);
-  $('playground-controls').disabled = $('inspector-controls').disabled = !state.ready;
-  document.querySelectorAll('.character-card').forEach(button => { button.disabled = !state.ready; });
-  for (const id of ['playground-play', 'reset', 'play', 'frame']) $(id).disabled = !state.ready;
-  renderAppearances(); renderCharacterGrids(); renderItemGrids(); updateInspectorFrames(); drawInspector();
-  resizePlayground(); resetActors(); drawPlayground(); renderSelection();
-  if (state.ready && !$('review-details').open) start('playground');
+  $('inspector-controls').disabled = !state.ready;
+  for (const id of ['pause-all', 'stop-audio', 'play', 'frame']) $(id).disabled = !state.ready;
+  renderCards(); updateAudioButtons(); renderAppearances(); renderCharacterGrids(); renderItemGrids(); updateInspectorFrames(); drawInspector();
+  if (state.ready && !$('review-details').open) start('cards');
   openHash();
   await Promise.all([audioLoading, loadCopy()]);
 }
 Object.defineProperty(window, 'sideyPreview', { value: Object.freeze({ snapshot: () => ({
-  ready: state.ready, owner: state.owner, playing: state.playing, time: state.time,
-  sender: state.sender, target: state.target, item: state.item, variant: state.variant,
-  soundEnabled: state.soundEnabled, impactCount: state.impactCount,
-  projectile: state.projectile ? { phase: state.projectile.phase, source: state.projectile.source, target: state.projectile.target,
-    x: state.projectile.x, y: state.projectile.y } : null,
-  actors: state.actors.map(actor => ({ id: actor.id, x: Math.round(actor.x), y: Math.round(actor.y), frame: actor.frame, motion: actor.motion })),
-  audio: audio.snapshot(), errors: [...state.errors],
-}) }), configurable: false, writable: false });
-initialize().catch(error => { stopWork(); $('load-status').textContent = `미리보기 초기화 오류: ${error.message}`; $('load-status').classList.add('error'); });
+  ready: state.ready, playing: state.playing, owner: state.owner,
+  cards: [...cards.values()].map(card => ({ id: card.id, type: card.type, motion: card.motion, frame: card.frame,
+    x: Math.round(card.type === 'character' ? card.renderX : card.x), y: Math.round(card.y) })),
+  audio: audio.snapshot(), loadedCurrentPaths: [...loadedCurrentPaths], errors: [...state.errors],
+}) }), writable: false, configurable: false });
+initialize().catch(error => { stopWork(); $('load-status').textContent = `검토 페이지 오류: ${error.message}`; $('load-status').classList.add('error'); });

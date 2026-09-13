@@ -4,7 +4,7 @@
 No files are written. Current concept boards are presentation art, not production
 pixel sheets. Passing the default check never establishes approval or readiness.
 Future final artifacts use character_id, character_sheet.sheet=base|throw_hit and
-audio_candidate.variant=A|B. Audio metadata uses duration_seconds, peak, rms
+audio_candidate.variant follows the per-character AUDIO_VARIANTS mapping. Audio metadata uses duration_seconds, peak, rms
 (normalized linear amplitude), source and license. Approval evidence must quote
 an actual user decision; software can validate its structure, not its truth.
 """
@@ -28,7 +28,9 @@ PACKAGE = Path(__file__).resolve().parent
 MEDIA_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".avif",
                   ".wav", ".mp3", ".ogg", ".flac", ".m4a", ".aac", ".mp4", ".webm"}
 FINAL_ROLES = {"appearance_pose", "character_sheet", "keepsake_sheet", "audio_candidate", "content_copy"}
-ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview", "audio_reference"}
+ROLES = FINAL_ROLES | {"original_sheet", "concept_board", "composite_preview", "audio_reference", "audio_archive", "archived_sprite"}
+AUDIO_VARIANTS = {"pixel_shiba": ("1", "2", "3"), "pixel_duck": ("original",),
+                  "pixel_poop": ("A", "B"), "pixel_tteokbokki": ("1", "2", "3"), "pixel_quokka": ("A", "B")}
 CHARACTER_STAGES = {"keepsake_plan", "appearance_pixels", "character_frames", "character_motion",
                     "keepsake_visual", "audio", "composite", "descriptions"}
 EXPECTED_RECORDS = {(stage, character) for stage in CHARACTER_STAGES for character in CHARACTERS}
@@ -92,6 +94,8 @@ def validate_pixels(path: Path, artifact: dict) -> None:
         return
     width, height, rgba = parse_rgba_png(path)
     require(set(rgba[3::4]) == {0, 255}, f"hard alpha required: {artifact['path']}")
+    if role == "archived_sprite":
+        return
     if role == "original_sheet":
         names = FRAME_NAMES[path.stem]
         require((width, height) == (24 * len(names), 24), "wrong original sheet dimensions")
@@ -156,7 +160,7 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
             and approvals["contract"].get("private_documents_included") is False, "contract record incomplete")
     require(manifest.get("release_enabled") is False, "this review package must keep release disabled")
     expected_counts = {"character_sheets": 10, "character_frames": 90, "keepsake_sheets": 5,
-                       "keepsake_frames": 60, "audio_candidates": 10, "audio_selections": 5,
+                       "keepsake_frames": 60, "audio_candidates": 11, "audio_selections": 5,
                        "content_descriptions": 10}
     require(manifest.get("production_deliverables") == expected_counts, "production counts differ from approved scope")
     artifacts, candidates, final_keys = {}, set(), set()
@@ -179,7 +183,7 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
                 require(qualifier in FRAME_NAMES, "character_sheet.sheet must be base or throw_hit")
             if role == "audio_candidate":
                 qualifier = artifact.get("variant")
-                require(qualifier in ("A", "B"), "audio_candidate.variant must be A or B")
+                require(qualifier in AUDIO_VARIANTS[artifact["character_id"]], "audio_candidate.variant differs from current review options")
             key = (role, artifact["character_id"], qualifier)
             require(key not in final_keys, f"duplicate final artifact role: {key}")
             final_keys.add(key)
@@ -193,7 +197,7 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
                         and all(nonempty(copy[subject].get(field)) for field in ("name", "description")),
                         f"content copy needs name and unique description: {subject}")
             require(nonempty(copy["keepsake"].get("id")), "content copy needs keepsake ID")
-        elif role in ("audio_candidate", "audio_reference"):
+        elif role in ("audio_candidate", "audio_reference", "audio_archive"):
             validate_audio(path, artifact)
         else:
             require(path.suffix.lower() == ".png", f"image artifacts must be PNG: {relative}")
@@ -338,7 +342,7 @@ def validate(root: Path = PACKAGE, *, manifest: dict | None = None,
         expected = {("appearance_pose", character, None), ("keepsake_sheet", character, None),
                     ("content_copy", character, None)}
         expected |= {("character_sheet", character, sheet) for sheet in FRAME_NAMES}
-        expected |= {("audio_candidate", character, variant) for variant in ("A", "B")}
+        expected |= {("audio_candidate", character, variant) for variant in AUDIO_VARIANTS[character]}
         missing.extend(sorted(expected - final_keys))
     pending = [f"{stage}/{character}" for (stage, character), record in records.items() if record["status"] != "approved"]
     if require_approved:

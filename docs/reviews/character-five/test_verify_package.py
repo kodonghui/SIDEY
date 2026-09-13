@@ -23,6 +23,8 @@ class PackageApprovalTests(unittest.TestCase):
 
     def direction(self):
         record = next(record for record in self.approvals["records"] if record["stage"] == "appearance_direction")
+        board = next(item for item in self.manifest["artifacts"] if item["role"] == "concept_board")
+        record["artifacts"] = [{key: board[key] for key in ("path", "sha256", "candidate_id")}]
         record["status"] = "approved"
         record["selection"] = record["artifacts"][0]["candidate_id"]
         record.pop("options", None)
@@ -50,10 +52,11 @@ class PackageApprovalTests(unittest.TestCase):
             if stage == "idle_timing":
                 selection = record["options"][0]
             elif stage == "audio":
-                selection = next(item["candidate_id"] for item in refs if item.get("variant") == "A")
+                selection = next(item["candidate_id"] for item in refs if item["role"] == "audio_candidate")
             elif stage == "composite":
+                chosen = next(item["candidate_id"] for item in refs if item["role"] == "audio_candidate")
                 selection = [item["candidate_id"] for item in refs
-                             if item["role"] != "audio_candidate" or item["variant"] == "A"]
+                             if item["role"] != "audio_candidate" or item["candidate_id"] == chosen]
             else:
                 selection = [item["candidate_id"] for item in refs]
             record.update(status="approved", selection=selection,

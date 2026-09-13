@@ -4,11 +4,11 @@
   "character_id": "pixel_tteokbokki",
   "character": {
     "name": "떡볶이",
-    "description": "빨간 소스 사이로 하얀 떡이 쏙쏙 보여요. 한입 크기의 몸으로 씩씩하게 움직이는 떡볶이예요."
+    "description": "순한맛이라더니요. 누구 기준인지는 안 알려줬어요."
   },
   "keepsake": {
     "id": "fish_cake_skewer",
     "name": "어묵꼬치",
-    "description": "작은 나무 꼬치에 어묵을 접어 끼웠어요. 빙글빙글 돌아 날아가는 말랑한 한 꼬치예요."
+    "description": "드시라고 드린 건데 왜 휘두르세요?"
   }
 }

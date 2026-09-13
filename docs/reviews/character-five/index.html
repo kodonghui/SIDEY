@@ -3,56 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>SIDEY · 다섯 친구의 놀이터</title>
-  <link rel="stylesheet" href="review.css?v=playground-v3">
-  <script type="module" src="review.js?v=playground-v3"></script>
+  <title>SIDEY · 캐릭터와 물건 검토</title>
+  <link rel="stylesheet" href="review.css?v=asset-review-v4">
+  <script type="module" src="review.js?v=asset-review-v4"></script>
 </head>
 <body>
 <main>
-  <header class="page-header">
-    <a class="wordmark" href="#playground-section">SIDEY<span>작은 놀이터</span></a>
-    <span class="status-chip">최신 후보 · 검토 중</span>
-  </header>
-  <section id="playground-section" aria-labelledby="playground-title">
-    <div class="intro"><p class="eyebrow">FIVE LITTLE FRIENDS</p><h1 id="playground-title">걷고, 던지고, 같이 놀기.</h1><p>친구를 고른 뒤, 다른 친구를 눌러 물건을 던져 보세요.<br>목도리 없는 새 쿼카도 함께 걸어요.</p></div>
-    <div id="sender-cards" class="character-cards" aria-label="던지는 캐릭터 선택"></div>
-    <div class="selected-copy"><p id="selected-character-copy">캐릭터 설명 준비 중</p><p id="selected-item-copy">물건 설명 준비 중</p></div>
-    <div class="playground-shell">
-      <div class="stage-heading"><span id="playground-status" role="status">친구들을 불러오는 중</span><span id="interaction-count">충돌 0회</span></div>
-      <canvas id="playground" width="960" height="300" role="img" aria-label="최신 캐릭터 다섯 종이 함께 걷는 놀이터"></canvas>
-      <div class="stage-caption"><span>선택한 친구가 다른 친구에게 던져요.</span><button id="playground-play" type="button" disabled>일시정지</button><button id="reset" type="button" disabled>처음으로</button></div>
-    </div>
-    <p id="load-status" class="load-status" role="status">최신 캐릭터 90프레임과 물건을 불러오는 중입니다.</p>
-    <fieldset id="playground-controls" disabled>
-      <legend class="sr-only">놀이터 조작</legend>
-      <div class="control-grid">
-        <label>던지는 친구<select id="sender"></select></label>
-        <label>받는 친구<select id="target"></select></label>
-        <label>던질 물건<select id="item"></select></label>
-        <label>친구의 평소 동작<select id="playground-motion"><option value="walk">걷기</option><option value="idle">기본</option><option value="doze">졸기</option><option value="offline">잠</option></select></label>
-        <button id="throw" type="button" class="primary">던지기</button>
-      </div>
-    </fieldset>
-    <div class="sound-strip">
-      <label class="check"><input id="sound-toggle" type="checkbox" checked disabled>충돌 소리</label>
-      <label class="variant-label">음원 후보<select id="variant" disabled><option value="A">A</option><option value="B">B</option></select></label>
-      <span id="audio-status" role="status">던질 때 충돌 소리 · 자동 산책은 무음</span>
-    </div>
-    <p class="small-note">캐릭터·물건·음원은 출시 전 검토 후보입니다. 페이지에서 재생하는 것은 승인 기록이 아닙니다.</p>
-  </section>
-
-  <section id="audio-comparison" class="audio-panel" aria-labelledby="audio-heading">
-    <div><h2 id="audio-heading">소리도 골라보기</h2><p>위에서 고른 물건의 충돌음만 재생합니다.</p></div>
-    <div class="audio-buttons"><button id="sound-once" type="button" disabled>한 번 듣기</button><button id="sound-three" type="button" disabled>3회 반복</button><button id="sound-ab" type="button" disabled>A → B 비교</button><button id="sound-reference" type="button" disabled>기존 야구공 소리</button><button id="stop-audio" type="button" disabled>모두 멈추기</button></div>
-    <p id="audio-load-status" class="small-note" role="status">음원 11개를 준비하는 중입니다.</p>
-  </section>
-
-  <details id="review-details" class="review-details">
-    <summary><span>픽셀과 프레임 자세히 보기</span><span>원본 비교 · 동작 · 배경 · 화면 가장자리</span></summary>
-    <div class="details-body">
-      <nav aria-label="세부 검토"><a href="#appearance">외형 비교</a><a href="#motion">프레임 검사</a><a href="#frames">캐릭터 90프레임</a><a href="#keepsakes">물건 60프레임</a><a href="#copy">고유 설명</a></nav>
-      <section id="appearance"><h2>외형 비교</h2><p>4종은 승인된 원본 외형을 유지합니다. 새 쿼카 외형과 전체 동작은 검토 중입니다.</p><div id="appearance-list"></div></section>
+  <header><div><p class="eyebrow">SIDEY / ASSET REVIEW</p><h1>캐릭터와 물건 검토</h1><p>걷는 모습과 물건을 보고, 소리 버튼을 눌러 비교해 주세요.</p></div><div class="page-actions"><button id="pause-all" type="button" disabled>일시정지</button><button id="stop-audio" type="button" disabled>소리 멈춤</button></div></header>
+  <p id="load-status" class="small-note" role="status">최신 자산을 불러오는 중입니다.</p>
+  <section id="appearance" aria-labelledby="characters-heading"><h2 id="characters-heading">캐릭터 5종</h2><div id="character-cards" class="review-card-grid"></div></section>
+  <section id="keepsakes" aria-labelledby="keepsakes-heading"><h2 id="keepsakes-heading">물건과 소리</h2><p class="section-note">소리 버튼은 누를 때마다 처음부터 재생됩니다. 한 번에 한 소리만 들려요.</p><div id="keepsake-cards" class="review-card-grid"></div><p id="audio-status" class="small-note" role="status"></p><p id="audio-load-status" class="small-note" role="status">음원을 준비하는 중입니다.</p></section>
+  <p class="small-note">출시 전 검토 자료입니다. 캐릭터·물건·소리·설명의 최종 승인은 별도로 기록합니다.</p>
+  <details id="review-details"><summary>프레임·원본·실루엣 자세히 보기</summary><div class="details-body"><nav aria-label="세부 검토"><a href="#original-comparison">원본 비교</a><a href="#motion">프레임 검사</a><a href="#frames">캐릭터 전체 프레임</a><a href="#keepsake-frames-section">물건 전체 프레임</a><a href="#copy">설명 모아보기</a></nav>
+    <section id="original-comparison"><h2>원본과 최신 후보</h2><p>4종은 원본 외형 유지, 쿼카는 새 갈색 체형으로 재제작한 후보입니다.</p><div id="appearance-list"></div></section>
       <section id="motion"><h2>프레임 검사</h2><p>기본 선택은 새 쿼카를 포함한 최신 후보 90프레임입니다. 원본은 직접 선택했을 때만 표시합니다.</p>
         <fieldset id="inspector-controls" disabled><legend class="sr-only">프레임 검사 조작</legend><div class="controls">
           <label>캐릭터<select id="character"></select></label><label>자료<select id="source"><option value="candidate">최신 후보 · 5종</option><option value="original">수정 전 원본</option></select></label>
@@ -67,12 +30,11 @@
         <p class="small-note">걷기 0.16초/장 · 22pt/s · 30 FPS. 24px 원본이 앱에서 48pt이므로 2× 배율을 기준으로 속도를 환산합니다. 발 기준선은 위에서 y=21 경계입니다. 졸기 0.8초/장, 잠 1.2초/장, 던지기 0.4초·방출 0.2초, 피격 0.44초입니다. 브라우저 미리보기는 실제 앱 실행 검증과 구분합니다.</p>
       </section>
       <section id="frames"><h2>캐릭터 90프레임</h2><p id="grid-status"></p><div id="frame-list"></div></section>
-      <section id="keepsakes"><h2>선택한 물건 60프레임</h2><p>테니스공 · 고무 오리 · 휴지 뭉치 · 어묵꼬치 · 잎사귀. 물건당 회전 8장, 충돌 4장입니다. 눌러서 정지 프레임을 크게 확인할 수 있습니다.</p><canvas id="keepsake-stage" width="160" height="160" role="img" aria-label="선택한 물건 프레임"></canvas><output id="keepsake-frame-status"></output><div id="keepsake-frames"></div></section>
+      <section id="keepsake-frames-section"><h2>선택한 물건 60프레임</h2><p>테니스공 · 삑삑 오리 · 휴지 뭉치 · 어묵꼬치 · 잎사귀. 물건당 회전 8장, 충돌 4장입니다. 눌러서 정지 프레임을 크게 확인할 수 있습니다.</p><canvas id="keepsake-stage" width="160" height="160" role="img" aria-label="선택한 물건 프레임"></canvas><output id="keepsake-frame-status"></output><div id="keepsake-frames"></div></section>
       <section id="copy"><h2>캐릭터와 물건의 이야기</h2><p>고유 설명 승인 대기 · 선택한 캐릭터와 물건의 문구를 함께 확인합니다.</p><p id="copy-load-status" role="status"></p><div id="copy-list"></div></section>
-      <details class="archive"><summary>이전 콘셉트 보관본</summary><p>생성 보드의 ORIGINAL 열도 재생성된 그림입니다. 현재 원본 비교·최신 후보와 구분해 주세요. 물방울·풀 뭉치는 현재 선택에서 제외됐습니다.</p><img src="candidates/appearance-v1/concept-board.png?v=playground-v3" alt="이전 외형 생성 콘셉트" loading="lazy"><img src="concepts/keepsakes-v1.png?v=playground-v3" alt="이전 물건 A/B 콘셉트" loading="lazy"></details>
-    </div>
-  </details>
-  <footer>원작 정지유 (@jungjiyu) · PR #27에서 선별한 5종. 원본·수정·승인 근거는 패키지 기록에서 확인합니다.</footer>
+    <details class="archive"><summary>이전 콘셉트 보관본</summary><p>이전 후보 보드입니다. 현재 카드의 최신 자산과 구분해 주세요.</p><img src="candidates/appearance-v1/concept-board.png?v=asset-review-v4" alt="이전 외형 콘셉트" loading="lazy"><img src="concepts/keepsakes-v1.png?v=asset-review-v4" alt="이전 물건 콘셉트" loading="lazy"></details>
+  </div></details>
+  <footer>원작 정지유 (@jungjiyu) · PR #27 선별 자산. 앱 연결·배포와 분리된 검토 패키지입니다.</footer>
 </main>
 </body>
 </html>

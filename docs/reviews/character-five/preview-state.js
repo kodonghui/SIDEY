@@ -8,7 +8,7 @@ export const CHARACTERS = [
 ];
 export const ITEMS = [
   { id: 'tennis_ball', name: '테니스공' },
-  { id: 'rubber_duck', name: '고무 오리' },
+  { id: 'rubber_duck', name: '삑삑 오리' },
   { id: 'tissue_ball', name: '휴지 뭉치' },
   { id: 'fish_cake_skewer', name: '어묵꼬치' },
   { id: 'leaf', name: '잎사귀' },

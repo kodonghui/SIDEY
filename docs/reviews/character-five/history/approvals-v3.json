@@ -24,6 +24,16 @@
       "selection": "original_four_new_quokka",
       "artifacts": [
         {
+          "path": "concepts/quokka-v2.png",
+          "sha256": "12903497a8e0b2c58b6a6a2f1239583a09617dd18a9ac8866ef8ce3f93024e50",
+          "candidate_id": "quokka-concept-v2"
+        },
+        {
+          "path": "originals/pixel_shiba/base.png",
+          "sha256": "298650cf84e4958a372f8e406d92365b66f2c9b185f1fc69b904ac2cd1dc5832",
+          "candidate_id": "originals--pixel_shiba--base"
+        },
+        {
           "path": "originals/pixel_duck/base.png",
           "sha256": "117b9929cf75edcbf39c904a3b471944b00af48faae55e73a3986b82ed35092f",
           "candidate_id": "originals--pixel_duck--base"
@@ -34,22 +44,12 @@
           "candidate_id": "originals--pixel_poop--base"
         },
         {
-          "path": "originals/pixel_quokka/base.png",
-          "sha256": "ab2778d8d2f49cfccecebfdab629507a77c5b9515c85c0884cc82233358168f6",
-          "candidate_id": "originals--pixel_quokka--base"
-        },
-        {
-          "path": "originals/pixel_shiba/base.png",
-          "sha256": "298650cf84e4958a372f8e406d92365b66f2c9b185f1fc69b904ac2cd1dc5832",
-          "candidate_id": "originals--pixel_shiba--base"
-        },
-        {
           "path": "originals/pixel_tteokbokki/base.png",
           "sha256": "dd302f7eeaed14ae33a970a37672a98458537f5c41920f644d6e6a0cfb04f26c",
           "candidate_id": "originals--pixel_tteokbokki--base"
         }
       ],
-      "user_evidence": "사용자: 시바견 원본대로, 오리 원본대로, 똥원본대로, 떡볶이 원본대로, 쿼카는 쿼카라는 동물만 유지하고 그냥 너 codex가 다시 재해석해서 ㄱㄱ. 원본유지라는게 문제있던 발목이나 프레임까지 유지하라는건아님. 후속 사용자: 쿼카 눈과 표정을 귀엽게 수정하고 목도리를 착용하도록 요청.",
+      "user_evidence": "사용자: 시바견 원본대로, 오리 원본대로, 똥원본대로, 떡볶이 원본대로, 쿼카는 쿼카라는 동물만 유지하고 그냥 너 codex가 다시 재해석해서 ㄱㄱ. 원본유지라는게 문제있던 발목이나 프레임까지 유지하라는건아님.",
       "options": [
         "original_four_new_quokka"
       ]
@@ -206,9 +206,9 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/character-v3/pixel_quokka/appearance.png",
-          "sha256": "9fb65c2c9a0c497b940efbfd56b42e0d35b7598e83033f33ca906787b6e9e21c",
-          "candidate_id": "appearance-v3-pixel_quokka"
+          "path": "candidates/character-v2/pixel_quokka/appearance.png",
+          "sha256": "3203ffeafdee5efd5cc9e1c357faaf1d4fd627968751754891ee7cb669e3707f",
+          "candidate_id": "appearance-v2-pixel_quokka"
         }
       ],
       "user_evidence": null
@@ -296,14 +296,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/character-v3/pixel_quokka/base.png",
-          "sha256": "e301cb83b48761c1bb5b83f82a6525638d973eb7e337ebe378dea88d370e2a7c",
-          "candidate_id": "character-v3-pixel_quokka-base"
+          "path": "candidates/character-v2/pixel_quokka/base.png",
+          "sha256": "6186d7965ec49d1f72aa51c629fbfb6b42183c8f583e1054dfc1f30ba5bb9ecc",
+          "candidate_id": "character-v2-pixel_quokka-base"
         },
         {
-          "path": "candidates/character-v3/pixel_quokka/throw_hit.png",
-          "sha256": "fc01c484c98651c5da3e32888122070af04091d57a514199da6019ca73b753a7",
-          "candidate_id": "character-v3-pixel_quokka-throw_hit"
+          "path": "candidates/character-v2/pixel_quokka/throw_hit.png",
+          "sha256": "47c53b24eb84821c46d0107e85b1039d55a49d3ad16716fbe14fc25d9b59c436",
+          "candidate_id": "character-v2-pixel_quokka-throw_hit"
         }
       ],
       "user_evidence": null
@@ -391,14 +391,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/character-v3/pixel_quokka/base.png",
-          "sha256": "e301cb83b48761c1bb5b83f82a6525638d973eb7e337ebe378dea88d370e2a7c",
-          "candidate_id": "character-v3-pixel_quokka-base"
+          "path": "candidates/character-v2/pixel_quokka/base.png",
+          "sha256": "6186d7965ec49d1f72aa51c629fbfb6b42183c8f583e1054dfc1f30ba5bb9ecc",
+          "candidate_id": "character-v2-pixel_quokka-base"
         },
         {
-          "path": "candidates/character-v3/pixel_quokka/throw_hit.png",
-          "sha256": "fc01c484c98651c5da3e32888122070af04091d57a514199da6019ca73b753a7",
-          "candidate_id": "character-v3-pixel_quokka-throw_hit"
+          "path": "candidates/character-v2/pixel_quokka/throw_hit.png",
+          "sha256": "47c53b24eb84821c46d0107e85b1039d55a49d3ad16716fbe14fc25d9b59c436",
+          "candidate_id": "character-v2-pixel_quokka-throw_hit"
         }
       ],
       "user_evidence": null
@@ -420,8 +420,8 @@
     {
       "stage": "keepsake_visual",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": "keepsakes-v2-rubber_duck",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/rubber_duck/sprite.png",
@@ -429,7 +429,7 @@
           "candidate_id": "keepsakes-v2-rubber_duck"
         }
       ],
-      "user_evidence": "사용자: 오리는 기존 투척템인 꽥괙오리를 오리의애착템으로 ㄱㄱ. 기존 throwable_squeaky_duck 그림과 승인된 꽥 음원의 동일 파일 재사용 선택."
+      "user_evidence": null
     },
     {
       "stage": "keepsake_visual",
@@ -480,19 +480,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/audio-v2/tennis_ball/1.wav",
-          "sha256": "19e7236673dafa5ce57f0d6c5959ed8179210aaedffdc421f3139982666a2d67",
-          "candidate_id": "audio-v2-tennis_ball-1"
+          "path": "candidates/audio-v1/tennis_ball/A.wav",
+          "sha256": "1e9083ba519a05b44cc5b4bcfb4ce9c8c286f0866f65aea00ac57e948faf1001",
+          "candidate_id": "audio-v1-tennis_ball-A"
         },
         {
-          "path": "candidates/audio-v2/tennis_ball/2.wav",
-          "sha256": "94e9f4bb7303e9e088e7064ca6bc1e675545b81d77924ac68057319a95fdef15",
-          "candidate_id": "audio-v2-tennis_ball-2"
-        },
-        {
-          "path": "candidates/audio-v2/tennis_ball/3.wav",
-          "sha256": "6ea031622e2b6e47bda5f08cf316efdc52f9b92a1f32503314095f00e2a7f5f5",
-          "candidate_id": "audio-v2-tennis_ball-3"
+          "path": "candidates/audio-v1/tennis_ball/B.wav",
+          "sha256": "a6b8b0509402e75ce9080e99f68c1ab478560eebc4da3858f5350184701261eb",
+          "candidate_id": "audio-v1-tennis_ball-B"
         }
       ],
       "user_evidence": null
@@ -500,16 +495,21 @@
     {
       "stage": "audio",
       "character_id": "pixel_duck",
-      "status": "approved",
-      "selection": "audio-v2-rubber_duck-original",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
-          "path": "candidates/audio-v2/rubber_duck/original.wav",
-          "sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
-          "candidate_id": "audio-v2-rubber_duck-original"
+          "path": "candidates/audio-v1/rubber_duck/A.wav",
+          "sha256": "9fede0e51443680947554e4c7f9dd7ac7ff43d10dfbdfc01baa23e125837ecb1",
+          "candidate_id": "audio-v1-rubber_duck-A"
+        },
+        {
+          "path": "candidates/audio-v1/rubber_duck/B.wav",
+          "sha256": "2752d2f0853e1c67e264995250424a846e21371e06653712070de157cd3748aa",
+          "candidate_id": "audio-v1-rubber_duck-B"
         }
       ],
-      "user_evidence": "사용자: 오리는 기존 투척템인 꽥괙오리를 오리의애착템으로 ㄱㄱ. 기존 throwable_squeaky_duck 그림과 승인된 꽥 음원의 동일 파일 재사용 선택."
+      "user_evidence": null
     },
     {
       "stage": "audio",
@@ -537,19 +537,14 @@
       "selection": null,
       "artifacts": [
         {
-          "path": "candidates/audio-v2/fish_cake_skewer/1.wav",
-          "sha256": "468a9111c759ac37a0676040427cb40ee93456aacb740f4b766808fb4f0717e2",
-          "candidate_id": "audio-v2-fish_cake_skewer-1"
+          "path": "candidates/audio-v1/fish_cake_skewer/A.wav",
+          "sha256": "9c63204741d024565fb813ee0772bea27511bb2abccad26fb253e2aa5afebb18",
+          "candidate_id": "audio-v1-fish_cake_skewer-A"
         },
         {
-          "path": "candidates/audio-v2/fish_cake_skewer/2.wav",
-          "sha256": "541358042c32583c5a4108ab73cd3fa0f5d5f15b2f144b8815417fe02bef1f5d",
-          "candidate_id": "audio-v2-fish_cake_skewer-2"
-        },
-        {
-          "path": "candidates/audio-v2/fish_cake_skewer/3.wav",
-          "sha256": "3f8b3d832074053b34fada5ee59d3b7eace0bad341ee630e6296c06dc4dca650",
-          "candidate_id": "audio-v2-fish_cake_skewer-3"
+          "path": "candidates/audio-v1/fish_cake_skewer/B.wav",
+          "sha256": "a0dca27a3bfd955563e4447ba267d7e12b5132b5f3627e7f24c44aba07677651",
+          "candidate_id": "audio-v1-fish_cake_skewer-B"
         }
       ],
       "user_evidence": null
@@ -595,19 +590,14 @@
           "candidate_id": "keepsakes-v2-tennis_ball"
         },
         {
-          "path": "candidates/audio-v2/tennis_ball/1.wav",
-          "sha256": "19e7236673dafa5ce57f0d6c5959ed8179210aaedffdc421f3139982666a2d67",
-          "candidate_id": "audio-v2-tennis_ball-1"
+          "path": "candidates/audio-v1/tennis_ball/A.wav",
+          "sha256": "1e9083ba519a05b44cc5b4bcfb4ce9c8c286f0866f65aea00ac57e948faf1001",
+          "candidate_id": "audio-v1-tennis_ball-A"
         },
         {
-          "path": "candidates/audio-v2/tennis_ball/2.wav",
-          "sha256": "94e9f4bb7303e9e088e7064ca6bc1e675545b81d77924ac68057319a95fdef15",
-          "candidate_id": "audio-v2-tennis_ball-2"
-        },
-        {
-          "path": "candidates/audio-v2/tennis_ball/3.wav",
-          "sha256": "6ea031622e2b6e47bda5f08cf316efdc52f9b92a1f32503314095f00e2a7f5f5",
-          "candidate_id": "audio-v2-tennis_ball-3"
+          "path": "candidates/audio-v1/tennis_ball/B.wav",
+          "sha256": "a6b8b0509402e75ce9080e99f68c1ab478560eebc4da3858f5350184701261eb",
+          "candidate_id": "audio-v1-tennis_ball-B"
         }
       ],
       "user_evidence": null
@@ -634,9 +624,14 @@
           "candidate_id": "keepsakes-v2-rubber_duck"
         },
         {
-          "path": "candidates/audio-v2/rubber_duck/original.wav",
-          "sha256": "805048802a0494d51c453000c3bc624f8713c23f9c5c5530dafc68be683715af",
-          "candidate_id": "audio-v2-rubber_duck-original"
+          "path": "candidates/audio-v1/rubber_duck/A.wav",
+          "sha256": "9fede0e51443680947554e4c7f9dd7ac7ff43d10dfbdfc01baa23e125837ecb1",
+          "candidate_id": "audio-v1-rubber_duck-A"
+        },
+        {
+          "path": "candidates/audio-v1/rubber_duck/B.wav",
+          "sha256": "2752d2f0853e1c67e264995250424a846e21371e06653712070de157cd3748aa",
+          "candidate_id": "audio-v1-rubber_duck-B"
         }
       ],
       "user_evidence": null
@@ -697,19 +692,14 @@
           "candidate_id": "keepsakes-v2-fish_cake_skewer"
         },
         {
-          "path": "candidates/audio-v2/fish_cake_skewer/1.wav",
-          "sha256": "468a9111c759ac37a0676040427cb40ee93456aacb740f4b766808fb4f0717e2",
-          "candidate_id": "audio-v2-fish_cake_skewer-1"
+          "path": "candidates/audio-v1/fish_cake_skewer/A.wav",
+          "sha256": "9c63204741d024565fb813ee0772bea27511bb2abccad26fb253e2aa5afebb18",
+          "candidate_id": "audio-v1-fish_cake_skewer-A"
         },
         {
-          "path": "candidates/audio-v2/fish_cake_skewer/2.wav",
-          "sha256": "541358042c32583c5a4108ab73cd3fa0f5d5f15b2f144b8815417fe02bef1f5d",
-          "candidate_id": "audio-v2-fish_cake_skewer-2"
-        },
-        {
-          "path": "candidates/audio-v2/fish_cake_skewer/3.wav",
-          "sha256": "3f8b3d832074053b34fada5ee59d3b7eace0bad341ee630e6296c06dc4dca650",
-          "candidate_id": "audio-v2-fish_cake_skewer-3"
+          "path": "candidates/audio-v1/fish_cake_skewer/B.wav",
+          "sha256": "a0dca27a3bfd955563e4447ba267d7e12b5132b5f3627e7f24c44aba07677651",
+          "candidate_id": "audio-v1-fish_cake_skewer-B"
         }
       ],
       "user_evidence": null
@@ -726,6 +716,16 @@
           "candidate_id": "keepsakes-v2-leaf"
         },
         {
+          "path": "candidates/character-v2/pixel_quokka/base.png",
+          "sha256": "6186d7965ec49d1f72aa51c629fbfb6b42183c8f583e1054dfc1f30ba5bb9ecc",
+          "candidate_id": "character-v2-pixel_quokka-base"
+        },
+        {
+          "path": "candidates/character-v2/pixel_quokka/throw_hit.png",
+          "sha256": "47c53b24eb84821c46d0107e85b1039d55a49d3ad16716fbe14fc25d9b59c436",
+          "candidate_id": "character-v2-pixel_quokka-throw_hit"
+        },
+        {
           "path": "candidates/audio-v1/leaf/A.wav",
           "sha256": "82de81531fab30958dee9bd4d12eeedb8041e704f7ba405db8cfae6432746a57",
           "candidate_id": "audio-v1-leaf-A"
@@ -734,16 +734,6 @@
           "path": "candidates/audio-v1/leaf/B.wav",
           "sha256": "f1f471c3b67f505bede999cbd1733aa9ccdf8dc077f4c7be24b60ec06d885364",
           "candidate_id": "audio-v1-leaf-B"
-        },
-        {
-          "path": "candidates/character-v3/pixel_quokka/base.png",
-          "sha256": "e301cb83b48761c1bb5b83f82a6525638d973eb7e337ebe378dea88d370e2a7c",
-          "candidate_id": "character-v3-pixel_quokka-base"
-        },
-        {
-          "path": "candidates/character-v3/pixel_quokka/throw_hit.png",
-          "sha256": "fc01c484c98651c5da3e32888122070af04091d57a514199da6019ca73b753a7",
-          "candidate_id": "character-v3-pixel_quokka-throw_hit"
         }
       ],
       "user_evidence": null
@@ -794,7 +784,7 @@
       "artifacts": [
         {
           "path": "copy-v1/pixel_shiba.json",
-          "sha256": "3b56d0da1c57e8976664b000334c33d6f0e3cccbe4ab43018bfa622cc3d78c19",
+          "sha256": "1b1cffe38ce43b326f4224153edfc0af842a7c9ddf152f12fd4ea102664d537c",
           "candidate_id": "copy-v1-pixel_shiba"
         }
       ],
@@ -808,7 +798,7 @@
       "artifacts": [
         {
           "path": "copy-v1/pixel_duck.json",
-          "sha256": "c4dbcb30406d0feb1f4796c67c262aea78d87d0f8efaab3d261a207e367a8d44",
+          "sha256": "849f41ce7ed5edbbebf86f574b32d2e04e13cfa473007e73e72eaf1e62460b69",
           "candidate_id": "copy-v1-pixel_duck"
         }
       ],
@@ -822,7 +812,7 @@
       "artifacts": [
         {
           "path": "copy-v1/pixel_poop.json",
-          "sha256": "da7ab7d64a23324103bb72ee6831f4fc1deef9c34ada04fae31d2452c1aae694",
+          "sha256": "bee33e09f5f145d6416179f6ddeada15742b0206c72aebc9abbb3c69e1845e46",
           "candidate_id": "copy-v1-pixel_poop"
         }
       ],
@@ -836,7 +826,7 @@
       "artifacts": [
         {
           "path": "copy-v1/pixel_tteokbokki.json",
-          "sha256": "a1439db70db61a7aaa0d8e91eea9d838ba7e798cca47b27277a983abe60d1d3d",
+          "sha256": "aefc1b399a9f64cf0ade39ccfc1055123917c92dec360b892465982d95c5bb73",
           "candidate_id": "copy-v1-pixel_tteokbokki"
         }
       ],
@@ -850,7 +840,7 @@
       "artifacts": [
         {
           "path": "copy-v1/pixel_quokka.json",
-          "sha256": "6a1d342e8a18db6e408abf1d9b705e6b148928b4227927546e310a0f6f7ecc40",
+          "sha256": "b173f5ea9be86b343cb3a4ca8ac5cad3328bfe6014751713ea77f1af2882bcee",
           "candidate_id": "copy-v1-pixel_quokka"
         }
       ],
@@ -859,8 +849,7 @@
   ],
   "history": [
     "history/approvals-v1.json",
-    "history/approvals-v2.json",
-    "history/approvals-v3.json"
+    "history/approvals-v2.json"
   ],
   "concept_art_approval": {
     "status": "approved_for_selected_concepts",
@@ -885,10 +874,5 @@
     "scope": "최종 시각 승인 전에도 새 쿼카 전체 동작·물건 충돌음·합성 상호작용 후보를 먼저 제작하고 실제로 체험 가능한 미리보기로 제공한다. 최종 외형·동작·음원·합성 승인을 대신하지 않는다.",
     "user_evidence": "쿼카는 왜 옛날 미리보기 밖에 없고 캐릭터들이 안거어다님. 미리보기 페이지 캐릭터들이 다 제대로 동작안하고, 투척물 소리, 그리고 캐릭터들 선택해서 던져보기 이런거 다 되도록 미리보기 깔끔하게 해놓고 코드작업해",
     "asset_package_clarification": "아그리고 코드작업할것도 없이 그냥 애샛들 캐릭터 5종, 투척물 5종 + 소리, 캐릭터, 투척물 고유 설명 같은거 허락밭고 그거 나중에 추후 5종 배포바로 할 수 있게 에셋들 저장및 문서화만 해놓고 pr승인 하는식으로 하면됨"
-  },
-  "revision_request": {
-    "user_evidence": "오리는 기존 투척템인 꽥괙오리를 오리의애착템으로 ㄱㄱ. 오뎅은 북소리 대신 췁췁 찰진소리. 쿼카 눈·목도리·귀여움 재작업. 테니스공 소리 재작업. 에셋 검증용으로 물건별 소리 1 2 3 직접 재생 버튼, 충돌 횟수와 던지는/받는 친구 설정 제거.",
-    "scope": "새 후보 제작 요청이며 비평하지 않은 자산·설명을 자동 승인하지 않음. 기존 삑삑 오리 그림·승인 소리 재사용은 명시 선택.",
-    "description_direction": "사용자: 설명에 센스 있는 유머 요청. 기존 돼지의 옆집 꿀꿀이 문구와 휴지의 똥휴지인지 아닌지는 모르겠어요! 같은 짧은 농담을 예시로 제시. 새 유머 문구 10개는 승인 대기."
   }
 }

@@ -2,35 +2,26 @@
   "browser": "Chromium 151.0.7922.34",
   "surface": "local headless Chromium; connected Browser plugin unavailable",
   "checks": [
-    "all five current candidates walk on load, including new quokka; actual canvas changes without autoplay audio",
-    "all five senders throw their selected item at moving targets; windup is silent; collision triggers hit and exactly one sound",
-    "idle/doze/sleep/walk work for all actors; mute preserves visual impact; pausing in flight prevents a ghost impact or sound",
-    "resizing during flight cancels the shot and sound without locking the throw button; retry succeeds",
-    "clicking a different canvas character throws at that target",
-    "pause freezes the scene and resume restores motion",
-    "single, three-repeat, A/B and existing-reference playback start real decoded buffers; explicit stop clears active and pending audio",
-    "all ten A/B candidates decode and start in Chromium; all ten character/item descriptions match the pinned files",
-    "item changes and hidden-document events cancel queued and active audio; hidden scene pauses",
-    "deep links open details; all 90 current frames including quokka; explicit original comparison; integer scales/backgrounds/edges/flip; 60 item frames",
-    "390px viewport has no document overflow",
-    "missing new quokka blocks playback without original fallback; selection during delayed audio decoding cancels the stale throw and the next explicit throw works",
-    "audio context suspension during preparation reports an interruption and allows a successful retry"
+    "five current characters walk in their cards; quokka uses scarf v3; no sender/target/collision-count interface or automatic sound",
+    "all 11 direct sound buttons play real decoded audio without throwing or choosing characters; one active sound; silent animation continues",
+    "rotation, impact and fixed composite previews work per item; pause/resume freezes and restores motion",
+    "hidden document stops playback; detailed 90-frame/original/background/edge/flip comparison remains available",
+    "390px viewport has no document overflow"
   ],
   "errors": [],
-  "actual_audio_starts": 26,
   "source_sha256": {
-    "index.html": "c184ebb61d758b87d03624a9a9bb7f2c5135760e443ebb2e96df3af123499a9c",
-    "review.css": "703ed906d3880d5f5dbca5728e8c5c036022cc91fc831edb906d64e49c5f43b9",
-    "review.js": "68544b8f2ce680951d4ecd966dcfed4177ba99fdb0e5b324322c6c1609b53ae3",
-    "preview-state.js": "ef1124be4826a1b58cecd136c397317ad78c5032b876610ce7fe006d928b7afc",
+    "index.html": "b0e90ea5f9be7241388cd7d6af4d24eb10eabf93cadc8e9c11b89ef3b1fa34ab",
+    "review.css": "527dcfa2aa2e6551de48e287fc248a2f14c8c2b81c72755df893033136e1c960",
+    "review.js": "f2d5e7d793cfdf61e828836f526ba4eaaad85e99ab96e4cc739141dc8343f721",
+    "preview-state.js": "895e5b0d4dccc66e739f8b65cd8dca84ee5d01489b3a4df697e54fef4b07fd03",
     "review-audio.js": "5b2cab3d30018d97126f7161dcb947fb7fff680a3dd26f5aec8c8a645fffd13e",
-    "package.json": "3fe47dd779f92b7df161e3d1d06a935665fc24214abf35a11ee0ecf786e0934f",
-    "approvals.json": "91569c4ad121b15c93af3d0d5f4006f70e4d4590e62b3fe646e31a2c50f56059",
-    "verify_browser.cjs": "a2b162e187d0fd1a1a02f156900b0dbe55183ad22364197fdbc8a0d49619ea13"
+    "package.json": "6279ceaa24eceb4178704925810f3f3a3975f47f51d066cf1f5e44232e8b4a1d",
+    "approvals.json": "119c0fdef7498e5a6e955364016de51db8b15c37911b988c3779eefc21df4479",
+    "verify_browser.cjs": "24daeca0a8f901c14b0a1b4c9493c0b8372ade56c21ae88f3b9de851be9d08f6"
   },
+  "actual_audio_starts": 17,
   "limitations": [
-    "Audio decoded and real Web Audio starts observed; no physical speaker or human listening certification.",
-    "Visibility tested with a simulated document.hidden event; no OS minimization or native app runtime verification.",
-    "All art and audio remain review candidates; successful interaction tests do not record user approval."
+    "Real Web Audio starts and decoding verified, not physical speaker quality or user listening approval.",
+    "Visibility uses a simulated document.hidden event; no native app execution."
   ]
 }
