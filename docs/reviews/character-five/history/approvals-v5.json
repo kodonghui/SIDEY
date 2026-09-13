@@ -560,8 +560,8 @@
     {
       "stage": "audio",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": "audio-v3-tissue_ball-B",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/audio-v3/tissue_ball/A.wav",
@@ -574,8 +574,7 @@
           "candidate_id": "audio-v3-tissue_ball-B"
         }
       ],
-      "user_evidence": "휴지는 2 잎사귀는 1. 됐으. 이렇게하고 메인 병합까지하면 컨트리뷰터로 정지유도 올라가는거지?",
-      "approved_revision": "ffe6fab8c86aa708b6044442023b100498aeb173"
+      "user_evidence": null
     },
     {
       "stage": "audio",
@@ -605,8 +604,8 @@
     {
       "stage": "audio",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": "audio-v3-leaf-A",
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/audio-v3/leaf/A.wav",
@@ -619,8 +618,7 @@
           "candidate_id": "audio-v3-leaf-B"
         }
       ],
-      "user_evidence": "휴지는 2 잎사귀는 1. 됐으. 이렇게하고 메인 병합까지하면 컨트리뷰터로 정지유도 올라가는거지?",
-      "approved_revision": "ffe6fab8c86aa708b6044442023b100498aeb173"
+      "user_evidence": null
     },
     {
       "stage": "composite",
@@ -705,13 +703,8 @@
     {
       "stage": "composite",
       "character_id": "pixel_poop",
-      "status": "approved",
-      "selection": [
-        "character-v2-pixel_poop-base",
-        "character-v2-pixel_poop-throw_hit",
-        "keepsakes-v2-tissue_ball",
-        "audio-v3-tissue_ball-B"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/character-v2/pixel_poop/base.png",
@@ -739,8 +732,7 @@
           "candidate_id": "audio-v3-tissue_ball-B"
         }
       ],
-      "user_evidence": "휴지는 2 잎사귀는 1. 됐으. 이렇게하고 메인 병합까지하면 컨트리뷰터로 정지유도 올라가는거지?",
-      "approved_revision": "ffe6fab8c86aa708b6044442023b100498aeb173"
+      "user_evidence": null
     },
     {
       "stage": "composite",
@@ -790,13 +782,8 @@
     {
       "stage": "composite",
       "character_id": "pixel_quokka",
-      "status": "approved",
-      "selection": [
-        "keepsakes-v2-leaf",
-        "character-v3-pixel_quokka-base",
-        "character-v3-pixel_quokka-throw_hit",
-        "audio-v3-leaf-A"
-      ],
+      "status": "pending",
+      "selection": null,
       "artifacts": [
         {
           "path": "candidates/keepsakes-v2/leaf/sprite.png",
@@ -824,8 +811,7 @@
           "candidate_id": "audio-v3-leaf-B"
         }
       ],
-      "user_evidence": "휴지는 2 잎사귀는 1. 됐으. 이렇게하고 메인 병합까지하면 컨트리뷰터로 정지유도 올라가는거지?",
-      "approved_revision": "ffe6fab8c86aa708b6044442023b100498aeb173"
+      "user_evidence": null
     },
     {
       "stage": "idle_timing",
@@ -973,7 +959,7 @@
     "asset_package_clarification": "아그리고 코드작업할것도 없이 그냥 애샛들 캐릭터 5종, 투척물 5종 + 소리, 캐릭터, 투척물 고유 설명 같은거 허락밭고 그거 나중에 추후 5종 배포바로 할 수 있게 에셋들 저장및 문서화만 해놓고 pr승인 하는식으로 하면됨"
   },
   "revision_request": {
-    "user_evidence": "휴지는 2 잎사귀는 1. 됐으. 이렇게하고 메인 병합까지하면 컨트리뷰터로 정지유도 올라가는거지?",
-    "scope": "휴지2(B)·잎사귀1(A)와 해당 합성 최종 승인, 검증 후 main 병합 지시. 앱 활성화·출시는 별도."
+    "user_evidence": "테니스공은1 어묵은1 나머지 다 ok\n근데 휴지랑 잎사귀 너무 소리가 둔탁해. 왜 다 무슨 고체 딲딲한거 같은소리야 잎은 사부작 휴지도 좀 휴지스럽게 잘해봐.",
+    "scope": "테니스공1·어묵1, 기존 오리 음원, 캐릭터5종·물건5종·설명10개와 현재 기본 타이밍 확정. 휴지·잎사귀 새 음원과 변경 음원을 포함한 합성만 재검토."
   }
 }

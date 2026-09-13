@@ -64,6 +64,8 @@ const crypto = require('node:crypto');
     }
     await page.screenshot({path: path.join(output, 'characters.png')});
     assert.equal(await page.locator('.sound-button').count(), 11);
+    assert.equal(await page.locator('[data-item="tissue_ball"] .sound-selection').textContent(), '소리 2 확정');
+    assert.equal(await page.locator('[data-item="leaf"] .sound-selection').textContent(), '소리 1 확정');
     for (const item of ['tissue_ball', 'leaf']) {
       for (const variant of ['A', 'B']) assert.ok(audioPaths.has(`/candidates/audio-v3/${item}/${variant}.wav`));
       assert.ok(![...audioPaths].some(path => path.includes(`/audio-v1/${item}/`)));

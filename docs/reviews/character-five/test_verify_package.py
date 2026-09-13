@@ -20,6 +20,13 @@ class PackageApprovalTests(unittest.TestCase):
     def setUp(self):
         self.manifest = json.loads((PACKAGE / "package.json").read_text())
         self.approvals = json.loads((PACKAGE / "approvals.json").read_text())
+        # Exercise pending-approval rejection independently of real approval progress.
+        for record in self.approvals["records"]:
+            if record["stage"] not in ("appearance_direction", "keepsake_plan"):
+                record.update(status="pending", selection=None, user_evidence=None)
+
+    def test_real_package_has_all_final_approvals(self):
+        self.assertTrue(validate(require_approved=True)["ready"])
 
     def direction(self):
         record = next(record for record in self.approvals["records"] if record["stage"] == "appearance_direction")

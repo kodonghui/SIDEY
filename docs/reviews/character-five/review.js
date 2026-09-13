@@ -1,8 +1,8 @@
-import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=asset-review-v5';
-import { createReviewAudio } from './review-audio.js?v=asset-review-v5';
+import { CHARACTERS, ITEMS, MOTIONS, TIMING, frameAt, advanceWalk, flightDuration, projectilePoint } from './preview-state.js?v=asset-review-final';
+import { createReviewAudio } from './review-audio.js?v=asset-review-final';
 
 const $ = id => document.getElementById(id);
-const url = path => `${path}?v=asset-review-v5`;
+const url = path => `${path}?v=asset-review-final`;
 const sheets = new Map(), objects = new Map(), copy = new Map(), spriteCache = new Map();
 const cards = new Map();
 const loadedCurrentPaths = [];
@@ -10,6 +10,7 @@ const SOUND_OPTIONS = {
   tennis_ball: ['1', '2', '3'], rubber_duck: ['original'], tissue_ball: ['1', '2'],
   fish_cake_skewer: ['1', '2', '3'], leaf: ['1', '2'],
 };
+const SELECTED_SOUNDS = { tennis_ball: '1', rubber_duck: 'original', tissue_ball: '2', fish_cake_skewer: '1', leaf: '1' };
 function soundPath(item, sound) {
   if (['tennis_ball', 'fish_cake_skewer', 'rubber_duck'].includes(item)) return `candidates/audio-v2/${item}/${sound}.wav`;
   return `candidates/audio-v3/${item}/${sound === '1' ? 'A' : 'B'}.wav`;
@@ -216,7 +217,7 @@ function makeCard(id, type, name, parent) {
   node.append(canvas, element('h3', name), description);
   const card = { id, type, element: node, canvas, description, elapsed: 0, x: 90, y: 65, renderX: 90, direction: 1,
     motion: type === 'character' ? 'walk' : 'rotation', frame: type === 'character' ? 2 : 0,
-    sound: type === 'item' ? SOUND_OPTIONS[id][0] : null, composite: null };
+    sound: type === 'item' ? SELECTED_SOUNDS[id] : null, composite: null };
   cards.set(id, card); $(parent).append(node); return card;
 }
 function renderCards() {
@@ -232,7 +233,7 @@ function renderCards() {
     if (!objects.has(item.id)) continue;
     const card = makeCard(item.id, 'item', item.name, 'keepsake-cards');
     const controls = element('div', null, 'card-controls'); const sounds = element('div', null, 'sound-buttons');
-    card.element.append(element('p', ['tennis_ball', 'fish_cake_skewer'].includes(item.id) ? '소리 1 확정' : item.id === 'rubber_duck' ? '기존 소리 확정' : '새 소리 1 · 2 비교', 'sound-selection'));
+    card.element.append(element('p', item.id === 'rubber_duck' ? '기존 소리 확정' : `소리 ${SELECTED_SOUNDS[item.id]} 확정`, 'sound-selection'));
     for (const sound of SOUND_OPTIONS[item.id]) {
       const button = element('button', sound === 'original' ? '기존 소리 재생' : `소리 ${sound}`, 'sound-button');
       button.type = 'button'; button.dataset.sound = sound; button.disabled = !audio.has(`${item.id}/${sound}`);
