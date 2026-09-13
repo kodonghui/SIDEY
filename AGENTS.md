@@ -19,6 +19,8 @@ Before creating a commit, use [.agents/skills/sidey-commit/SKILL.md](.agents/ski
 
 Use [.agents/skills/sidey-workflow/SKILL.md](.agents/skills/sidey-workflow/SKILL.md) and `scripts/workflow.py` for task start, resume, integration and app opening. Default completion includes reviewed PR integration and refreshing the primary main checkout; app-affecting changes also require build/run provenance verification. Public releases, store uploads and production deployments remain separate.
 
+Codex-assisted new commits must include `Co-authored-by: codex <codex@openai.com>` while preserving the human Git author. Install the repository hook once per clone with `python3 scripts/setup_codex_attribution.py`; it also covers linked worktrees. See the commit skill for attribution exceptions and verification. Do not rewrite existing history to add attribution.
+
 ## Automatic parallel agent work
 
 - The coordinating agent must proactively create subagents when independent work can run alongside its own useful work and the expected time savings or verification benefit outweigh creation and coordination costs. This is an explicit instruction to delegate qualifying SIDEY work; do not wait for the user to request parallel agents or ask for confirmation each time.
