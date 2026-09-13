@@ -191,11 +191,20 @@ public sealed class MvvmArchitectureTests
             element => element.Name.LocalName == "Button"
                 && element.Attribute("Command")?.Value == "{Binding PreviewCommand}");
 
-        Assert.Equal("204", button.Attribute("MinHeight")?.Value);
+        Assert.Equal("224", button.Attribute("MinHeight")?.Value);
         Assert.Equal("Stretch", button.Attribute("HorizontalAlignment")?.Value);
         Assert.Equal("Stretch", button.Attribute("VerticalAlignment")?.Value);
         Assert.Equal("Stretch", button.Attribute("HorizontalContentAlignment")?.Value);
         Assert.Equal("Stretch", button.Attribute("VerticalContentAlignment")?.Value);
+
+        XElement name = Assert.Single(
+            button.Descendants(),
+            element => element.Name.LocalName == "TextBlock"
+                && element.Attribute("Text")?.Value == "{Binding DisplayName}");
+        Assert.Equal("1", name.Attribute("MaxLines")?.Value);
+        Assert.Equal("NoWrap", name.Attribute("TextWrapping")?.Value);
+        Assert.Equal("CharacterEllipsis", name.Attribute("TextTrimming")?.Value);
+        Assert.Equal("{Binding DisplayName}", name.Attribute("ToolTipService.ToolTip")?.Value);
     }
 
     [Fact]
