@@ -33,9 +33,11 @@ public sealed partial class StorePreviewStage : UserControl
     private const double ThrowActionSeconds = 0.4;
     private const double ThrowReleaseSeconds = 0.2;
     private const double HitActionSeconds = 0.44;
-    private const double ImpactSeconds = 0.24;
+    private string PreviewObjectId { get; }
+    private double ImpactSeconds => CharacterImpactTiming.Duration(PreviewObjectId);
     private const double ProjectileRotationFrameSeconds = 0.083;
-    private const double ThrowCycleSeconds = 1.0;
+    private double ThrowCycleSeconds => Math.Max(1d,
+        ThrowReleaseSeconds + ThrowFlightDuration(StageWidth * 0.22, StageWidth * 0.78) + ImpactSeconds);
     private const double FirstAutomaticThrowDelaySeconds = 0.35;
     private const double BubbleTangentMargin = 6;
     private const double BubbleMessageHeight = 42;
@@ -56,6 +58,9 @@ public sealed partial class StorePreviewStage : UserControl
     private const double AmbientSparkleDurationSeconds = 1.05;
     private static readonly IReadOnlyList<RectD> s_noAvoidanceRects = [];
     private readonly HashSet<Guid> _stoppedIds = [];
+    private bool _treeMovementPaused;
+    private bool _previewSoundEnabled = true;
+
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(1000d / 30d) };
     private readonly Stopwatch _clock = new();
     private readonly Dictionary<string, IReadOnlyList<PixelFrameSurface>> _characters = new(StringComparer.Ordinal);
@@ -116,7 +121,14 @@ public sealed partial class StorePreviewStage : UserControl
         ProductKind = kind;
         CatalogItemId = catalogItemId;
         CharacterId = PixelCharacterCatalog.NormalizeId(characterId);
+        PreviewObjectId = kind == CommerceProductKind.Throwable
+            ? catalogItemId
+            : WindowsCommerceCatalog.KeepsakeFor(CharacterId)?.EffectiveCatalogItemId ?? "patch_soft_ball";
         _lifetimeToken = lifetimeToken;
+        TreeMovementHint.Visibility = ProductKind == CommerceProductKind.Character && CharacterId == "pixel_tree"
+            ? Visibility.Visible : Visibility.Collapsed;
+        PreviewSoundButton.Visibility = ProductKind == CommerceProductKind.Bubble ? Visibility.Collapsed : Visibility.Visible;
+        RefreshSoundButton();
         _timer.Tick += OnTimerTick;
         BuildPlatform();
         BuildSparkles();
@@ -130,8 +142,36 @@ public sealed partial class StorePreviewStage : UserControl
             _stunCanvas.Children.Add(pixel);
         }
         Canvas.SetLeft(_motionNotice, 20);
-        Canvas.SetTop(_motionNotice, 12);
+        Canvas.SetTop(_motionNotice, CharacterId == "pixel_tree" ? 60 : 12);
         SceneCanvas.Children.Add(_motionNotice);
+    }
+
+    private void OnPreviewSoundClick(object sender, RoutedEventArgs args)
+    {
+        _previewSoundEnabled = !_previewSoundEnabled;
+        if (!_previewSoundEnabled)
+        {
+            StopSounds?.Invoke(_audioScope);
+        }
+        RefreshSoundButton();
+    }
+
+    private void RefreshSoundButton()
+    {
+        string label = I18n.Get(_previewSoundEnabled ? "preview.muteSound" : "preview.enableSound");
+        PreviewSoundIcon.Symbol = _previewSoundEnabled ? Symbol.Volume : Symbol.Mute;
+        ToolTipService.SetToolTip(PreviewSoundButton, label);
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(PreviewSoundButton, label);
+    }
+
+    private void OnCharacterRightTapped(object sender, RightTappedRoutedEventArgs args)
+    {
+        if (ProductKind == CommerceProductKind.Character && CharacterId == "pixel_tree" && _isPresented && _resourcesLoaded)
+        {
+            _treeMovementPaused = !_treeMovementPaused;
+            args.Handled = true;
+            UpdateScene();
+        }
     }
 
     public void SetAnimationsEnabled(bool enabled)
@@ -325,9 +365,7 @@ public sealed partial class StorePreviewStage : UserControl
             }
             else
             {
-                string objectId = ProductKind == CommerceProductKind.Throwable
-                    ? CatalogItemId
-                    : StoreProductArtwork.SignatureObject(CharacterId);
+                string objectId = CosmeticCatalog.ResolveThrowableAssetId(PreviewObjectId);
                 string objectPath = Path.Combine(root, "Throwables", objectId, "sprite.png");
                 var projectileFrames = new ImageSource[12];
                 for (int frame = 0; frame < projectileFrames.Length; frame++)
@@ -538,7 +576,7 @@ public sealed partial class StorePreviewStage : UserControl
             PixelMovementAgent rightAgent = _movementAgents[1];
             leftX = leftAgent.TrackPosition - (RenderedCharacterSize / 2d);
             rightX = rightAgent.TrackPosition - (RenderedCharacterSize / 2d);
-            leftFrame = CharacterFrame(elapsed, PixelRoamingPolicy.IsWalking(leftAgent, false, PreviewScale) ? leftAgent.Velocity : 0);
+            leftFrame = CharacterFrame(elapsed, PixelRoamingPolicy.IsWalking(leftAgent, _stoppedIds.Contains(leftAgent.Id), PreviewScale) ? leftAgent.Velocity : 0);
             rightFrame = CharacterFrame(elapsed + 0.08, PixelRoamingPolicy.IsWalking(rightAgent, _stoppedIds.Contains(rightAgent.Id), PreviewScale) ? rightAgent.Velocity : 0);
             if (elapsed - _manualThrowStarted >= ThrowActionSeconds)
             {
@@ -701,6 +739,10 @@ public sealed partial class StorePreviewStage : UserControl
         foreach (PixelMovementAgent agent in _movementAgents)
             if (_stun.IsStunned(agent.Id))
                 _stoppedIds.Add(agent.Id);
+        if (_treeMovementPaused && CharacterId == "pixel_tree")
+        {
+            _stoppedIds.Add(_movementAgents[0].Id);
+        }
         double hitStarted = _manualThrowStarted + ThrowReleaseSeconds + _manualThrowFlightDuration;
         if (ProductKind == CommerceProductKind.Character
             && elapsed >= hitStarted && elapsed < hitStarted + HitActionSeconds)
@@ -1007,12 +1049,13 @@ public sealed partial class StorePreviewStage : UserControl
                 _lastImpactStart = eventStart;
                 Guid target = _movementAgents[leftToRight ? 1 : 0].Id;
                 _stun.RecordHit(target);
-                string soundId = ProductKind == CommerceProductKind.Throwable ? CatalogItemId : ImpactSoundCatalog.Resolve(CharacterId, null);
-                CharacterImpact?.Invoke(soundId, _audioScope, Stopwatch.GetTimestamp());
+                string soundId = ImpactSoundCatalog.Resolve(CharacterId, PreviewObjectId);
+                if (_previewSoundEnabled)
+                {
+                    CharacterImpact?.Invoke(soundId, _audioScope, Stopwatch.GetTimestamp());
+                }
             }
-            int impactFrame = 8 + Math.Min(
-                3,
-                (int)((local - impactStarted) / (ImpactSeconds / 4d)));
+            int impactFrame = 8 + CharacterImpactTiming.Frame(PreviewObjectId, local - impactStarted);
             ImpactImage.ShowFrame(impactFrame - 8);
             double targetCenterX = (leftToRight ? rightX : leftX)
                 + (RenderedCharacterSize / 2d);
@@ -1285,11 +1328,11 @@ public sealed partial class StorePreviewStage : UserControl
         }
         if (ProductKind == CommerceProductKind.Throwable)
         {
-            await VerifyCannonFramesSmokeAsync();
+            await VerifyThrowableFramesSmokeAsync();
             EndPresentation();
             if ((_ownedFrames.Count != 0 || _ownedImageFrames.Count != 0) || _timer.IsEnabled)
                 throw new InvalidOperationException("Store preview smoke: cannon resources still active.");
-            StartupDiagnostics.Stage("store-preview-cannon-smoke-complete");
+            StartupDiagnostics.Stage($"store-preview-throwable-smoke-complete product={CatalogItemId}");
             return;
         }
         if (!TriggerPreviewPulse())
@@ -1443,7 +1486,7 @@ public sealed partial class StorePreviewStage : UserControl
         StartupDiagnostics.Stage($"stun-rendered-verified visible={visible} expected={expected.Count}");
     }
 
-    private async Task VerifyCannonFramesSmokeAsync()
+    private async Task VerifyThrowableFramesSmokeAsync()
     {
         const double Left = 80, Right = 360;
         double flight = ThrowFlightDuration(Left, Right);
@@ -1455,13 +1498,14 @@ public sealed partial class StorePreviewStage : UserControl
             await Task.Delay(30);
             double actorX = (leftToRight ? Left : Right) + (RenderedCharacterSize / 2d);
             double emitterX = Canvas.GetLeft(EmitterImage) + (EmitterSize / 2d);
-            if (EmitterImage.Opacity != 1 || !EmitterImage.IsFrameReady
-                || Math.Sign(emitterX - actorX) != (leftToRight ? 1 : -1))
+            if (CatalogItemId == "throwable_toy_cannon" && (EmitterImage.Opacity != 1 || !EmitterImage.IsFrameReady
+                || Math.Sign(emitterX - actorX) != (leftToRight ? 1 : -1)))
             {
                 StartupDiagnostics.Stage($"cannon-smoke-emitter-failed forward={leftToRight} opacity={EmitterImage.Opacity} ready={EmitterImage.IsFrameReady} delta={emitterX - actorX}");
                 throw new InvalidOperationException("Store preview smoke: cannon emitter missing or behind actor.");
             }
-            await VerifyRenderedEffectAsync(EmitterImage);
+            if (CatalogItemId == "throwable_toy_cannon")
+                await VerifyRenderedEffectAsync(EmitterImage);
             for (int frame = 0; (frame + 0.5) * ProjectileRotationFrameSeconds < flight; frame++)
             {
                 UpdateThrow(ThrowReleaseSeconds + (frame + 0.5) * ProjectileRotationFrameSeconds,
@@ -1477,7 +1521,10 @@ public sealed partial class StorePreviewStage : UserControl
             }
             for (int frame = 0; frame < 4; frame++)
             {
-                UpdateThrow(ThrowReleaseSeconds + flight + (frame + 0.5) * ImpactSeconds / 4,
+                double impactTime = CatalogItemId == "throwable_dujjonku"
+                    ? new[] { 0.04, 0.13, 0.32, 0.52 }[frame]
+                    : (frame + 0.5) * 0.06;
+                UpdateThrow(ThrowReleaseSeconds + flight + impactTime,
                     Left, Right, leftToRight, flight);
                 await Task.Delay(20);
                 if (ImpactImage.Opacity != 1 || !ImpactImage.IsFrameReady

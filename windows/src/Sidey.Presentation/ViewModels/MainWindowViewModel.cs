@@ -312,6 +312,11 @@ public sealed partial class MainWindowViewModel : ObservableObject
         _updates = updates ?? throw new ArgumentNullException(nameof(updates));
         IsRemoteContentLoading = coordinator.IsRemoteContentLoading;
         StoreProducts = [.. WindowsCommerceCatalog.Products.Select(CreateStorePreview)];
+        foreach (StoreProductPreviewViewModel product in StoreProducts.Where(product => product.Kind == CommerceProductKind.Character))
+        {
+            string? keepsakeId = WindowsCommerceCatalog.KeepsakeFor(product.CharacterId)?.Id;
+            product.RelatedKeepsake = StoreProducts.FirstOrDefault(candidate => candidate.ProductId == keepsakeId);
+        }
         RefreshVisibleStoreProducts();
         RefreshMonitors();
         ApplyState(coordinator.State);
@@ -342,28 +347,10 @@ public sealed partial class MainWindowViewModel : ObservableObject
     private StoreProductPreviewViewModel CreateStorePreview(CommerceProduct product)
     {
         PixelCharacterDefinition character = PixelCharacterCatalog.Get(product.CharacterId);
-        string descriptionKey = product.Id switch
-        {
-            "character_starlight_upalupa" => "store.starlightUpalupaDescription",
-            "character_guinea_pig" => "store.guineaPigDescription",
-            "character_monkey" => "store.monkeyDescription",
-            "character_chinchilla" => "store.chinchillaDescription",
-            "bubble_bunny_pink" => "store.bunnyPinkBubbleDescription",
-            "bubble_butter_chick" => "store.butterChickBubbleDescription",
-            "bubble_starry_cat" => "store.starryCatBubbleDescription",
-            "throwable_bouncy_heart" => "store.bouncyHeartDescription",
-            "throwable_toy_cannon" => "store.toyCannonDescription",
-            "throwable_squeaky_duck" => "store.squeakyDuckDescription",
-            _ => throw new InvalidOperationException("Unknown Windows commerce product."),
-        };
         string displayName = product.Kind == CommerceProductKind.Character
             ? character.DisplayName
             : I18n.Get($"store.product.{product.Id}");
-        string description = I18n.Get(descriptionKey);
-        if (product.Kind == CommerceProductKind.Character)
-        {
-            description = $"{description} {I18n.Get($"store.interaction.{character.Id}")}";
-        }
+        string description = I18n.Get($"store.productDescriptions.{product.Id}");
         return new StoreProductPreviewViewModel(
             product,
             displayName,

@@ -1,0 +1,46 @@
+{
+  "character_id": "pixel_otter",
+  "display_name": "아기 수달",
+  "legacy_aliases": [],
+  "frame_pixel_size": [
+    24,
+    24
+  ],
+  "render_dip_size": [
+    48,
+    48
+  ],
+  "sheet_pixel_size": [
+    240,
+    24
+  ],
+  "foot_baseline_pixel": 3,
+  "filtering": "nearest",
+  "animations": {
+    "idle": [
+      0,
+      1
+    ],
+    "walk": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "doze": [
+      6,
+      7
+    ],
+    "offline": [
+      8,
+      9
+    ]
+  },
+  "sha256": "38ebed0f4588e4f776df44872c2e81e96d70056fb8c97b19c812433584e4b5db",
+  "runtime_bgra": {
+    "byte_order": "BGRA",
+    "alpha": "straight",
+    "byte_length": 23040,
+    "sha256": "5af56ef469d028642ba133a0b7f21fc42ca404143e0bb2a36bc990230d52d778"
+  }
+}

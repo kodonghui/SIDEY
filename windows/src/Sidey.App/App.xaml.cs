@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Sidey.Core.Domain;
 using Sidey.Core.Localization;
 using Sidey.Platform.Windows;
 using Sidey.Presentation.Services;
@@ -135,6 +136,7 @@ public partial class App : Application
             + $"saved={(coordinator.State.Preferences.Language is not null).ToString().ToLowerInvariant()}");
         coordinator.ComposerRequested += RequestComposer;
         coordinator.PulseRequested += RequestPulse;
+        coordinator.TreeMovementToggleRequested += RequestTreeMovementToggle;
         coordinator.CharacterThrowRequested += RequestCharacterThrow;
         coordinator.SendFailed += RestoreFailedDraft;
         coordinator.RenderingFailed += OnRenderingFailed;
@@ -505,9 +507,13 @@ public partial class App : Application
             {
                 stage.CharacterImpact += _coordinator!.PlayImpactSound;
                 stage.StopSounds += scope => _coordinator.StopImpactSounds(scope);
-                var content = new Microsoft.UI.Xaml.Controls.StackPanel { Spacing = 12 };
-                content.Children.Add(stage);
-                content.Children.Add(new Microsoft.UI.Xaml.Controls.TextBlock { Text = "SIDEY preview" });
+                StoreProductPreviewViewModel? product = EnsureMainWindow().ViewModel.StoreProducts.FirstOrDefault(
+                    product => product.Kind == stage.ProductKind && product.CatalogItemId == stage.CatalogItemId);
+                StackPanel content = product is null
+                    ? new Microsoft.UI.Xaml.Controls.StackPanel()
+                    : MainWindow.CreateStorePreviewContent(product, stage);
+                if (product is null)
+                    content.Children.Add(stage);
                 var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog
                 {
                     XamlRoot = host.XamlRoot,
@@ -531,9 +537,12 @@ public partial class App : Application
                 var stage = new Controls.StorePreviewStage(Sidey.Core.Domain.CommerceProductKind.Character, character, character);
                 await VerifyDialogAsync(stage);
             }
-            var cannonStage = new Controls.StorePreviewStage(
-                Sidey.Core.Domain.CommerceProductKind.Throwable, "throwable_toy_cannon", "pixel_hamster");
-            await VerifyDialogAsync(cannonStage);
+            foreach (CommerceProduct? product in Sidey.Core.Domain.WindowsCommerceCatalog.Products.Where(
+                product => product.Kind == Sidey.Core.Domain.CommerceProductKind.Throwable))
+            {
+                await VerifyDialogAsync(new Controls.StorePreviewStage(
+                    product.Kind, product.EffectiveCatalogItemId, "pixel_hamster"));
+            }
             await VerifyDialogAsync(new Controls.StorePreviewStage(
                 Sidey.Core.Domain.CommerceProductKind.Bubble, "bubble_bunny_pink", "pixel_hamster"));
         }
@@ -673,6 +682,29 @@ public partial class App : Application
                 {
                     EnsureMainWindow().ShowFatalError(exception);
                 }
+            }
+        });
+    }
+
+    private void RequestTreeMovementToggle(Guid? roomId)
+    {
+        if (_shuttingDown)
+        {
+            return;
+        }
+        _dispatcherQueue.TryEnqueue(async () =>
+        {
+            if (_shuttingDown || _coordinator is null)
+            {
+                return;
+            }
+            try
+            {
+                await _coordinator.ToggleTreeMovementAsync(roomId);
+            }
+            catch (Exception exception)
+            {
+                StartupDiagnostics.NonFatal("tree-movement", exception);
             }
         });
     }
@@ -1339,6 +1371,7 @@ public partial class App : Application
             catch (Exception exception) { StartupDiagnostics.NonFatal("shutdown-settings-save", exception); }
             _coordinator.ComposerRequested -= RequestComposer;
             _coordinator.PulseRequested -= RequestPulse;
+            _coordinator.TreeMovementToggleRequested -= RequestTreeMovementToggle;
             _coordinator.CharacterThrowRequested -= RequestCharacterThrow;
             _coordinator.SendFailed -= RestoreFailedDraft;
             _coordinator.RenderingFailed -= OnRenderingFailed;

@@ -19,7 +19,6 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
     private const double ThrowActionSeconds = 0.4d;
     private const double ThrowReleaseSeconds = 0.2d;
     private const double HitActionSeconds = 0.44d;
-    private const double ImpactSeconds = 0.24d;
     private const double AmbientSparkleCycleSeconds = 1.2d;
     private const double AmbientSparkleDurationSeconds = 1.05d;
     private const double SparklePulseDurationSeconds = 0.78d;
@@ -27,6 +26,7 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
 
     private readonly Lock _gate = new();
     private readonly CharacterStunState _stun = new();
+    private bool _treeMovementPaused;
     private volatile bool _hasPresentedFrame;
     public bool HasPresentedFrame => _hasPresentedFrame;
 
@@ -713,6 +713,7 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
 
     private void ApplySnapshotWithinGate(WorldSnapshot snapshot)
     {
+        _treeMovementPaused = snapshot.TreeMovementPaused;
         lock (_selfGate)
             _selfId = snapshot.Members.FirstOrDefault(member => member.IsCurrentUser)?.Id ?? Guid.Empty;
         if (_roomId != snapshot.RoomId)
@@ -866,7 +867,8 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
         foreach (WorldNode node in _nodes)
         {
             if (node.Member.Presence is PresenceState.Away or PresenceState.Offline or PresenceState.Reconnecting
-                || _hitStartedAt.ContainsKey(node.Member.Id) || _stun.IsStunned(node.Member.Id))
+                || _hitStartedAt.ContainsKey(node.Member.Id) || _stun.IsStunned(node.Member.Id)
+                || PixelMovementPolicy.IsTreePaused(node.Member, _treeMovementPaused))
             {
                 _stoppedIds.Add(node.Member.Id);
             }
@@ -941,7 +943,7 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
                 if (projectile.Start is not null && projectile.End is not null)
                 {
                     projectile.ImpactStartedAt ??= Stopwatch.GetTimestamp();
-                    if (Stopwatch.GetElapsedTime(projectile.ImpactStartedAt.Value).TotalSeconds >= ImpactSeconds)
+                    if (Stopwatch.GetElapsedTime(projectile.ImpactStartedAt.Value).TotalSeconds >= CharacterImpactTiming.Duration(projectile.Event.ThrowableId))
                     {
                         _projectiles.RemoveAt(index);
                     }
@@ -977,7 +979,7 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
                     _hitStartedAt[target.Member.Id] = projectile.ImpactStartedAt.Value;
             }
             if (projectile.ImpactStartedAt is { } impactStarted
-                && Stopwatch.GetElapsedTime(impactStarted).TotalSeconds >= ImpactSeconds)
+                && Stopwatch.GetElapsedTime(impactStarted).TotalSeconds >= CharacterImpactTiming.Duration(projectile.Event.ThrowableId))
             {
                 _projectiles.RemoveAt(index);
             }
@@ -999,7 +1001,7 @@ internal sealed class LayeredPixelWorldRenderer : IDisposable
             if (projectile.ImpactStartedAt is { } impactStarted)
             {
                 double elapsed = Stopwatch.GetElapsedTime(impactStarted).TotalSeconds;
-                frame = 8 + Math.Min(3, (int)(elapsed / (ImpactSeconds / 4d)));
+                frame = 8 + CharacterImpactTiming.Frame(projectile.Event.ThrowableId, elapsed);
                 point = ImpactPoint(end);
                 renderScale = 1.5d;
             }

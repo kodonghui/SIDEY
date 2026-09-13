@@ -21,6 +21,9 @@ internal sealed class CharacterThrowFrameCache : IDisposable
             ["pixel_monkey"] = "059a288dde75695febec8a42303dc63f126636b094e3896b795b6a4ac1cce39a",
             ["pixel_chinchilla"] = "a6dd2b4f1837812bc9fd0d979fe379c4362ed8018b9d5e6991e5c28d53265b02",
             ["pixel_starlight_upalupa"] = "7a9bae8b1359f432857e026c972e3bc99777539ce7cfff89bc01e95d1938de75",
+            ["pixel_otter"] = "ad7d076f4c63910c2c97f6e6ed03c27b47642a825d002d64b8c9dc86c11c2716",
+            ["pixel_pig"] = "045344ec128ed34cfe2e6a641cf90c1a04b3ac639045dc200bc996c0089da85b",
+            ["pixel_tree"] = "af22b750129b813d0affd8fa572604837f6bf67acfa14bda68074abf45a11f15",
         };
 
     private static readonly IReadOnlyDictionary<string, string> s_objectHashes =
@@ -34,20 +37,13 @@ internal sealed class CharacterThrowFrameCache : IDisposable
             ["throwable_bouncy_heart"] = "8474458c5d810a598c16a7f74bbfecf65300d7fb2c55aaaf0cabfa0399945305",
             ["throwable_toy_cannon"] = "c42c472f216ec4d291a41562dfaf6a28204625133961a5a225198daf87459bef",
             ["throwable_squeaky_duck"] = "3b6935398d41b6d1cd5efa922392dbf4864782deb9880c5d0f10885e00906e7a",
-        };
-
-    private static readonly IReadOnlyDictionary<string, string> s_characterObjects =
-        new Dictionary<string, string>(StringComparer.Ordinal)
-        {
-            ["pixel_hamster"] = "patch_soft_ball",
-            ["pixel_cat"] = "patch_soft_ball",
-            ["pixel_puppy"] = "patch_soft_ball",
-            ["pixel_rabbit"] = "patch_soft_ball",
-            ["pixel_penguin"] = "patch_soft_ball",
-            ["pixel_guinea_pig"] = "mini_paprika",
-            ["pixel_monkey"] = "banana",
-            ["pixel_chinchilla"] = "dust_bath_pouch",
-            ["pixel_starlight_upalupa"] = "starlight_orb",
+            ["clam"] = "561832b15538e3f57b0b6381e967130f21ba1a0aaf74110019588ff90da874e0",
+            ["pork"] = "0a7acc60184321e05f7e0e04aed8972651331e50960aa18243b4958d27fd4da6",
+            ["timber"] = "21280bb2ac9f9df4332552281fcba6fc1efdaf27b933eb058bf625a30221b63b",
+            ["throwable_snowflake"] = "35ede7107f668d193c272773441215427da267e1f27b2beaab47d8c88ae37cd2",
+            ["throwable_baseball"] = "73f3dc8d86a9f8f76f07494df5ee48a8ff5380feec55a718eed8aad6940b94e5",
+            ["throwable_wakkuball"] = "4627c3538efcdaae3deda1ee390fbac92f96cf6e199dceb58a60f7917b7de295",
+            ["throwable_dujjonku"] = "bb2468a5a9f3a692c294c7546c2b20cd4bfdfc903e6779304b2bfeccaea50b32",
         };
 
     private static readonly IReadOnlyDictionary<string, string> s_bgraHashes =
@@ -71,6 +67,16 @@ internal sealed class CharacterThrowFrameCache : IDisposable
             ["Throwables/throwable_toy_cannon/sprite"] = "f685f7eaf078c1f800bbcd76525e717c7ebb72ae93f8c031fa2d4250b84969d4",
             ["Throwables/throwable_toy_cannon/emitter"] = "a7801effb2e7117ca7f2fc386c1f1e9bfddcf8aa70df3328312f573a84d890da",
             ["Throwables/throwable_squeaky_duck/sprite"] = "2456adbd1f17ea4b831b4d58bb510c3a9a663a7aa2a36c030f286ab4e9ee31f9",
+            ["Characters/pixel_otter/throw_hit"] = "27aeb7a143f9bbeda7d5aab4dc0c69666d444e5e09f27b9249d3c22b4d960e4f",
+            ["Characters/pixel_pig/throw_hit"] = "a4da4e142417243e16c8e60f9ba7864d836d3fbd3c88aa607dfa6dd56e9d8b5b",
+            ["Characters/pixel_tree/throw_hit"] = "4bc7a7960f778346910a5e071b0396a3a2d61ca869fd79eec58d6516d2c71c85",
+            ["Throwables/clam/sprite"] = "fb5486a6a17ac8406ccf63c9671de233f62d285376f598361be8c02edc23d8c4",
+            ["Throwables/pork/sprite"] = "f521506a1d95f1423dbade5645c4a2e9497878bdab672729f1ff8169c059ff3f",
+            ["Throwables/timber/sprite"] = "bcc35b32478d06fa051a306ecf14475d1429d75b9cf58e8949de28773b566a8d",
+            ["Throwables/throwable_snowflake/sprite"] = "d7c5a1438ba9d9cc65684fab0c484ddb467c2e7bc27a85de90a050c124246483",
+            ["Throwables/throwable_baseball/sprite"] = "c0df6dd6c04815fa4373eb6dbb710a8f36db0e120f7c07d81206f9259f3f1e6c",
+            ["Throwables/throwable_wakkuball/sprite"] = "5bed22d92763fb0a16917ef89b03d86b94e63e3594f52021437cc861582de1b0",
+            ["Throwables/throwable_dujjonku/sprite"] = "f1b7c6583f64a6990c556a29d8874a8762b61ecf9117c79f7fe86a73f8423e53",
         };
 
     private readonly Dictionary<string, byte[][]> _actions = new(StringComparer.Ordinal);
@@ -145,11 +151,7 @@ internal sealed class CharacterThrowFrameCache : IDisposable
     internal ReadOnlySpan<byte> ObjectFrame(string? sourceCharacterId, string? throwableId, int frame)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        string objectId = CosmeticCatalog.NormalizeThrowableId(throwableId)
-            ?? (sourceCharacterId is not null
-                && s_characterObjects.TryGetValue(sourceCharacterId, out string? mapped)
-                    ? mapped
-                    : "patch_soft_ball");
+        string objectId = CosmeticCatalog.ResolveThrowableAssetId(throwableId);
         return _objects[objectId][Math.Clamp(frame, 0, ObjectFrameCount - 1)];
     }
 

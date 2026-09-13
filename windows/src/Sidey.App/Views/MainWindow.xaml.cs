@@ -600,7 +600,6 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         StorePreviewStage? previewStage = null;
         try
         {
-            var content = new StackPanel { Spacing = 12 };
             previewStage = new StorePreviewStage(
                 product.Kind,
                 product.CatalogItemId,
@@ -615,31 +614,11 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
                 return;
             }
 
-            content.Children.Add(previewStage);
-            content.Children.Add(new TextBlock
-            {
-                Text = product.DisplayName,
-                FontSize = 22,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                TextAlignment = TextAlignment.Center,
-                TextWrapping = TextWrapping.Wrap,
-            });
-            content.Children.Add(new TextBlock
-            {
-                Text = product.Description,
-                Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources[
-                    "TextFillColorSecondaryBrush"],
-                TextAlignment = TextAlignment.Center,
-                TextWrapping = TextWrapping.Wrap,
-            });
+            StackPanel content = CreateStorePreviewContent(product, previewStage);
             var dialog = new ContentDialog
             {
                 XamlRoot = xamlRoot,
                 Content = content,
-                PrimaryButtonText = product.IsOwned
-                    ? I18n.Get("store.owned")
-                    : I18n.Format("store.purchase", product.FormattedPrice),
-                IsPrimaryButtonEnabled = false,
                 CloseButtonText = I18n.Get("common.close"),
                 DefaultButton = ContentDialogButton.Close,
             };
@@ -664,6 +643,79 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
             _activePreview = null;
             _storePreviewDialogOpen = false;
         }
+    }
+
+    internal static StackPanel CreateStorePreviewContent(StoreProductPreviewViewModel product, StorePreviewStage previewStage)
+    {
+        var content = new StackPanel { Spacing = 12 };
+        content.Children.Add(new TextBlock
+        {
+            Text = product.DisplayName,
+            FontSize = 22,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            TextAlignment = TextAlignment.Center,
+            TextWrapping = TextWrapping.Wrap,
+        });
+        content.Children.Add(previewStage);
+        var cards = new Grid { ColumnSpacing = 12, Width = 540 };
+        cards.ColumnDefinitions.Add(new ColumnDefinition());
+        cards.Children.Add(CreateStoreDetailCard(product, isKeepsake: product.IsKeepsake));
+        if (product.RelatedKeepsake is { } keepsake)
+        {
+            cards.ColumnDefinitions.Add(new ColumnDefinition());
+            Border keepsakeCard = CreateStoreDetailCard(keepsake, isKeepsake: true);
+            Grid.SetColumn(keepsakeCard, 1);
+            cards.Children.Add(keepsakeCard);
+        }
+        content.Children.Add(cards);
+        return content;
+    }
+
+    private static Border CreateStoreDetailCard(StoreProductPreviewViewModel product, bool isKeepsake)
+    {
+        var content = new StackPanel { Spacing = 8 };
+        if (isKeepsake)
+        {
+            content.Children.Add(new TextBlock { Text = I18n.Get("store.keepsake"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+        }
+        content.Children.Add(new StoreProductArtwork
+        {
+            ProductKind = product.Kind,
+            CatalogItemId = product.CatalogItemId,
+            CharacterId = product.CharacterId,
+            Width = 72,
+            Height = 72,
+            HorizontalAlignment = HorizontalAlignment.Left,
+        });
+        foreach (string property in new[] { nameof(product.DisplayName), nameof(product.Description), nameof(product.FormattedPrice) })
+        {
+            var text = new TextBlock { TextWrapping = TextWrapping.Wrap };
+            text.SetBinding(TextBlock.TextProperty, new Microsoft.UI.Xaml.Data.Binding
+            {
+                Source = product,
+                Path = new PropertyPath(property),
+                Mode = Microsoft.UI.Xaml.Data.BindingMode.OneWay,
+            });
+            content.Children.Add(text);
+        }
+        if (isKeepsake)
+        {
+            content.Children.Add(new TextBlock { Text = I18n.Get("store.soldSeparately"), TextWrapping = TextWrapping.Wrap });
+        }
+        var status = new Button { IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Stretch };
+        status.SetBinding(ContentControl.ContentProperty, new Microsoft.UI.Xaml.Data.Binding
+        {
+            Source = product,
+            Path = new PropertyPath(nameof(product.DetailStatusText)),
+            Mode = Microsoft.UI.Xaml.Data.BindingMode.OneWay,
+        });
+        content.Children.Add(status);
+        return new Border
+        {
+            Style = (Style)Application.Current.Resources["SideySettingsCardStyle"],
+            Padding = new Thickness(16),
+            Child = content,
+        };
     }
 
     public async Task<string?> PromptForRoomNameAsync(string currentName)

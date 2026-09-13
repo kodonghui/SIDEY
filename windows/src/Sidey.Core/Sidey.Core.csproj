@@ -3,4 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Sidey.Core</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain/commerce-catalog.json" LogicalName="Sidey.Core.commerce-catalog.json" />
+  </ItemGroup>
 </Project>
