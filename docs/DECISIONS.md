@@ -269,7 +269,7 @@ Windows 오버레이와 상점 캐릭터 미리보기의 산책은 macOS와 같�
 - Sparkle 프레임워크와 `SUFeedURL`·`SUPublicEDKey`가 Release 번들에 포함되고 signed feed·압축 해제 전 검증이 강제되어야 한다. appcast 게시 도구는 ad-hoc·development 빌드를 기본 거부하고 Developer ID·Hardened Runtime·stapled notarization·production 표시명과 채널을 검증해야 한다. development 채널은 Sparkle을 만들지 않고 업데이트 메뉴를 비활성화해야 한다.
 - 12번째 가입 성공, 13번째 거부, 여섯 번째 방 거부, 3일 초과 메시지 삭제, 방장 전용 이름 변경·추방·삭제와 cascade, RLS, 중복 닉네임·캐릭터 허용을 SQL 테스트한다.
 - 최대 방 인원 12명으로 30분 실행하고, 별도 20노드 합성 부하에서도 p95 frame time 40ms 이하, 100ms 이상 main-thread hang 없음, 지속 RSS 증가 없음, 숨긴 월드의 SpriteKit 정지를 확인한다.
-- Windows는 무료 5종과 현재 계정의 활성 entitlement 캐릭터 선택, 추가 4종의 구매 없는 상점 미리보기와 원격 렌더링을 같은 catalog·renderer asset으로 유지하고 Debug 전용 햄스터 제한 모드에서 투명·최상위·클릭 통과·52×52 hotspot·DPI·잠금·절전 복귀를 실기 검증한다. 연결형 검증은 익명 세션·방·Presence·타이핑·메시지·`character_pulse`·`character_throw`를 macOS와 양방향 확인한다.
+- Windows는 무료 5종과 현재 계정의 활성 entitlement 캐릭터 선택, 추가 7종의 구매 없는 상점 미리보기와 원격 렌더링을 같은 catalog·renderer asset으로 유지하고 Debug 전용 햄스터 제한 모드에서 투명·최상위·클릭 통과·52×52 hotspot·DPI·잠금·절전 복귀를 실기 검증한다. 연결형 검증은 익명 세션·방·Presence·타이핑·메시지·`character_pulse`·`character_throw`를 macOS와 양방향 확인한다.
 - Windows 정식판은 12명 2시간과 20노드 30분 부하에서 p95 frame time 40ms 이하, 100ms 이상 UI-thread hang 없음, warm-up 후 working set 20MB 초과 증가 없음, handle·surface 지속 증가 없음을 확인한다.
 
 ## 아직 결정하지 않은 항목
@@ -283,3 +283,5 @@ Windows 오버레이와 상점 캐릭터 미리보기의 산책은 macOS와 같�
 2026-09-12: macOS App Store판에도 직배포판과 동일한 보라색 프로필 선택 테두리·체크·배경을 적용한다. 캐릭터·말풍선·투척물은 공통 선택 스타일을 사용하고 상점 카드의 hover·키보드 focus 및 사용 중 표시도 같은 보라색을 사용한다. 보유·오류 상태의 의미 색은 유지한다. 이전 직배포 전용 범위를 이번 사용자 요청으로 App Store판까지 확장한다.
 
 2026-09-12: App Store 상점은 Apple에서 조회한 가격만 표시한다. Apple 응답에 없는 상품에 직배포 DB 가격을 대신 표시하거나 조회가 끝난 뒤에도 로딩 중으로 안내하지 않는다. 실제 조회 중·조회 불가·조회 실패를 구분하고 상세의 가격 다시 확인 및 상점 상태 새로고침은 Apple 상품 조회도 재실행한다. Apple 상품을 받지 못한 항목의 구매는 계속 차단하며 이미 보유한 권리는 가격 조회 실패로 변경하지 않는다.
+
+2026-09-13: Windows 후속 구현은 승인된 캐릭터 12종과 상점 상품 24종(캐릭터 7종·말풍선 3종·투척물 14종)을 사용해요. 애장품 7종은 캐릭터와 별도 entitlement로 보유하고, 보유한 애장품은 어떤 캐릭터에도 장착할 수 있어요. 투척물 미장착 시 모든 캐릭터가 패치 말랑공을 사용해요. 서버에서 이미 부여한 소유권은 유지하며 production 판매 잠금은 열지 않아요. 내 캐릭터 더블 우클릭은 기존 10초 던지기 활성화를 담당하고, 나무의 단일 우클릭은 산책 정지·재개를 전환해 기기에 저장해요. 상점에는 캐릭터·애장품의 독립 가격·보유 상태와 별도 판매 안내, 미리보기 소리 설정, 나무 조작 안내를 표시해요. 충돌음은 승인된 15개를 사용하고 두쫀쿠의 충돌 4프레임은 0.08·0.10·0.28·0.12초로 재생해요. 공개 버전과 판매 정책은 별도 출시 작업에서만 변경해요.
