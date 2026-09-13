@@ -614,14 +614,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
                 return;
             }
 
-            StackPanel content = CreateStorePreviewContent(product, previewStage);
-            var dialog = new ContentDialog
-            {
-                XamlRoot = xamlRoot,
-                Content = content,
-                CloseButtonText = I18n.Get("common.close"),
-                DefaultButton = ContentDialogButton.Close,
-            };
+            ContentDialog dialog = CreateStorePreviewDialog(product, previewStage, xamlRoot);
             dialog.Closing += (_, _) => previewStage.EndPresentation();
             previewStage.BeginPresentation();
             await dialog.ShowAsync();
@@ -645,6 +638,46 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         }
     }
 
+    internal static ContentDialog CreateStorePreviewDialog(
+        StoreProductPreviewViewModel? product, StorePreviewStage previewStage, XamlRoot xamlRoot)
+    {
+        StackPanel content = product is null ? new StackPanel() : CreateStorePreviewContent(product, previewStage);
+        if (product is null)
+        {
+            content.Children.Add(new Viewbox { Child = previewStage, Stretch = Stretch.Uniform, StretchDirection = StretchDirection.DownOnly });
+        }
+        var scroll = new ScrollViewer
+        {
+            Content = content,
+            Width = 540,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            HorizontalScrollMode = ScrollMode.Disabled,
+            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            Padding = new Thickness(0, 0, 4, 0),
+        };
+        var dialog = new ContentDialog
+        {
+            XamlRoot = xamlRoot,
+            Content = scroll,
+            RequestedTheme = (xamlRoot.Content as FrameworkElement)?.ActualTheme ?? ElementTheme.Default,
+            CloseButtonText = I18n.Get("common.close"),
+            DefaultButton = ContentDialogButton.Close,
+        };
+        // WinUI's default dialog content width is narrower than the preview stage.
+        dialog.Resources["ContentDialogMaxWidth"] = 620d;
+        void UpdateViewport(XamlRoot sender, XamlRootChangedEventArgs args)
+        {
+            scroll.MaxWidth = Math.Max(1, sender.Size.Width - 80);
+            scroll.MaxHeight = Math.Max(1, sender.Size.Height - 160);
+        }
+        scroll.MaxWidth = Math.Max(1, xamlRoot.Size.Width - 80);
+        scroll.MaxHeight = Math.Max(1, xamlRoot.Size.Height - 160);
+        dialog.Opened += (_, _) => xamlRoot.Changed += UpdateViewport;
+        dialog.Closed += (_, _) => xamlRoot.Changed -= UpdateViewport;
+        return dialog;
+    }
+
     internal static StackPanel CreateStorePreviewContent(StoreProductPreviewViewModel product, StorePreviewStage previewStage)
     {
         var content = new StackPanel { Spacing = 12 };
@@ -656,8 +689,14 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
             TextAlignment = TextAlignment.Center,
             TextWrapping = TextWrapping.Wrap,
         });
-        content.Children.Add(previewStage);
-        var cards = new Grid { ColumnSpacing = 12, Width = 540 };
+        content.Children.Add(new Viewbox
+        {
+            Child = previewStage,
+            Stretch = Stretch.Uniform,
+            StretchDirection = StretchDirection.DownOnly,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+        });
+        var cards = new Grid { ColumnSpacing = 12, HorizontalAlignment = HorizontalAlignment.Stretch };
         cards.ColumnDefinitions.Add(new ColumnDefinition());
         cards.Children.Add(CreateStoreDetailCard(product, isKeepsake: product.IsKeepsake));
         if (product.RelatedKeepsake is { } keepsake)
@@ -671,45 +710,154 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         return content;
     }
 
+    internal static async Task VerifyStorePreviewLayoutAsync(ContentDialog dialog)
+    {
+        var scroll = (ScrollViewer)dialog.Content;
+        if (!scroll.IsLoaded)
+        {
+            var loaded = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            void OnLoaded(object sender, RoutedEventArgs args) => loaded.TrySetResult();
+            scroll.Loaded += OnLoaded;
+            try
+            {
+                await loaded.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            }
+            finally
+            {
+                scroll.Loaded -= OnLoaded;
+            }
+        }
+        scroll.UpdateLayout();
+        var content = (StackPanel)scroll.Content;
+        if (scroll.ViewportWidth <= 0 || content.ActualWidth > scroll.ViewportWidth + 1)
+        {
+            throw new InvalidOperationException("Store detail content exceeds its viewport width.");
+        }
+        async Task VerifyChildrenAsync(DependencyObject parent)
+        {
+            for (int index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, index);
+                if (child is Viewbox { Child: StorePreviewStage stage })
+                {
+                    Windows.Foundation.Rect bounds = stage.TransformToVisual(content).TransformBounds(
+                        new Windows.Foundation.Rect(0, 0, stage.ActualWidth, stage.ActualHeight));
+                    if (bounds.Left < -1 || bounds.Right > content.ActualWidth + 1)
+                    {
+                        throw new InvalidOperationException("Store preview stage is clipped horizontally.");
+                    }
+                }
+                if (child is StoreProductArtwork artwork)
+                {
+                    Windows.Foundation.Point position = artwork.TransformToVisual(content).TransformPoint(new Windows.Foundation.Point());
+                    if (position.X < -1 || position.X + artwork.ActualWidth > content.ActualWidth + 1)
+                    {
+                        throw new InvalidOperationException("Store detail artwork is clipped horizontally.");
+                    }
+                    scroll.ChangeView(null, position.Y, null, disableAnimation: true);
+                    scroll.UpdateLayout();
+                    await artwork.VerifyRenderedArtworkAsync();
+                }
+                else
+                {
+                    await VerifyChildrenAsync(child);
+                }
+            }
+        }
+        await VerifyChildrenAsync(content);
+        scroll.ChangeView(null, 0, null, disableAnimation: true);
+        StartupDiagnostics.Stage("store-detail-layout-smoke-complete");
+    }
+
     private static Border CreateStoreDetailCard(StoreProductPreviewViewModel product, bool isKeepsake)
     {
-        var content = new StackPanel { Spacing = 8 };
-        if (isKeepsake)
+        var content = new Grid { RowSpacing = 12 };
+        foreach (GridLength height in new[] { GridLength.Auto, new GridLength(88), GridLength.Auto, new GridLength(1, GridUnitType.Star), GridLength.Auto })
         {
-            content.Children.Add(new TextBlock { Text = I18n.Get("store.keepsake"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+            content.RowDefinitions.Add(new RowDefinition { Height = height });
         }
-        content.Children.Add(new StoreProductArtwork
+        var header = new TextBlock
+        {
+            Text = I18n.Get(isKeepsake ? "store.keepsake" : product.Kind switch
+            {
+                CommerceProductKind.Character => "profile.character",
+                CommerceProductKind.Bubble => "profile.bubble",
+                _ => "profile.throwable",
+            }),
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            FontSize = 12,
+        };
+        content.Children.Add(header);
+        var artwork = new StoreProductArtwork
         {
             ProductKind = product.Kind,
             CatalogItemId = product.CatalogItemId,
             CharacterId = product.CharacterId,
-            Width = 72,
-            Height = 72,
-            HorizontalAlignment = HorizontalAlignment.Left,
-        });
-        foreach (string property in new[] { nameof(product.DisplayName), nameof(product.Description), nameof(product.FormattedPrice) })
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = VerticalAlignment.Stretch,
+        };
+        var artworkSurface = new Border
         {
-            var text = new TextBlock { TextWrapping = TextWrapping.Wrap };
+            Style = (Style)Application.Current.Resources["SideyStoreArtworkSurfaceStyle"],
+            Child = artwork,
+        };
+        Grid.SetRow(artworkSurface, 1);
+        content.Children.Add(artworkSurface);
+        foreach ((string property, int row) in new[] { (nameof(product.DisplayName), 2), (nameof(product.Description), 3) })
+        {
+            var text = new TextBlock
+            {
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                FontSize = property == nameof(product.DisplayName) ? 14 : 12,
+                FontWeight = property == nameof(product.DisplayName)
+                    ? Microsoft.UI.Text.FontWeights.SemiBold : Microsoft.UI.Text.FontWeights.Normal,
+            };
             text.SetBinding(TextBlock.TextProperty, new Microsoft.UI.Xaml.Data.Binding
             {
                 Source = product,
                 Path = new PropertyPath(property),
                 Mode = Microsoft.UI.Xaml.Data.BindingMode.OneWay,
             });
+            Grid.SetRow(text, row);
             content.Children.Add(text);
         }
+        var footer = new StackPanel { Spacing = 6 };
+        var price = new TextBlock { TextAlignment = TextAlignment.Center };
+        price.SetBinding(TextBlock.TextProperty, new Microsoft.UI.Xaml.Data.Binding
+        {
+            Source = product,
+            Path = new PropertyPath(nameof(product.FormattedPrice)),
+            Mode = Microsoft.UI.Xaml.Data.BindingMode.OneWay,
+        });
+        footer.Children.Add(price);
         if (isKeepsake)
         {
-            content.Children.Add(new TextBlock { Text = I18n.Get("store.soldSeparately"), TextWrapping = TextWrapping.Wrap });
+            footer.Children.Add(new TextBlock
+            {
+                Text = I18n.Get("store.soldSeparately"),
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                FontSize = 12,
+                Style = (Style)Application.Current.Resources["SideyStoreSecondaryTextStyle"],
+            });
         }
-        var status = new Button { IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Stretch };
-        status.SetBinding(ContentControl.ContentProperty, new Microsoft.UI.Xaml.Data.Binding
+        var status = new TextBlock
+        {
+            TextAlignment = TextAlignment.Center,
+            TextWrapping = TextWrapping.Wrap,
+            FontSize = 12,
+            Style = (Style)Application.Current.Resources["SideyStoreSecondaryTextStyle"],
+        };
+        status.SetBinding(TextBlock.TextProperty, new Microsoft.UI.Xaml.Data.Binding
         {
             Source = product,
             Path = new PropertyPath(nameof(product.DetailStatusText)),
             Mode = Microsoft.UI.Xaml.Data.BindingMode.OneWay,
         });
-        content.Children.Add(status);
+        footer.Children.Add(status);
+        Grid.SetRow(footer, 4);
+        content.Children.Add(footer);
         return new Border
         {
             Style = (Style)Application.Current.Resources["SideySettingsCardStyle"],

@@ -509,21 +509,17 @@ public partial class App : Application
                 stage.StopSounds += scope => _coordinator.StopImpactSounds(scope);
                 StoreProductPreviewViewModel? product = EnsureMainWindow().ViewModel.StoreProducts.FirstOrDefault(
                     product => product.Kind == stage.ProductKind && product.CatalogItemId == stage.CatalogItemId);
-                StackPanel content = product is null
-                    ? new Microsoft.UI.Xaml.Controls.StackPanel()
-                    : MainWindow.CreateStorePreviewContent(product, stage);
-                if (product is null)
-                    content.Children.Add(stage);
-                var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog
-                {
-                    XamlRoot = host.XamlRoot,
-                    Content = content,
-                    CloseButtonText = I18n.Get("common.close"),
-                };
+                ContentDialog dialog = MainWindow.CreateStorePreviewDialog(product, stage, host.XamlRoot);
+                var opened = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+                dialog.Opened += (_, _) => opened.TrySetResult();
                 stage.BeginPresentation();
                 IAsyncOperation<ContentDialogResult> showing = dialog.ShowAsync();
                 try
-                { await stage.VerifyInteractionSmokeAsync(); }
+                {
+                    await opened.Task.WaitAsync(TimeSpan.FromSeconds(10));
+                    await MainWindow.VerifyStorePreviewLayoutAsync(dialog);
+                    await stage.VerifyInteractionSmokeAsync();
+                }
                 finally
                 {
                     stage.EndPresentation();
