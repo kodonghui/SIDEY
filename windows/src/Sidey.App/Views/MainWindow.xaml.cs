@@ -325,6 +325,213 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         StartupDiagnostics.Stage("live-language-smoke-complete changes=6 drafts-preserved=true");
     }
 
+    internal async Task VerifyStoreScrollingSmokeAsync()
+    {
+        bool wasLoading = ViewModel.IsRemoteContentLoading;
+        int originalKind = ViewModel.SelectedStoreKindIndex;
+        double originalWidth = StorePage.Width;
+        double originalHeight = StorePage.Height;
+        StoreProductPreviewViewModel longNameProduct = ViewModel.StoreProducts.First(
+            product => product.Kind == CommerceProductKind.Throwable);
+        string originalName = longNameProduct.DisplayName;
+        try
+        {
+            ShowPage("store");
+            ViewModel.IsRemoteContentLoading = false;
+            ViewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Throwable;
+            longNameProduct.DisplayName = string.Concat(Enumerable.Repeat("긴 상품 이름 ", 12));
+            StorePage.Height = 360;
+            foreach (double width in new[] { 620d, 400d })
+            {
+                StorePage.Width = width;
+                StorePage.ChangeView(null, 0, null, disableAnimation: true);
+                StorePage.UpdateLayout();
+                await WaitForNextFrameAsync();
+                StorePage.UpdateLayout();
+                double extent = StorePage.ExtentHeight;
+                double bottom = StorePage.ScrollableHeight;
+                IReadOnlyList<StoreProductPreviewViewModel> products = ViewModel.VisibleStoreProducts;
+                var positions = new Dictionary<int, Windows.Foundation.Point>();
+                int steps = Math.Max(1, (int)Math.Ceiling(bottom / (StorePage.ViewportHeight * .75)));
+                double[] offsets = [.. Enumerable.Range(0, steps + 1).Select(step => bottom * step / steps)];
+                foreach (double requested in offsets.Concat(offsets.Reverse()).Concat([bottom + 224, 0]))
+                {
+                    double target = Math.Min(requested, bottom);
+                    StorePage.ChangeView(null, requested, null, disableAnimation: true);
+                    await WaitForNextFrameAsync();
+                    await WaitForNextFrameAsync();
+                    StorePage.UpdateLayout();
+                    if (!ReferenceEquals(products, ViewModel.VisibleStoreProducts)
+                        || Math.Abs(StorePage.ExtentHeight - extent) > 1
+                        || Math.Abs(StorePage.VerticalOffset - target) > 1)
+                    {
+                        StartupDiagnostics.Stage($"store-scroll-unstable width={width} target={target} offset={StorePage.VerticalOffset} extent={StorePage.ExtentHeight} initial={extent}");
+                        throw new InvalidOperationException("Store scrolling changed the content extent or jumped away from its requested position.");
+                    }
+                    var visibleCards = new List<Windows.Foundation.Rect>();
+                    for (int index = 0; index < products.Count; index++)
+                    {
+                        if (StoreProductRepeater.TryGetElement(index) is not FrameworkElement card)
+                            continue;
+                        Windows.Foundation.Rect visibleBounds = card.TransformToVisual(StorePage).TransformBounds(
+                            new Windows.Foundation.Rect(0, 0, card.ActualWidth, card.ActualHeight));
+                        if (visibleBounds.Bottom <= 0 || visibleBounds.Top >= StorePage.ViewportHeight)
+                            continue;
+                        if (visibleCards.Any(bounds => visibleBounds.Left < bounds.Right - 1
+                            && visibleBounds.Right > bounds.Left + 1
+                            && visibleBounds.Top < bounds.Bottom - 1
+                            && visibleBounds.Bottom > bounds.Top + 1))
+                            throw new InvalidOperationException("Store scrolling overlapped visible product cards.");
+                        visibleCards.Add(visibleBounds);
+                        if (!ReferenceEquals(card.DataContext, products[index]))
+                        {
+                            StartupDiagnostics.Stage($"store-scroll-wrong-product index={index}");
+                            throw new InvalidOperationException("Store scrolling recycled a card with the wrong product.");
+                        }
+                        Windows.Foundation.Point position = card.TransformToVisual(StoreResultsHost)
+                            .TransformPoint(new Windows.Foundation.Point());
+                        if (positions.TryGetValue(index, out Windows.Foundation.Point previous)
+                            && (Math.Abs(previous.X - position.X) > 1 || Math.Abs(previous.Y - position.Y) > 1))
+                        {
+                            StartupDiagnostics.Stage($"store-scroll-moved index={index} old-x={previous.X} old-y={previous.Y} new-x={position.X} new-y={position.Y}");
+                            throw new InvalidOperationException("Store scrolling moved an existing product to a different row.");
+                        }
+                        positions[index] = position;
+                        TextBlock name = FindStoreText(card, "StoreProductName")
+                            ?? throw new InvalidOperationException("Store product name is missing.");
+                        TextBlock price = FindStoreText(card, "StoreProductPrice")
+                            ?? throw new InvalidOperationException("Store product price is missing.");
+                        double nameBottom = name.TransformToVisual(card).TransformPoint(new Windows.Foundation.Point()).Y + name.ActualHeight;
+                        double priceTop = price.TransformToVisual(card).TransformPoint(new Windows.Foundation.Point()).Y;
+                        if (name.MaxLines != 2 || name.TextWrapping != TextWrapping.Wrap
+                            || name.TextTrimming != TextTrimming.CharacterEllipsis
+                            || nameBottom > priceTop + 1 || priceTop + price.ActualHeight > card.ActualHeight + 1)
+                            throw new InvalidOperationException("Store name and price do not fit inside the card.");
+                        if (ReferenceEquals(products[index], longNameProduct)
+                            && (!name.IsTextTrimmed || name.ActualHeight < name.FontSize * 2))
+                            throw new InvalidOperationException("A long store name did not occupy two lines with an ellipsis.");
+                    }
+                }
+                if (positions.Count != products.Count)
+                    throw new InvalidOperationException("Store scrolling did not reach every product.");
+                StartupDiagnostics.Stage($"store-scroll-width-complete width={width} products={positions.Count} extent={extent}");
+            }
+            StartupDiagnostics.Stage("store-scroll-smoke-complete");
+        }
+        finally
+        {
+            StorePage.Width = originalWidth;
+            StorePage.Height = originalHeight;
+            longNameProduct.DisplayName = originalName;
+            ViewModel.SelectedStoreKindIndex = originalKind;
+            ViewModel.IsRemoteContentLoading = wasLoading;
+            StorePage.ChangeView(null, 0, null, disableAnimation: true);
+        }
+    }
+
+    internal async Task VerifySkeletonLoadingSmokeAsync()
+    {
+        bool wasLoading = ViewModel.IsRemoteContentLoading;
+        int originalKind = ViewModel.SelectedStoreKindIndex;
+        ElementTheme originalTheme = MainRoot.RequestedTheme;
+        double originalWidth = StorePage.Width;
+        double originalHeight = StorePage.Height;
+        try
+        {
+            ShowPage("store");
+            ViewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Throwable;
+            StorePage.Width = 620;
+            StorePage.Height = 360;
+            foreach (ElementTheme theme in new[] { ElementTheme.Light, ElementTheme.Dark })
+            {
+                MainRoot.RequestedTheme = theme;
+                ViewModel.IsRemoteContentLoading = true;
+                StorePage.ChangeView(null, 0, null, disableAnimation: true);
+                StorePage.UpdateLayout();
+                await WaitForNextFrameAsync();
+                await WaitForNextFrameAsync();
+                StorePage.UpdateLayout();
+                double loadingExtent = StorePage.ExtentHeight;
+                SkeletonBar bar = FindVisualChild<SkeletonBar>(StoreSkeletonRepeater)
+                    ?? throw new InvalidOperationException("Loading skeleton is missing.");
+                if (bar.Content is not FrameworkElement fill
+                    || fill.ActualWidth < bar.ActualWidth - 1 || fill.ActualHeight < bar.ActualHeight - 1
+                    || bar.ActualWidth <= 0 || bar.ActualHeight <= 0)
+                    throw new InvalidOperationException("Skeleton fill does not occupy its reserved space.");
+                var rendered = new RenderTargetBitmap();
+                await rendered.RenderAsync(bar);
+                byte[] pixels = System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeBufferExtensions.ToArray(
+                    await rendered.GetPixelsAsync());
+                int visiblePixels = 0;
+                for (int offset = 3; offset < pixels.Length; offset += 4)
+                {
+                    if (pixels[offset] >= 32)
+                        visiblePixels++;
+                }
+                if (pixels.Length == 0 || visiblePixels < pixels.Length / 8)
+                    throw new InvalidOperationException("Skeleton loading indicator is empty or too faint.");
+                ViewModel.IsRemoteContentLoading = false;
+                await WaitForNextFrameAsync();
+                await WaitForNextFrameAsync();
+                StorePage.UpdateLayout();
+                if (bar.IsPulseRunning || Math.Abs(StorePage.ExtentHeight - loadingExtent) > 1)
+                    throw new InvalidOperationException("Loading completion changed store height or left a hidden pulse running.");
+                StartupDiagnostics.Stage($"skeleton-loading-smoke-complete theme={theme} visible-pixels={visiblePixels} extent={loadingExtent}");
+            }
+        }
+        finally
+        {
+            MainRoot.RequestedTheme = originalTheme;
+            StorePage.Width = originalWidth;
+            StorePage.Height = originalHeight;
+            ViewModel.SelectedStoreKindIndex = originalKind;
+            ViewModel.IsRemoteContentLoading = wasLoading;
+            StorePage.ChangeView(null, 0, null, disableAnimation: true);
+        }
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject root) where T : DependencyObject
+    {
+        for (int index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            DependencyObject child = VisualTreeHelper.GetChild(root, index);
+            if (child is T match)
+                return match;
+            if (FindVisualChild<T>(child) is { } nested)
+                return nested;
+        }
+        return null;
+    }
+
+    private static TextBlock? FindStoreText(DependencyObject root, string automationId)
+    {
+        for (int index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            DependencyObject child = VisualTreeHelper.GetChild(root, index);
+            if (child is TextBlock text
+                && Microsoft.UI.Xaml.Automation.AutomationProperties.GetAutomationId(text) == automationId)
+                return text;
+            if (FindStoreText(child, automationId) is { } match)
+                return match;
+        }
+        return null;
+    }
+
+    private static async Task WaitForNextFrameAsync()
+    {
+        var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        void OnRendering(object? sender, object args) => completion.TrySetResult();
+        CompositionTarget.Rendering += OnRendering;
+        try
+        {
+            await completion.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        }
+        finally
+        {
+            CompositionTarget.Rendering -= OnRendering;
+        }
+    }
+
     internal async Task VerifyStoreFilterToggleSmokeAsync()
     {
         string originalSearchText = ViewModel.StoreSearchText;
