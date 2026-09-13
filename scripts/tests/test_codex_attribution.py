@@ -71,11 +71,11 @@ class AttributionTests(unittest.TestCase):
             state = self.repo / '.git' / marker
             state.write_text('test')
             message.write_text('Original message\n')
-            subprocess.run([str(hook), str(message), 'message'], cwd=self.repo, env=self.env, check=True)
+            subprocess.run([sys.executable, str(hook), str(message), 'message'], cwd=self.repo, env=self.env, check=True)
             self.assertEqual(message.read_text(), 'Original message\n')
             state.unlink()
         message.write_text('\n# comment only\n')
-        subprocess.run([str(hook), str(message), 'message'], cwd=self.repo, env=self.env, check=True)
+        subprocess.run([sys.executable, str(hook), str(message), 'message'], cwd=self.repo, env=self.env, check=True)
         self.assertNotIn('codex@', message.read_text())
 
     def test_setup_is_idempotent_and_preserves_other_hooks(self):
@@ -93,6 +93,22 @@ class AttributionTests(unittest.TestCase):
         self.git('config', 'core.hooksPath', 'custom-hooks')
         self.assertNotEqual(self.install(check=False).returncode, 0)
         self.assertEqual(self.git('config', '--get', 'core.hooksPath'), 'custom-hooks')
+
+    def test_setup_accepts_both_line_endings_and_preserves_source_bytes(self):
+        source = self.repo / '.githooks/prepare-commit-msg'
+        destination = self.repo / '.git/hooks/prepare-commit-msg'
+        canonical = source.read_bytes().replace(b'\r\n', b'\n')
+        for source_ending in (b'\n', b'\r\n'):
+            for installed_ending in (b'\n', b'\r\n'):
+                with self.subTest(source=source_ending, installed=installed_ending):
+                    expected = canonical.replace(b'\n', source_ending)
+                    source.write_bytes(expected)
+                    destination.write_bytes(canonical.replace(b'\n', installed_ending))
+                    self.install()
+                    self.assertEqual(destination.read_bytes(), expected)
+                    self.install()
+                    self.assertEqual(destination.read_bytes(), expected)
+                    self.assertEqual(source.read_bytes(), expected)
 
     def test_linked_worktree_uses_same_installed_hook(self):
         self.commit()
