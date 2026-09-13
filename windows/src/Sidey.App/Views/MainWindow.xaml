@@ -753,18 +753,11 @@
                   <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=store.emptyDescription}, Mode=OneWay}" TextAlignment="Center" TextWrapping="Wrap" />
                   </StackPanel>
                   <ItemsRepeater
+                    x:Name="StoreProductRepeater"
                     ItemsSource="{Binding VisibleStoreProducts}"
                     Visibility="{Binding HasVisibleStoreProducts, Converter={StaticResource BooleanToVisibilityConverter}}">
                   <ItemsRepeater.Layout>
-                    <UniformGridLayout
-                        ItemsJustification="Start"
-                        ItemsStretch="Fill"
-                        MaximumRowsOrColumns="5"
-                        MinColumnSpacing="12"
-                        MinItemHeight="224"
-                        MinItemWidth="150"
-                        MinRowSpacing="12"
-                        Orientation="Horizontal" />
+                    <controls:StoreProductGridLayout />
                   </ItemsRepeater.Layout>
                   <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
@@ -813,17 +806,20 @@
                           </Border>
                           <TextBlock
                               Grid.Row="1"
+                              AutomationProperties.AutomationId="StoreProductName"
                               HorizontalAlignment="Stretch"
                               FontSize="14"
                               FontWeight="SemiBold"
-                              MaxLines="1"
+                              MaxLines="2"
+                              MinHeight="40"
                               Text="{Binding DisplayName}"
                               TextAlignment="Center"
                               TextTrimming="CharacterEllipsis"
-                              TextWrapping="NoWrap"
+                              TextWrapping="Wrap"
                               ToolTipService.ToolTip="{Binding DisplayName}" />
                           <TextBlock
                               Grid.Row="2"
+                              AutomationProperties.AutomationId="StoreProductPrice"
                               HorizontalAlignment="Center"
                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                               FontSize="12"
@@ -834,13 +830,28 @@
                   </ItemsRepeater.ItemTemplate>
                   </ItemsRepeater>
                 </Grid>
-                <Grid ColumnSpacing="12" Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-                  <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                  <Border Grid.Column="0" Height="224" Padding="12" Style="{StaticResource SideySettingsCardStyle}"><StackPanel Spacing="12"><controls:SkeletonBar Height="116" /><controls:SkeletonBar Width="92" Height="14" HorizontalAlignment="Center" /><controls:SkeletonBar Width="54" Height="12" HorizontalAlignment="Center" /></StackPanel></Border>
-                  <Border Grid.Column="1" Height="224" Padding="12" Style="{StaticResource SideySettingsCardStyle}"><StackPanel Spacing="12"><controls:SkeletonBar Height="116" /><controls:SkeletonBar Width="80" Height="14" HorizontalAlignment="Center" /><controls:SkeletonBar Width="48" Height="12" HorizontalAlignment="Center" /></StackPanel></Border>
-                  <Border Grid.Column="2" Height="224" Padding="12" Style="{StaticResource SideySettingsCardStyle}"><StackPanel Spacing="12"><controls:SkeletonBar Height="116" /><controls:SkeletonBar Width="98" Height="14" HorizontalAlignment="Center" /><controls:SkeletonBar Width="54" Height="12" HorizontalAlignment="Center" /></StackPanel></Border>
-                  <Border Grid.Column="3" Height="224" Padding="12" Style="{StaticResource SideySettingsCardStyle}"><StackPanel Spacing="12"><controls:SkeletonBar Height="116" /><controls:SkeletonBar Width="86" Height="14" HorizontalAlignment="Center" /><controls:SkeletonBar Width="48" Height="12" HorizontalAlignment="Center" /></StackPanel></Border>
-                </Grid>
+                <ItemsRepeater x:Name="StoreSkeletonRepeater"
+                    ItemsSource="{Binding VisibleStoreProducts}"
+                    Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <ItemsRepeater.Layout><controls:StoreProductGridLayout /></ItemsRepeater.Layout>
+                  <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                      <Border MinHeight="224" Padding="12" Style="{StaticResource SideySettingsCardStyle}">
+                        <Grid RowSpacing="8">
+                          <Grid.RowDefinitions>
+                            <RowDefinition Height="116" /><RowDefinition Height="40" /><RowDefinition Height="16" />
+                          </Grid.RowDefinitions>
+                          <controls:SkeletonBar />
+                          <StackPanel Grid.Row="1" Spacing="6" VerticalAlignment="Center">
+                            <controls:SkeletonBar Width="92" Height="14" HorizontalAlignment="Center" />
+                            <controls:SkeletonBar Width="68" Height="14" HorizontalAlignment="Center" />
+                          </StackPanel>
+                          <controls:SkeletonBar Grid.Row="2" Width="54" Height="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
               </Grid>
               <TextBlock
                   HorizontalAlignment="Center"

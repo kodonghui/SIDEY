@@ -179,15 +179,11 @@ public sealed class MvvmArchitectureTests
     }
 
     [Fact]
-    public void StoreProductButtonStretchesAcrossItsUniformGridCell()
+    public void StoreCardsReserveTwoLineNamesAndStretchToFitColumns()
     {
         XDocument view = MainWindowView();
-        XElement repeater = Assert.Single(
-            view.Descendants(),
-            element => element.Name.LocalName == "ItemsRepeater"
-                && element.Attribute("ItemsSource")?.Value == "{Binding VisibleStoreProducts}");
         XElement button = Assert.Single(
-            repeater.Descendants(),
+            view.Descendants(),
             element => element.Name.LocalName == "Button"
                 && element.Attribute("Command")?.Value == "{Binding PreviewCommand}");
 
@@ -201,8 +197,8 @@ public sealed class MvvmArchitectureTests
             button.Descendants(),
             element => element.Name.LocalName == "TextBlock"
                 && element.Attribute("Text")?.Value == "{Binding DisplayName}");
-        Assert.Equal("1", name.Attribute("MaxLines")?.Value);
-        Assert.Equal("NoWrap", name.Attribute("TextWrapping")?.Value);
+        Assert.Equal("2", name.Attribute("MaxLines")?.Value);
+        Assert.Equal("Wrap", name.Attribute("TextWrapping")?.Value);
         Assert.Equal("CharacterEllipsis", name.Attribute("TextTrimming")?.Value);
         Assert.Equal("{Binding DisplayName}", name.Attribute("ToolTipService.ToolTip")?.Value);
     }
