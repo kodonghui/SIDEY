@@ -1,6 +1,6 @@
 ---
 name: sidey-workflow
-description: Start, resume, verify and integrate SIDEY repository tasks, or open the current macOS app with verified provenance. Use for repository changes and app review, not for general product discussion.
+description: Start, resume, coordinate useful parallel agent work, verify and integrate SIDEY repository tasks, or open the current macOS app with verified provenance. Use for repository changes and app review, not for general product discussion.
 ---
 
 # SIDEY Workflow
@@ -19,3 +19,15 @@ Run the repository checker; a cached origin/main, open Xcode window or installed
 - Report fetched SHA, task target, applied checks, PR/main status and preview status. For app opening, report the actual project path, scheme and running build provenance only when the opener confirms them. App-affecting work is not complete after merge alone.
 
 Task records and locks live under the Git common directory, never in product documents. Clean up only missing worktree metadata or clean, merged worktrees after checking untracked/ignored files and active usage. Preserve recording settings. Public releases, App Store upload and production deployment need their own explicit task authorization.
+
+## Parallel work coordination
+
+Apply the repository's [automatic parallel agent rule](../../../AGENTS.md#automatic-parallel-agent-work) at task start and when independent work becomes available. Delegate qualifying work without a separate user request. Use the minimum useful number of agents within the current tool limits, and retain useful work for the coordinator. Honor explicit solo/sequential requests; continue directly when tools or capacity are unavailable.
+
+- Before delegating, give each agent a bounded objective, absolute worktree path, task/branch identity, owned files or read-only scope, dependencies, and completion checks. The coordinator alone allocates agents; subagents must not spawn more agents or expand their assignment.
+- For one task on one platform, default to its registered worktree with disjoint file ownership. Assign every shared file to one writer, including tests, manifests, lockfiles, and generated files. Workflow task ownership and locks do not enforce agent-level file ownership. Do not concurrently change the same file even in separate worktrees; sequence those edits or assign a read-only review instead.
+- When independent branches or different authorized platforms are needed, the coordinator creates separate registered tasks/worktrees using `start`. Each agent must use its assigned absolute path; an agent is not automatically given a separate checkout. Preserve other tasks' dirty worktrees. Follow platform restrictions for builds/tests as well as edits, and land required shared changes independently before their platform consumers.
+- Parallelize independent features or investigations only after the necessary interfaces and dependencies are settled. Work waiting on a predecessor stays sequential; independent investigation may proceed meanwhile. A review of an unfinished state is preliminary and does not replace review of the final diff.
+- Subagents may edit assigned files and run scoped checks, but must leave Git/workflow state changes, commits, pushes, PRs, and integration to the coordinator. Isolate build/test outputs or serialize checks when they can contend for caches, generated files, or shared resources.
+- Have subagents report changed files, checks and results, and unresolved issues. If a task fails or ownership overlaps, stop the affected writer and confirm it has stopped before reassigning or continuing directly. Preserve its partial changes for review.
+- After all writers and source-mutating checks have stopped, review the complete diff and run `check` followed by `finish` serially for each task. Do not modify the source or index during validation/integration; a later edit requires a new check. Integrate separate tasks one at a time, syncing and rechecking the next task when main advances. Complete the existing required CI, primary-main refresh, and applicable app verification before reporting completion.
