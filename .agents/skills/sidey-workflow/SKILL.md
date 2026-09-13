@@ -7,6 +7,7 @@ description: Start, resume, verify and integrate SIDEY repository tasks, or open
 
 Run the repository checker; a cached origin/main, open Xcode window or installed app name is not freshness evidence.
 
+- Before creating any commit or preparing `finish --message` / `--title`, apply [sidey-commit](../sidey-commit/SKILL.md): use `type(scope): 한국어 설명` with the prescribed distribution scope and Korean descriptions and bodies.
 - Begin with `python3 scripts/workflow.py doctor`. Record the fetched remote SHA and worktree ownership. A failed fetch means freshness is unverified.
 - Create a task from freshly fetched main using `start <task-id> --platform shared|macos|windows --worktree <new-absolute-path>`. The default app is `SIDEYAppStore`. Use `--repo <path>` before the command to select a repository.
 - Resume from the registered worktree with `sync <task-id>`. Preserve dirty changes in explicit task commits first. Resolve a reported merge conflict in that worktree, then check again. Never stash, reset or force push to synchronize.
