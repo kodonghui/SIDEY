@@ -351,6 +351,8 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
                 double extent = StorePage.ExtentHeight;
                 double bottom = StorePage.ScrollableHeight;
                 IReadOnlyList<StoreProductPreviewViewModel> products = ViewModel.VisibleStoreProducts;
+                if (products.Count < 2 || !products.Contains(longNameProduct))
+                    throw new InvalidOperationException("Store scrolling smoke requires the unfiltered throwable catalog.");
                 var positions = new Dictionary<int, Windows.Foundation.Point>();
                 int steps = Math.Max(1, (int)Math.Ceiling(bottom / (StorePage.ViewportHeight * .75)));
                 double[] offsets = [.. Enumerable.Range(0, steps + 1).Select(step => bottom * step / steps)];
@@ -365,7 +367,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
                         || Math.Abs(StorePage.ExtentHeight - extent) > 1
                         || Math.Abs(StorePage.VerticalOffset - target) > 1)
                     {
-                        StartupDiagnostics.Stage($"store-scroll-unstable width={width} target={target} offset={StorePage.VerticalOffset} extent={StorePage.ExtentHeight} initial={extent}");
+                        StartupDiagnostics.Stage($"store-scroll-unstable width={width} target={target} offset={StorePage.VerticalOffset} extent={StorePage.ExtentHeight} initial={extent} products={ViewModel.VisibleStoreProducts.Count} initial-products={products.Count}");
                         throw new InvalidOperationException("Store scrolling changed the content extent or jumped away from its requested position.");
                     }
                     var visibleCards = new List<Windows.Foundation.Rect>();
@@ -665,6 +667,9 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         finally
         {
             ViewModel.StoreSearchText = originalSearchText;
+            // A collapsed search field can still have a queued TextChanged callback.
+            // Restore its input as well as the model before the next smoke test runs.
+            StoreSearchTextBox.Text = originalSearchText;
             ViewModel.SelectedStoreSortIndex = originalSortIndex;
             ViewModel.HidesOwnedStoreProducts = originallyHidesOwned;
             RadioButton originalKindChip = originalKindIndex switch
@@ -676,6 +681,12 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
             originalKindChip.IsChecked = true;
             StoreFilterToggle.IsChecked = false;
             SetStoreFilterPanelExpanded(false);
+            await WaitForDispatcherTurnAsync();
+            if (!StringComparer.Ordinal.Equals(ViewModel.StoreSearchText, originalSearchText)
+                || !StringComparer.Ordinal.Equals(StoreSearchTextBox.Text, originalSearchText))
+            {
+                throw new InvalidOperationException("Store filter smoke: search state was not restored.");
+            }
         }
     }
 
