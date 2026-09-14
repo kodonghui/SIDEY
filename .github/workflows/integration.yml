@@ -159,7 +159,7 @@ jobs:
           $PSNativeCommandUseErrorActionPreference = $true
           winget install NSIS.NSIS --exact --version 3.12 --silent `
             --accept-package-agreements --accept-source-agreements --disable-interactivity
-          $version = (Get-Content ./release/windows.json -Raw | ConvertFrom-Json).version
+          $version = ([xml](Get-Content ./windows/src/Sidey.App/Sidey.App.csproj -Raw)).Project.PropertyGroup.Version | Where-Object { $_ }
           ./scripts/windows/New-WindowsInstaller.ps1 -PublishDirectory ./build/windows/publish `
             -OutputDirectory ./build/windows/artifacts -Version $version
 
