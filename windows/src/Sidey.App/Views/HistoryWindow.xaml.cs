@@ -1,4 +1,3 @@
-using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -22,6 +21,7 @@ public sealed partial class HistoryWindow : Window
         InitializeComponent();
         HistoryRoot.DataContext = ViewModel;
         ApplyTheme(_initialState.Preferences.Theme);
+        SideyWindowTheme.FollowTitleBarTheme(this, HistoryRoot);
         Title = I18n.Get("window.historyTitle");
         SideyWindowIcon.Apply(AppWindow);
         ApplyResponsiveSize();
@@ -64,11 +64,7 @@ public sealed partial class HistoryWindow : Window
 
     private void ApplyBackdrop()
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000)
-            && MicaController.IsSupported())
-        {
-            SystemBackdrop = new MicaBackdrop { Kind = MicaKind.Base };
-        }
+        SideyWindowTheme.ApplyBackdrop(this, HistoryFallbackBackground);
     }
 
     private void ApplyResponsiveSize()

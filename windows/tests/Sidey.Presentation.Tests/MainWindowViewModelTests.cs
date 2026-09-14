@@ -884,6 +884,69 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
+    public void SelectionAndRoomSkeletonsFollowTheirSnapshotWhileStoreRemainsPending()
+    {
+        var coordinator = new FakeSideyCoordinator { IsRemoteContentLoading = true };
+        var viewModel = new MainWindowViewModel(coordinator,
+            new FakeMainWindowDialogService(), new FakeUpdateService());
+        Assert.True(viewModel.IsCharacterSelectionsLoading);
+        Assert.True(viewModel.IsBubbleSelectionsLoading);
+        Assert.True(viewModel.IsThrowableSelectionsLoading);
+        Assert.True(viewModel.IsRoomsLoading);
+        Assert.True(viewModel.IsStoreLoading);
+
+        CoordinatorState loaded = coordinator.State with
+        {
+            ContentLoading = new(RemoteDataLoadState.Ready, RemoteDataLoadState.Initial),
+        };
+        viewModel.ApplyState(loaded);
+
+        Assert.True(viewModel.IsRemoteContentLoading);
+        Assert.False(viewModel.IsCharacterSelectionsLoading);
+        Assert.False(viewModel.IsBubbleSelectionsLoading);
+        Assert.False(viewModel.IsThrowableSelectionsLoading);
+        Assert.False(viewModel.IsRoomsLoading);
+        Assert.True(viewModel.IsStoreLoading);
+
+        viewModel.ApplyState(loaded with
+        {
+            ContentLoading = loaded.ContentLoading with { Store = RemoteDataLoadState.Ready },
+        });
+        Assert.False(viewModel.IsStoreLoading);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void FailedAttemptsStopSkeletonsAndRefreshKeepsPreviouslyLoadedLists(bool hasValue)
+    {
+        var coordinator = new FakeSideyCoordinator();
+        var viewModel = new MainWindowViewModel(coordinator,
+            new FakeMainWindowDialogService(), new FakeUpdateService());
+        RemoteDataLoadState completed = new RemoteDataLoadState(hasValue, IsLoading: true).EndAttempt();
+        CoordinatorState state = coordinator.State with { ContentLoading = new(completed, completed) };
+        viewModel.ApplyState(state);
+        Assert.False(viewModel.IsCharacterSelectionsLoading);
+        Assert.False(viewModel.IsRoomsLoading);
+        Assert.False(viewModel.IsStoreLoading);
+
+        viewModel.ApplyState(state with
+        {
+            ContentLoading = state.ContentLoading with { Store = completed.Begin() },
+        });
+        Assert.False(viewModel.IsCharacterSelectionsLoading);
+        Assert.False(viewModel.IsRoomsLoading);
+        Assert.Equal(!hasValue, viewModel.IsStoreLoading);
+        viewModel.ApplyState(state with
+        {
+            ContentLoading = new(completed.Begin(), completed),
+        });
+        Assert.Equal(!hasValue, viewModel.IsCharacterSelectionsLoading);
+        Assert.Equal(!hasValue, viewModel.IsRoomsLoading);
+        Assert.False(viewModel.IsStoreLoading);
+    }
+
+    [Fact]
     public void RemoteLoadingKeepsLocalCatalogDefaultsAndCachedFreeSelectionAvailable()
     {
         CoordinatorState state = CoordinatorState.Initial with
@@ -1151,6 +1214,41 @@ public sealed class MainWindowViewModelTests
         Assert.Equal("draft-name", viewModel.Nickname);
         Assert.Equal("pixel_cat", viewModel.SelectedCharacterId);
         Assert.True(viewModel.CharacterSelections.Single(item => item.Id == "pixel_cat").IsSelected);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("unknown_character")]
+    [InlineData("pixel_pig")]
+    public void UnavailableCharacterSelectionPreservesConfirmedCharacterWithoutSaving(string? selection)
+    {
+        (FakeSideyCoordinator coordinator, CoordinatorState state) = CreateRoomState();
+        coordinator.State = state with { Profile = state.Profile! with { CharacterId = "pixel_penguin" } };
+        var viewModel = new MainWindowViewModel(
+            coordinator, new FakeMainWindowDialogService(), new FakeUpdateService());
+
+        viewModel.SelectedCharacterId = selection!;
+
+        Assert.Equal(0, coordinator.SaveProfileCallCount);
+        Assert.Equal("pixel_penguin", viewModel.SelectedCharacterId);
+        Assert.Equal("pixel_penguin", Assert.Single(viewModel.CharacterSelections, item => item.IsSelected).Id);
+    }
+
+    [Fact]
+    public void ExplicitHamsterSelectionStillSavesTheChosenCharacter()
+    {
+        (FakeSideyCoordinator coordinator, CoordinatorState state) = CreateRoomState();
+        coordinator.State = state with { Profile = state.Profile! with { CharacterId = "pixel_penguin" } };
+        var viewModel = new MainWindowViewModel(
+            coordinator, new FakeMainWindowDialogService(), new FakeUpdateService());
+
+        viewModel.SelectedCharacterId = "pixel_hamster";
+
+        Assert.Equal(1, coordinator.SaveProfileCallCount);
+        Assert.Equal("pixel_hamster", coordinator.LastSavedCharacterId);
+        Assert.Equal("pixel_hamster", viewModel.SelectedCharacterId);
+        Assert.Equal("pixel_hamster", Assert.Single(viewModel.CharacterSelections, item => item.IsSelected).Id);
     }
 
     [Fact]

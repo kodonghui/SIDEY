@@ -4,22 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Sidey.App.Controls"
     xmlns:i18n="using:Sidey.App.Localization">
-  <Grid x:Name="MainRoot" Background="Transparent">
+  <UserControl x:Name="MainRoot">
+  <Grid Background="Transparent">
     <VisualStateManager.VisualStateGroups>
       <VisualStateGroup x:Name="ResponsiveStates">
         <VisualState x:Name="Narrow">
-          <VisualState.StateTriggers>
-            <AdaptiveTrigger MinWindowWidth="0" />
-          </VisualState.StateTriggers>
           <VisualState.Setters>
             <Setter Target="HomePageContent.Padding" Value="24,20" />
             <Setter Target="GroupsPageContent.Padding" Value="24,20" />
             <Setter Target="StorePageContent.Padding" Value="24,20" />
             <Setter Target="SettingsPageContent.Padding" Value="24,20" />
             <Setter Target="AboutPageContent.Padding" Value="24,20" />
-            <Setter Target="ProfileEditorColumn.Width" Value="0" />
-            <Setter Target="ProfileNameEditor.(Grid.Row)" Value="1" />
-            <Setter Target="ProfileNameEditor.(Grid.Column)" Value="0" />
             <Setter Target="GroupCreateAction.(Grid.Row)" Value="1" />
             <Setter Target="GroupCreateAction.(Grid.Column)" Value="0" />
             <Setter Target="GroupCreateAction.HorizontalAlignment" Value="Right" />
@@ -65,17 +60,15 @@
             <Setter Target="ThemeComboBox.(Grid.Column)" Value="1" />
           </VisualState.Setters>
         </VisualState>
-        <VisualState x:Name="Standard">
-          <VisualState.StateTriggers>
-            <AdaptiveTrigger MinWindowWidth="720" />
-          </VisualState.StateTriggers>
-        </VisualState>
+        <VisualState x:Name="Standard" />
       </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+    <Border x:Name="MainFallbackBackground" Grid.RowSpan="2" Canvas.ZIndex="-1"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsHitTestVisible="False" />
     <TitleBar
         x:Name="AppTitleBar"
         Grid.Row="0"
@@ -117,24 +110,22 @@
         </NavigationViewItem>
       </NavigationView.FooterMenuItems>
 
-      <Grid>
+      <Grid x:Name="PageViewport" SizeChanged="OnPageViewportSizeChanged">
         <Grid>
           <ScrollViewer x:Name="HomePage" HorizontalContentAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled">
             <StackPanel x:Name="HomePageContent" Padding="32,24" MaxWidth="820" HorizontalAlignment="Stretch" Spacing="24">
               <StackPanel Spacing="4">
                 <TextBlock AutomationProperties.HeadingLevel="Level1" Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding Value, Source={i18n:I18n Key=profile.title}, Mode=OneWay}" />
-                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.description}, Mode=OneWay}" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.description}, Mode=OneWay}" TextWrapping="Wrap" />
               </StackPanel>
               <Border Style="{StaticResource SideySettingsCardStyle}">
                 <StackPanel x:Name="ProfileCardContent" Spacing="20">
-                  <Grid x:Name="ProfileNameLayout" ColumnSpacing="24" RowSpacing="12">
-                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition x:Name="ProfileEditorColumn" Width="320" /></Grid.ColumnDefinitions>
+                  <controls:ResponsiveFormPanel x:Name="ProfileNameLayout">
                     <StackPanel Spacing="4">
                       <TextBlock FontWeight="SemiBold" Text="{Binding Value, Source={i18n:I18n Key=profile.nickname}, Mode=OneWay}" />
                       <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.nicknameDescription}, Mode=OneWay}" TextWrapping="Wrap" />
                     </StackPanel>
-                    <StackPanel x:Name="ProfileNameEditor" Grid.Column="1" Spacing="8">
+                    <StackPanel x:Name="ProfileNameEditor" Spacing="8">
                       <TextBox MaxLength="8" PlaceholderText="{Binding Value, Source={i18n:I18n Key=onboarding.nicknamePlaceholder}, Mode=OneWay}" Text="{Binding Nickname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                       <Button
                           Command="{Binding SaveProfileCommand}"
@@ -144,11 +135,11 @@
                           ToolTipService.ToolTip="{Binding Value, Source={i18n:I18n Key=profile.changeNicknameTooltip}, Mode=OneWay}"
                           Visibility="{Binding HasNicknameChanges, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
-                  </Grid>
+                  </controls:ResponsiveFormPanel>
                   <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
                   <StackPanel Spacing="4">
                     <TextBlock FontWeight="SemiBold" Text="{Binding Value, Source={i18n:I18n Key=profile.character}, Mode=OneWay}" />
-                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.characterDescription}, Mode=OneWay}" />
+                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.characterDescription}, Mode=OneWay}" TextWrapping="Wrap" />
                   </StackPanel>
                   <StackPanel>
                     <GridView
@@ -160,20 +151,11 @@
                       SelectionMode="Single"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                      Width="{Binding ActualWidth, ElementName=ProfileCardContent}">
-                    <GridView.Transitions>
-                      <TransitionCollection><EntranceThemeTransition FromVerticalOffset="8" /></TransitionCollection>
-                    </GridView.Transitions>
-                    <GridView.Resources>
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="Transparent" />
-                    </GridView.Resources>
+                      ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Stretch">
+                    <GridView.ItemContainerTransitions><TransitionCollection /></GridView.ItemContainerTransitions>
                     <GridView.ItemsPanel>
                       <ItemsPanelTemplate>
-                        <controls:FixedColumnPanel ColumnCount="5" ItemHeight="116" />
+                        <controls:ResponsiveSelectionPanel MaximumColumns="5" MinimumItemWidth="128" />
                       </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemContainerStyle>
@@ -185,11 +167,29 @@
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Padding" Value="0" />
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                              <ListViewItemPresenter CornerRadius="8" ContentMargin="{TemplateBinding Padding}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Control.IsTemplateFocusTarget="True" FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                  FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}" FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                  FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}" FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                  SelectionCheckMarkVisualEnabled="False" SelectedBorderThickness="0"
+                                  PointerOverBackground="{ThemeResource SubtleButtonBackgroundPointerOver}" SelectedPointerOverBackground="{ThemeResource SubtleButtonBackgroundPointerOver}"
+                                  PressedBackground="{ThemeResource SubtleButtonBackgroundPressed}" SelectedPressedBackground="{ThemeResource SubtleButtonBackgroundPressed}"
+                                  SelectedBackground="Transparent" SelectedDisabledBackground="Transparent"
+                                  PointerOverBorderBrush="Transparent" SelectedBorderBrush="Transparent" SelectedPointerOverBorderBrush="Transparent"
+                                  SelectedPressedBorderBrush="Transparent" SelectedDisabledBorderBrush="Transparent" SelectedInnerBorderBrush="Transparent"
+                                  DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" />
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
                       </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                       <DataTemplate>
-                        <Grid Height="116" HorizontalAlignment="Stretch">
+                        <Grid MinHeight="116" HorizontalAlignment="Stretch">
                           <controls:SelectionProgress Canvas.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" IsPending="{Binding IsPending}" AnimationsEnabled="{Binding AnimationsEnabled}" />
                           <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="8" Spacing="8">
                             <Border Width="48" Height="48" HorizontalAlignment="Center">
@@ -214,7 +214,7 @@
                               IsHitTestVisible="False"
                               Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                 FontSize="12"
                                 Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                 Glyph="&#xE73E;" />
@@ -223,39 +223,30 @@
                       </DataTemplate>
                     </GridView.ItemTemplate>
                     </GridView>
-                    <Grid Height="92" ColumnSpacing="12" Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
-                      </Grid.ColumnDefinitions>
-                      <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="68" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="52" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="64" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                    </Grid>
+                    <controls:ResponsiveSelectionPanel x:Name="CharacterSkeleton" MaximumColumns="5" MinimumItemWidth="128" IsHitTestVisible="False" Visibility="{Binding IsCharacterSelectionsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="68" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="52" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="48" Height="48" HorizontalAlignment="Center" /><controls:SkeletonBar Width="64" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                    </controls:ResponsiveSelectionPanel>
                   </StackPanel>
                   <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
                   <StackPanel Spacing="4">
                     <TextBlock FontWeight="SemiBold" Text="{Binding Value, Source={i18n:I18n Key=profile.bubble}, Mode=OneWay}" />
                     <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.bubbleDescription}, Mode=OneWay}" TextWrapping="Wrap" />
                   </StackPanel>
-                  <Grid>
+                  <StackPanel>
                     <GridView
                       x:Name="BubbleSelector"
                       ItemsSource="{Binding BubbleSelections}"
                       SelectionMode="None"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                      Width="{Binding ActualWidth, ElementName=ProfileCardContent}">
-                    <GridView.Transitions>
-                      <TransitionCollection><EntranceThemeTransition FromVerticalOffset="8" /></TransitionCollection>
-                    </GridView.Transitions>
-                    <GridView.Resources>
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
-                    </GridView.Resources>
+                      ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Stretch">
+                    <GridView.ItemContainerTransitions><TransitionCollection /></GridView.ItemContainerTransitions>
                     <GridView.ItemsPanel>
                       <ItemsPanelTemplate>
-                        <controls:FixedColumnPanel ColumnCount="4" ItemHeight="116" />
+                        <controls:ResponsiveSelectionPanel MaximumColumns="4" MinimumItemWidth="128" FillAvailableWidth="True" />
                       </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemContainerStyle>
@@ -264,16 +255,25 @@
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Padding" Value="0" />
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
                       </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                       <DataTemplate>
-                        <Button Height="116" HorizontalAlignment="Stretch" Padding="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="Transparent" BorderThickness="0" Command="{Binding SelectCommand}" IsEnabled="{Binding IsEnabled}" AutomationProperties.Name="{Binding DisplayName}" AutomationProperties.ItemStatus="{Binding SelectionStatus}" Style="{StaticResource SubtleButtonStyle}" CornerRadius="8">
-                          <Grid MinHeight="96">
+                        <Button MinHeight="116" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="Transparent" BorderThickness="0" Command="{Binding SelectCommand}" IsEnabled="{Binding IsEnabled}" AutomationProperties.Name="{Binding DisplayName}" AutomationProperties.ItemStatus="{Binding SelectionStatus}" Style="{StaticResource SubtleButtonStyle}" CornerRadius="8">
+                          <Grid MinHeight="116">
                             <controls:SelectionProgress Canvas.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" IsPending="{Binding IsPending}" AnimationsEnabled="{Binding AnimationsEnabled}" />
-                            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Spacing="8">
+                            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="8" Spacing="8">
                               <controls:StoreProductArtwork Height="58" ProductKind="{Binding Kind}" CatalogItemId="{Binding CatalogItemId}" CharacterId="{Binding CharacterId}" />
-                              <TextBlock MinHeight="32" HorizontalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Center" TextWrapping="Wrap" />
+                              <TextBlock MinHeight="32" HorizontalAlignment="Stretch" Text="{Binding DisplayName}" TextAlignment="Center" TextWrapping="Wrap" />
                             </StackPanel>
                             <Border BorderBrush="{ThemeResource AccentFillColorDefaultBrush}" BorderThickness="1.5" CornerRadius="8" IsHitTestVisible="False" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Border
@@ -287,7 +287,7 @@
                                 IsHitTestVisible="False"
                                 Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                               <FontIcon
-                                  FontFamily="Segoe Fluent Icons"
+                                  FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                   FontSize="12"
                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                   Glyph="&#xE73E;" />
@@ -297,36 +297,29 @@
                       </DataTemplate>
                     </GridView.ItemTemplate>
                     </GridView>
-                    <Grid Height="116" ColumnSpacing="12" Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-                      <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="72" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="62" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                    </Grid>
-                  </Grid>
+                    <controls:ResponsiveSelectionPanel x:Name="BubbleSkeleton" MaximumColumns="4" MinimumItemWidth="128" FillAvailableWidth="True" IsHitTestVisible="False" Visibility="{Binding IsBubbleSelectionsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="72" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="70" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="62" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                    </controls:ResponsiveSelectionPanel>
+                  </StackPanel>
                   <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
                   <StackPanel Spacing="4">
                     <TextBlock FontWeight="SemiBold" Text="{Binding Value, Source={i18n:I18n Key=profile.throwable}, Mode=OneWay}" />
                     <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.throwableDescription}, Mode=OneWay}" TextWrapping="Wrap" />
                   </StackPanel>
-                  <Grid>
+                  <StackPanel>
                     <GridView
                       x:Name="ThrowableSelector"
                       ItemsSource="{Binding ThrowableSelections}"
                       SelectionMode="None"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                      Width="{Binding ActualWidth, ElementName=ProfileCardContent}">
-                    <GridView.Transitions>
-                      <TransitionCollection><EntranceThemeTransition FromVerticalOffset="8" /></TransitionCollection>
-                    </GridView.Transitions>
-                    <GridView.Resources>
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
-                      <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
-                    </GridView.Resources>
+                      ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Stretch">
+                    <GridView.ItemContainerTransitions><TransitionCollection /></GridView.ItemContainerTransitions>
                     <GridView.ItemsPanel>
                       <ItemsPanelTemplate>
-                        <controls:FixedColumnPanel ColumnCount="4" ItemHeight="116" />
+                        <controls:ResponsiveSelectionPanel MaximumColumns="4" MinimumItemWidth="128" FillAvailableWidth="True" />
                       </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemContainerStyle>
@@ -335,16 +328,25 @@
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="0" />
                         <Setter Property="Padding" Value="0" />
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
                       </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                       <DataTemplate>
-                        <Button Height="116" HorizontalAlignment="Stretch" Padding="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="Transparent" BorderThickness="0" Command="{Binding SelectCommand}" IsEnabled="{Binding IsEnabled}" AutomationProperties.Name="{Binding DisplayName}" AutomationProperties.ItemStatus="{Binding SelectionStatus}" Style="{StaticResource SubtleButtonStyle}" CornerRadius="8">
-                          <Grid MinHeight="96">
+                        <Button MinHeight="116" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="Transparent" BorderThickness="0" Command="{Binding SelectCommand}" IsEnabled="{Binding IsEnabled}" AutomationProperties.Name="{Binding DisplayName}" AutomationProperties.ItemStatus="{Binding SelectionStatus}" Style="{StaticResource SubtleButtonStyle}" CornerRadius="8">
+                          <Grid MinHeight="116">
                             <controls:SelectionProgress Canvas.ZIndex="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" IsPending="{Binding IsPending}" AnimationsEnabled="{Binding AnimationsEnabled}" />
-                            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Spacing="8">
+                            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Padding="8" Spacing="8">
                               <controls:StoreProductArtwork Height="58" ProductKind="{Binding Kind}" CatalogItemId="{Binding CatalogItemId}" CharacterId="{Binding CharacterId}" />
-                              <TextBlock MinHeight="32" HorizontalAlignment="Center" Text="{Binding DisplayName}" TextAlignment="Center" TextWrapping="Wrap" />
+                              <TextBlock MinHeight="32" HorizontalAlignment="Stretch" Text="{Binding DisplayName}" TextAlignment="Center" TextWrapping="Wrap" />
                             </StackPanel>
                             <Border BorderBrush="{ThemeResource AccentFillColorDefaultBrush}" BorderThickness="1.5" CornerRadius="8" IsHitTestVisible="False" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Border
@@ -358,7 +360,7 @@
                                 IsHitTestVisible="False"
                                 Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                               <FontIcon
-                                  FontFamily="Segoe Fluent Icons"
+                                  FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                     FontSize="12"
                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                   Glyph="&#xE73E;" />
@@ -368,14 +370,13 @@
                       </DataTemplate>
                     </GridView.ItemTemplate>
                     </GridView>
-                    <Grid Height="116" ColumnSpacing="12" Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-                      <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="72" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                      <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="62" Height="12" HorizontalAlignment="Center" /></StackPanel>
-                    </Grid>
-                  </Grid>
-                  <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.duplicateNotice}, Mode=OneWay}" />
+                    <controls:ResponsiveSelectionPanel x:Name="ThrowableSkeleton" MaximumColumns="4" MinimumItemWidth="128" FillAvailableWidth="True" IsHitTestVisible="False" Visibility="{Binding IsThrowableSelectionsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="58" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="72" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                      <StackPanel VerticalAlignment="Center" Spacing="12"><controls:SkeletonBar Width="58" Height="50" HorizontalAlignment="Center" /><controls:SkeletonBar Width="62" Height="12" HorizontalAlignment="Center" /></StackPanel>
+                    </controls:ResponsiveSelectionPanel>
+                  </StackPanel>
+                  <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=profile.duplicateNotice}, Mode=OneWay}" TextWrapping="Wrap" />
                 </StackPanel>
               </Border>
             </StackPanel>
@@ -389,7 +390,7 @@
                 <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=groups.description}, Mode=OneWay}" TextWrapping="Wrap" />
               </StackPanel>
               <Grid>
-                <Grid Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <Grid Visibility="{Binding IsRoomsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                   <Grid.Transitions>
                     <TransitionCollection><EntranceThemeTransition FromVerticalOffset="8" /></TransitionCollection>
                   </Grid.Transitions>
@@ -576,20 +577,20 @@
                     </ListView.ItemTemplate>
                   </ListView>
                 </Grid>
-                <StackPanel Spacing="12" Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel x:Name="RoomsSkeleton" Spacing="12" Visibility="{Binding IsRoomsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
                   <Border Height="86" Style="{StaticResource SideySettingsCardStyle}">
                     <Grid ColumnSpacing="12">
-                      <Grid.ColumnDefinitions><ColumnDefinition Width="42" /><ColumnDefinition Width="*" /><ColumnDefinition Width="150" /></Grid.ColumnDefinitions>
+                      <Grid.ColumnDefinitions><ColumnDefinition Width="32" /><ColumnDefinition Width="*" /><ColumnDefinition Width="64" /></Grid.ColumnDefinitions>
                       <controls:SkeletonBar Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8"><controls:SkeletonBar Width="120" Height="14" /><controls:SkeletonBar Width="190" Height="12" /></StackPanel>
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8"><controls:SkeletonBar MaxWidth="120" Height="14" /><controls:SkeletonBar MaxWidth="190" Height="12" /></StackPanel>
                       <controls:SkeletonBar Grid.Column="2" Height="32" VerticalAlignment="Center" />
                     </Grid>
                   </Border>
                   <Border Height="86" Style="{StaticResource SideySettingsCardStyle}">
                     <Grid ColumnSpacing="12">
-                      <Grid.ColumnDefinitions><ColumnDefinition Width="42" /><ColumnDefinition Width="*" /><ColumnDefinition Width="150" /></Grid.ColumnDefinitions>
+                      <Grid.ColumnDefinitions><ColumnDefinition Width="32" /><ColumnDefinition Width="*" /><ColumnDefinition Width="64" /></Grid.ColumnDefinitions>
                       <controls:SkeletonBar Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8"><controls:SkeletonBar Width="104" Height="14" /><controls:SkeletonBar Width="176" Height="12" /></StackPanel>
+                      <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8"><controls:SkeletonBar MaxWidth="104" Height="14" /><controls:SkeletonBar MaxWidth="176" Height="12" /></StackPanel>
                       <controls:SkeletonBar Grid.Column="2" Height="32" VerticalAlignment="Center" />
                     </Grid>
                   </Border>
@@ -739,7 +740,7 @@
                 </Border>
               </Grid>
               <Grid x:Name="StoreResultsHost" MinHeight="220">
-                <Grid Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <Grid Visibility="{Binding IsStoreLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                   <Grid.Transitions>
                     <TransitionCollection><EntranceThemeTransition FromVerticalOffset="8" /></TransitionCollection>
                   </Grid.Transitions>
@@ -832,7 +833,7 @@
                 </Grid>
                 <ItemsRepeater x:Name="StoreSkeletonRepeater"
                     ItemsSource="{Binding VisibleStoreProducts}"
-                    Visibility="{Binding IsRemoteContentLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    Visibility="{Binding IsStoreLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
                   <ItemsRepeater.Layout><controls:StoreProductGridLayout /></ItemsRepeater.Layout>
                   <ItemsRepeater.ItemTemplate>
                     <DataTemplate>
@@ -867,7 +868,7 @@
             <StackPanel x:Name="SettingsPageContent" Padding="32,24" MaxWidth="820" HorizontalAlignment="Stretch" Spacing="20">
               <StackPanel Spacing="4">
                 <TextBlock AutomationProperties.HeadingLevel="Level1" Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding Value, Source={i18n:I18n Key=settings.generalTitle}, Mode=OneWay}" />
-                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=settings.generalDescription}, Mode=OneWay}" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding Value, Source={i18n:I18n Key=settings.generalDescription}, Mode=OneWay}" TextWrapping="Wrap" />
               </StackPanel>
               <Border Style="{StaticResource SideySettingsCardStyle}">
                 <StackPanel Spacing="16">
@@ -1026,7 +1027,7 @@
                 <Grid x:Name="LanguageSettingsLayout" ColumnSpacing="16" RowSpacing="0" VerticalAlignment="Center">
                   <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                   <Grid.ColumnDefinitions><ColumnDefinition Width="32" /><ColumnDefinition Width="*" /><ColumnDefinition x:Name="LanguageControlColumn" Width="220" /></Grid.ColumnDefinitions>
-                  <FontIcon FontFamily="Segoe Fluent Icons" FontSize="24" Glyph="&#xF2B7;" VerticalAlignment="Center" />
+                  <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="24" Glyph="&#xF2B7;" VerticalAlignment="Center" />
                   <StackPanel x:Name="LanguageDescription" Grid.Column="1" Spacing="4" VerticalAlignment="Center">
                     <TextBlock FontWeight="SemiBold" Text="{Binding Value, Source={i18n:I18n Key=settings.language}, Mode=OneWay}" />
                     <TextBlock x:Name="LanguageDescriptionText" Text="{Binding Value, Source={i18n:I18n Key=settings.languageDescription}, Mode=OneWay}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
@@ -1146,4 +1147,5 @@
       </Grid>
     </NavigationView>
   </Grid>
+  </UserControl>
 </Window>

@@ -1,4 +1,3 @@
-using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -86,8 +85,13 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         ViewModel.PrepareGroupsForPresentation();
         Title = "SIDEY";
         SideyWindowIcon.Apply(AppWindow);
-        ExtendsContentIntoTitleBar = true;
-        SetTitleBar(AppTitleBar);
+        if (Microsoft.UI.Windowing.AppWindowTitleBar.IsCustomizationSupported())
+        {
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+        }
+        SideyWindowTheme.FollowTitleBarTheme(this, MainRoot);
+        MainRoot.Loaded += OnResponsiveRootLoaded;
         RootNavigation.SelectedItem = RootNavigation.MenuItems[0];
         ResponsiveWindowSize minimumWindowSize = ApplyResponsiveSize();
         _minimumSizeController = new WindowsMinimumSizeController(
@@ -130,7 +134,53 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
                 return;
             ViewModel.RefreshFeedbackPresentation();
             _activePreview?.SetAnimationsEnabled(_coordinator.AnimationsEnabled);
+            UpdateResponsiveAnimations(MainRoot);
         });
+    }
+
+    private void OnResponsiveRootLoaded(object sender, RoutedEventArgs args)
+    {
+        UpdateResponsiveState();
+        UpdateResponsiveAnimations(MainRoot);
+    }
+
+    private void OnPageViewportSizeChanged(object sender, SizeChangedEventArgs args) => UpdateResponsiveState();
+
+    private void UpdateResponsiveState()
+    {
+        if (_isClosed || _coordinator is null || PageViewport.ActualWidth <= 0)
+        {
+            return;
+        }
+        VisualStateManager.GoToState(MainRoot,
+            PageViewport.ActualWidth < 680 ? "Narrow" : "Standard", _coordinator.AnimationsEnabled);
+    }
+
+    private void UpdateResponsiveAnimations(DependencyObject root)
+    {
+        if (ReferenceEquals(root, MainRoot))
+        {
+            FrameworkElement[] controls = [GroupCreateAction, GroupJoinAction, StoreFilterToggle,
+                StoreSortStack, StoreHideOwnedCheckBox, SoundControlsGrid, EdgeComboBox,
+                SpanComboBox, MonitorComboBox, LanguageComboBox, ThemeComboBox];
+            foreach (FrameworkElement control in controls)
+            {
+                control.Transitions = _coordinator.AnimationsEnabled
+                    ? [new RepositionThemeTransition { IsStaggeringEnabled = false }] : null;
+            }
+        }
+        if (root is ResponsiveFormPanel form)
+        {
+            form.AnimationsEnabled = _coordinator.AnimationsEnabled;
+        }
+        if (root is ResponsiveSelectionPanel selection)
+        {
+            selection.AnimationsEnabled = _coordinator.AnimationsEnabled;
+        }
+        for (int index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            UpdateResponsiveAnimations(VisualTreeHelper.GetChild(root, index));
+        }
     }
 
     public bool ShouldExitOnClose => _allowClose || !_trayAvailable;
@@ -327,7 +377,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
 
     internal async Task VerifyStoreScrollingSmokeAsync()
     {
-        bool wasLoading = ViewModel.IsRemoteContentLoading;
+        bool wasLoading = ViewModel.IsStoreLoading;
         int originalKind = ViewModel.SelectedStoreKindIndex;
         double originalWidth = StorePage.Width;
         double originalHeight = StorePage.Height;
@@ -337,7 +387,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         try
         {
             ShowPage("store");
-            ViewModel.IsRemoteContentLoading = false;
+            ViewModel.IsStoreLoading = false;
             ViewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Throwable;
             longNameProduct.DisplayName = string.Concat(Enumerable.Repeat("긴 상품 이름 ", 12));
             StorePage.Height = 360;
@@ -426,68 +476,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
             StorePage.Height = originalHeight;
             longNameProduct.DisplayName = originalName;
             ViewModel.SelectedStoreKindIndex = originalKind;
-            ViewModel.IsRemoteContentLoading = wasLoading;
-            StorePage.ChangeView(null, 0, null, disableAnimation: true);
-        }
-    }
-
-    internal async Task VerifySkeletonLoadingSmokeAsync()
-    {
-        bool wasLoading = ViewModel.IsRemoteContentLoading;
-        int originalKind = ViewModel.SelectedStoreKindIndex;
-        ElementTheme originalTheme = MainRoot.RequestedTheme;
-        double originalWidth = StorePage.Width;
-        double originalHeight = StorePage.Height;
-        try
-        {
-            ShowPage("store");
-            ViewModel.SelectedStoreKindIndex = (int)CommerceProductKind.Throwable;
-            StorePage.Width = 620;
-            StorePage.Height = 360;
-            foreach (ElementTheme theme in new[] { ElementTheme.Light, ElementTheme.Dark })
-            {
-                MainRoot.RequestedTheme = theme;
-                ViewModel.IsRemoteContentLoading = true;
-                StorePage.ChangeView(null, 0, null, disableAnimation: true);
-                StorePage.UpdateLayout();
-                await WaitForNextFrameAsync();
-                await WaitForNextFrameAsync();
-                StorePage.UpdateLayout();
-                double loadingExtent = StorePage.ExtentHeight;
-                SkeletonBar bar = FindVisualChild<SkeletonBar>(StoreSkeletonRepeater)
-                    ?? throw new InvalidOperationException("Loading skeleton is missing.");
-                if (bar.Content is not FrameworkElement fill
-                    || fill.ActualWidth < bar.ActualWidth - 1 || fill.ActualHeight < bar.ActualHeight - 1
-                    || bar.ActualWidth <= 0 || bar.ActualHeight <= 0)
-                    throw new InvalidOperationException("Skeleton fill does not occupy its reserved space.");
-                var rendered = new RenderTargetBitmap();
-                await rendered.RenderAsync(bar);
-                byte[] pixels = System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeBufferExtensions.ToArray(
-                    await rendered.GetPixelsAsync());
-                int visiblePixels = 0;
-                for (int offset = 3; offset < pixels.Length; offset += 4)
-                {
-                    if (pixels[offset] >= 32)
-                        visiblePixels++;
-                }
-                if (pixels.Length == 0 || visiblePixels < pixels.Length / 8)
-                    throw new InvalidOperationException("Skeleton loading indicator is empty or too faint.");
-                ViewModel.IsRemoteContentLoading = false;
-                await WaitForNextFrameAsync();
-                await WaitForNextFrameAsync();
-                StorePage.UpdateLayout();
-                if (bar.IsPulseRunning || Math.Abs(StorePage.ExtentHeight - loadingExtent) > 1)
-                    throw new InvalidOperationException("Loading completion changed store height or left a hidden pulse running.");
-                StartupDiagnostics.Stage($"skeleton-loading-smoke-complete theme={theme} visible-pixels={visiblePixels} extent={loadingExtent}");
-            }
-        }
-        finally
-        {
-            MainRoot.RequestedTheme = originalTheme;
-            StorePage.Width = originalWidth;
-            StorePage.Height = originalHeight;
-            ViewModel.SelectedStoreKindIndex = originalKind;
-            ViewModel.IsRemoteContentLoading = wasLoading;
+            ViewModel.IsStoreLoading = wasLoading;
             StorePage.ChangeView(null, 0, null, disableAnimation: true);
         }
     }
@@ -1334,7 +1323,10 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
             selectedPage.ChangeView(null, 0, null, disableAnimation: true);
             DispatcherQueue.TryEnqueue(() =>
                 selectedPage.ChangeView(null, 0, null, disableAnimation: true));
-            AnimatePageRefresh(selectedPage);
+            if (tag != "profile")
+            {
+                AnimatePageRefresh(selectedPage);
+            }
         }
     }
 
@@ -1928,11 +1920,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
 
     private void ApplyBackdrop()
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000)
-            && MicaController.IsSupported())
-        {
-            SystemBackdrop = new MicaBackdrop { Kind = MicaKind.Base };
-        }
+        SideyWindowTheme.ApplyBackdrop(this, MainFallbackBackground);
     }
 
     private ResponsiveWindowSize ApplyResponsiveSize()
@@ -1961,6 +1949,7 @@ public sealed partial class MainWindow : Window, IMainWindowDialogService
         ViewModel.NoticeRaised -= OnNoticeRaised;
         ViewModel.StorePreviewRequested -= OnStorePreviewRequested;
         ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        MainRoot.Loaded -= OnResponsiveRootLoaded;
         _minimumSizeController.Dispose();
         _feedbackMonitor?.Dispose();
         if (_coordinator is AppCoordinator appCoordinator)
