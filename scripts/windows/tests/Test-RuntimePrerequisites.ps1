@@ -191,6 +191,23 @@ try {
     Assert-True (Test-Path -LiteralPath (Join-Path $installRoot 'SIDEY.exe')) 'Preserve files outside private Runtime.'
     Assert-True (Test-Path -LiteralPath (Join-Path $sharedRoot 'coreclr.dll')) 'Preserve shared runtimes.'
     Remove-SideyPrivateRuntime $installRoot
+    # In-app updates inherit the host's Runtime working directory. Exercise the
+    # actual helper in a child process so both PowerShell and native cwd apply.
+    foreach ($workingSubdirectory in @('Runtime', 'Runtime/en-US')) {
+        $workingDirectory = Join-Path $installRoot $workingSubdirectory
+        [IO.Directory]::CreateDirectory($workingDirectory) | Out-Null
+        [IO.File]::WriteAllText((Join-Path $workingDirectory 'legacy.dll'), 'old runtime')
+        $helperPath = Join-Path $installerSourceDirectory 'SetupRuntime.ps1'
+        $cleanupProcess = Start-Process -FilePath (Get-Command powershell.exe).Source `
+            -ArgumentList @('-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
+                '-File', ('"{0}"' -f $helperPath), '-InstallDirectory', ('"{0}"' -f $installRoot),
+                '-ResultPath', ('"{0}"' -f $resultPath), '-LogPath', ('"{0}"' -f $logPath)) `
+            -WorkingDirectory $workingDirectory -WindowStyle Hidden -PassThru -Wait
+        Assert-True ($cleanupProcess.ExitCode -eq 0) "Cleanup must succeed when started in $workingSubdirectory."
+        Assert-True (-not (Test-Path -LiteralPath $runtimeRoot)) 'Remove the inherited working directory.'
+        Assert-True (Test-Path -LiteralPath (Join-Path $installRoot 'SIDEY.exe')) 'Preserve the launcher during inherited-cwd cleanup.'
+        Assert-True (Test-Path -LiteralPath (Join-Path $sharedRoot 'coreclr.dll')) 'Preserve shared runtimes during inherited-cwd cleanup.'
+    }
     New-Item -ItemType Junction -Path $runtimeRoot -Target $sharedRoot | Out-Null
     try {
         Assert-Throws { Remove-SideyPrivateRuntime $installRoot } 'Reject a Runtime junction.'
