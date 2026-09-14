@@ -28,6 +28,11 @@ try {
     }
     . (Join-Path $PSScriptRoot 'Prerequisites.ps1')
     if ($InstallDirectory) {
+        # A directly launched helper may also inherit the private Runtime cwd.
+        # Release both PowerShell's location and the native process directory.
+        $InstallDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($InstallDirectory)
+        Set-Location -LiteralPath $PSScriptRoot
+        [Environment]::CurrentDirectory = $PSScriptRoot
         Remove-SideyPrivateRuntime $InstallDirectory
         $result = New-SideyInstallerResult 0 'FILESYSTEM' 'CLEANUP' '' 'SIDEY private Runtime' `
             'Remove-SideyPrivateRuntime' 0 '' $InstallerVersion

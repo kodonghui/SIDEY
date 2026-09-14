@@ -325,6 +325,9 @@ FunctionEnd
 
 Function PrepareRuntimeHelper
   InitPluginsDir
+  ; Updates can inherit the app host's Runtime working directory. Release it in
+  ; the installer itself before launching any helper or removing the old app.
+  SetOutPath "$PLUGINSDIR"
   File /oname=$PLUGINSDIR\SetupRuntime.ps1 "${__FILEDIR__}\SetupRuntime.ps1"
   File /oname=$PLUGINSDIR\Prerequisites.ps1 "${__FILEDIR__}\Prerequisites.ps1"
   File /oname=$PLUGINSDIR\InstallerErrors.ps1 "${__FILEDIR__}\InstallerErrors.ps1"
