@@ -8,6 +8,8 @@
 
 ## 확정된 결정
 
+2026-09-15 백엔드 비공개 저장소 분리: 사용자는 Supabase 관련 백엔드 전체를 조직의 새 비공개 저장소 [sidey-app/sidey-backend](https://github.com/sidey-app/sidey-backend)로 분리하도록 명시적으로 승인했다. Supabase migration·RLS·Edge Functions·서버 테스트, App Store 검증 서비스, 운영 데이터 수집·staging 설정·배포 도구와 서버 운영 문서는 비공개 저장소에서 관리한다. 공개 SIDEY에는 macOS·Windows Supabase 클라이언트, 공개 웹과 제품·클라이언트 계약을 유지한다. 상품·자산 원본은 공개 `assets/v1/commerce-catalog.json`·`manifest.json`이며 backend는 검토한 공개 커밋의 snapshot과 출처를 기록하고 서버용 매핑만 별도로 생성·검증한다. 서버 작업은 backend의 현재 clone·규칙·CI를 따르고 공개 저장소의 과거 사본에서 수정·배포하지 않는다. 이번 분리는 앞으로의 파일 위치와 공개 범위를 변경하는 작업이다. 이미 공개된 Git 이력·태그·fork·다운로드 사본의 제거 또는 이력 재작성은 별도 범위이며, 이번 작업으로 과거 코드까지 비공개가 되었다고 주장하지 않는다. 저장소 이관 자체는 운영 DB migration·Cloud Run 배포·판매 설정 변경을 뜻하지 않는다.
+
 2026-09-15 공개 README 구성·언어: 사용자가 직접 정리한 소개·접이식 설치 안내·기여·감사 구성을 유지하고 한국어 문장은 해요체로 윤문한다. 루트 `README.md`는 한국어이며 영어·일본어·중국어 간체·번체·러시아어·우크라이나어 번역은 Windows 설치기 지원 언어에 맞춰 `docs/readme/README.<locale>.md`에 둔다. 버전·빌드·업데이트 내역은 릴리스 노트로 모으고 README의 플랫폼별 설치 안내는 공식 GitHub Releases로 연결한다. 이전 README 표시 구역의 버전 복제 규칙은 이 링크 검사로 대체하되 release manifest·앱 설정·업데이트 피드·웹 메타데이터의 일치 검사는 유지한다. App Store는 공개 제품 페이지에 연결하고 Microsoft Store는 사용자 확인에 따라 공식 SVG 배지를 링크 없이 준비 중으로 표시한다. 사용자는 최종 로컬 변경의 푸시를 승인했으며 공개 릴리스·스토어 업로드·운영 웹 배포는 별도다.
 
 2026-09-15 로컬 어드민 App Store 결제 금액: 사용자 요청으로 개요와 결제 메뉴에 App Store의 검증된 앱 내 구매 금액을 추가한다. Apple 서명 거래의 `price` milliunits·`currency`를 거래 원장에 저장하고 Production과 Sandbox를 분리하며 통화별로 합산한다. 상품 정가로 과거 금액을 추정하지 않고 미확인 건수를 표시한다. 환불·회수 대상 구매액은 원래 구매 금액이며 실제 부분 환불액·수수료·세금 차감 후 정산액으로 부르지 않는다. 복원·재검증은 같은 transaction을 중복 집계하지 않으며 계정 연결이 삭제된 보존 거래도 포함한다. 과거 금액 보완은 검증 서버의 제한된 순차 도구로 수행하고 어드민에는 변경 기능을 추가하지 않는다. 이번 코드 통합과 운영 DB migration·검증 서버 배포·과거 거래 보완 실행은 구분한다.
