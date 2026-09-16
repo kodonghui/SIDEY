@@ -28,7 +28,7 @@ public sealed class WindowsReleaseContractTests
         string validationWorkflow = Read(".github", "workflows", "validate-windows.yml");
         string releaseWorkflow = Read(".github", "workflows", "publish-windows-release.yml");
         string metadataVerifier = Read("scripts", "skills", "verify_release_consistency.py");
-        string releaseVerifier = Read("scripts", "windows", "Test-WindowsRelease.ps1");
+        string releaseVerifier = Read("scripts", "windows", "tests", "Test-WindowsRelease.ps1");
 
         Assert.DoesNotContain("tags:", validationWorkflow, StringComparison.Ordinal);
         Assert.DoesNotContain("tags:", releaseWorkflow, StringComparison.Ordinal);
