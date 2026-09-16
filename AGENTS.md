@@ -13,6 +13,7 @@ If the documents conflict, confirmed decisions in `docs/DECISIONS.md` win.
 
 ## Instruction routing
 
+- Before changing `macos/**`, `scripts/macos/**`, or macOS-specific workflows, read [the macOS instructions](macos/AGENTS.md).
 - Before changing `windows/**`, `scripts/windows/**`, or Windows-specific workflows, read [the Windows instructions](windows/AGENTS.md). Changes under `windows/docs/**` also follow [the Windows developer-document instructions](windows/docs/AGENTS.md).
 - Before changing `website/**`, read [the public website instructions](website/AGENTS.md). Use [.agents/skills/web-verification/SKILL.md](.agents/skills/web-verification/SKILL.md) when a public-site change needs claim, build, or rendered-layout evidence.
 - Before changing the root README, translated README files, `docs/releases/**`, or public release copy, read [the documentation and release instructions](docs/AGENTS.md). Use [.agents/skills/release-notes/SKILL.md](.agents/skills/release-notes/SKILL.md) only for a specific macOS or Windows release note or GitHub Release body.
@@ -26,7 +27,7 @@ Keep native Supabase clients, the public website and client-facing product contr
 
 ## Work lifecycle
 
-Use an isolated, task-owned worktree on a branch whose platform prefix matches the complete change. Treat `scripts/workflow.py` as the executable source of truth for freshness, ownership, changed-path classification, checks, exact-head integration and primary-main refresh. Use [.agents/skills/app-verification/SKILL.md](.agents/skills/app-verification/SKILL.md) when an integrated app change needs a runtime verdict from exact-main provenance. Public releases, store uploads and production deployments are separate operations that require explicit authorization.
+Use an isolated, task-owned worktree on a branch whose platform prefix matches the complete change. Treat `scripts/skills/workflow.py` as the executable source of truth for freshness, ownership, changed-path classification, checks, exact-head integration and primary-main refresh. Use [.agents/skills/app-verification/SKILL.md](.agents/skills/app-verification/SKILL.md) when an integrated app change needs a runtime verdict from exact-main provenance. Public releases, store uploads and production deployments are separate operations that require explicit authorization.
 
 - Do not make implementation changes directly on `main`, switch or clean another task's dirty worktree, or overwrite unrelated user or agent changes.
 - Keep the requested change focused. Do not include drive-by refactors, formatting, generated output, or documentation changes that are not required by the task.
@@ -34,18 +35,22 @@ Use an isolated, task-owned worktree on a branch whose platform prefix matches t
 - Review the full diff against its base before a commit or handoff. Validation must describe the exact commit and source snapshot tested. If source changes after validation, run the affected checks again.
 - Integrate only the reviewed and checked head. Do not substitute a rebuilt, amended, or merely similar commit without repeating review and validation.
 
-## Commit and pull request policy
+## Contribution, commit and pull request policy
 
-Directly authored commit subjects, and pull request titles that will become squash commit subjects, use `type(scope): 한국어 설명`.
+[CONTRIBUTING.md](CONTRIBUTING.md) is the human-readable source of truth for
+issues, branch boundaries, commit messages, validation and pull request
+content. Apply it to both manual and agent-assisted work. Deterministic rules
+remain enforced by the tracked validators, `scripts/skills/workflow.py` and CI.
 
-- Allowed types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `build`, `ci`, `chore`, `revert`.
-- Allowed scopes: `macOS-Direct`, `AppStore`, `macOS-Direct / AppStore`, `Windows`, `Shared`.
-- The description and optional prose body are Korean. Identifiers, paths, product names, and machine-readable trailers may retain their required spelling.
-- Git- or GitHub-generated merge subjects may remain generated; a human- or agent-supplied title must follow this contract.
+Use [.agents/skills/commit/SKILL.md](.agents/skills/commit/SKILL.md) when asked
+to prepare a commit message or create a local commit. Use
+[.agents/skills/create-pr/SKILL.md](.agents/skills/create-pr/SKILL.md) when
+asked to draft or publish a pull request. Neither skill grants permission to
+push, create a pull request, merge, release or deploy beyond the user's
+explicit request. GitHub's repository settings own the generated squash
+commit title and body; do not override them in the task workflow.
 
-`scripts/validate_commit_message.py` is the deterministic format checker. `scripts/workflow.py` rejects invalid authored commit and squash-PR subjects before mutation or merge, and the integration scope check validates only the new commit range plus the current PR title.
-
-Codex-assisted new commits must include `Co-authored-by: codex <codex@openai.com>` while preserving the human Git author. The canonical mechanism is the repository hook installed once per clone with `python3 scripts/setup_codex_attribution.py`; it also covers linked worktrees. If an existing hook prevents installation, preserve it and connect the tracked hook through that clone's hook manager; if automatic attribution is unavailable, add the trailer once to the newly authored Codex commit. Do not attribute imported or replayed history, duplicate attribution enforcement in the commit-message validator, or rewrite existing history to add attribution.
+Codex-assisted new commits must include `Co-authored-by: codex <codex@openai.com>` while preserving the human Git author. The canonical mechanism is the repository hook installed once per clone with `python3 scripts/skills/commit/setup_codex_attribution.py`; it also covers linked worktrees. If an existing hook prevents installation, preserve it and connect the tracked hook through that clone's hook manager; if automatic attribution is unavailable, add the trailer once to the newly authored Codex commit. Do not attribute imported or replayed history, duplicate attribution enforcement in the commit-message validator, or rewrite existing history to add attribution.
 
 ## Automatic parallel agent work
 
@@ -63,6 +68,7 @@ Codex-assisted new commits must include `Co-authored-by: codex <codex@openai.com
 - A `macos/*` branch must not edit, move, delete, format, generate, build, test, or release Windows implementation files. This includes `windows/**` and Windows-specific workflows, installers, assets, and documentation.
 - A `windows/*` branch must not edit, move, delete, format, generate, build, test, or release macOS implementation files. This includes `macos/**` and macOS-specific scripts, workflows, packages, assets, and documentation.
 - Shared changes belong on `shared/*`. Do not mix new shared-file edits into a platform implementation commit. Land the shared change independently, then merge or cherry-pick that reviewed commit into the platform branch that needs it.
+- A maintainer-applied `repository-wide` pull request label may authorize a `shared/*` branch to update platform-owned call sites required by one atomic repository-wide migration. It does not authorize unrelated platform behavior changes, and CI must run every affected scope.
 - If a platform task reveals work needed on the other platform, record a follow-up instead of implementing it on the current branch.
 - Do not switch or clean a dirty worktree owned by another task or agent. Create an isolated worktree on the correctly prefixed branch.
 - macOS remains the reference implementation. Windows follows through its own branch without rewriting or opportunistically modifying macOS code.

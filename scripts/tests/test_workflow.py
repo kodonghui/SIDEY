@@ -9,8 +9,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).parents[1]))
-spec = importlib.util.spec_from_file_location('workflow', Path(__file__).parents[1] / 'workflow.py')
+SKILL_SCRIPTS = Path(__file__).parents[1] / 'skills'
+sys.path.insert(0, str(SKILL_SCRIPTS))
+spec = importlib.util.spec_from_file_location('workflow', SKILL_SCRIPTS / 'workflow.py')
 w = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(w)
 
@@ -190,21 +191,96 @@ class WorkflowTests(unittest.TestCase):
             'Co-authored-by: Person <person@example.test>',
         ])
 
-    def test_squash_body_normalizes_existing_trailers_and_preserves_others(self):
-        body = ('Summary\n\nReviewed-by: Reviewer <reviewer@example.test>\n'
-                'Co-authored-by: Codex <codex@openai.com>\n'
-                'co-authored-by: codex <CODEX@OPENAI.COM>')
-        result = w.squash_body(self.primary, body, [
-            'Change\n\nCo-authored-by: Person <person@example.test>',
-        ])
-        self.assertEqual(result, ('Summary\n\nReviewed-by: Reviewer <reviewer@example.test>\n'
-                                  'Co-authored-by: Codex <codex@openai.com>\n'
-                                  'Co-authored-by: Person <person@example.test>'))
+    def test_publish_body_appends_missing_commit_coauthors_once(self):
+        body = (
+            'Summary\n\n'
+            'Co-authored-by: Codex <codex@openai.com>\n'
+        )
+        messages = [
+            'Change\n\nCo-authored-by: codex <CODEX@OPENAI.COM>',
+            'Another\n\nCo-authored-by: Person <person@example.test>',
+        ]
+        self.assertEqual(
+            w.pr_body_with_coauthors(self.primary, body, messages),
+            body.rstrip()
+            + '\nCo-authored-by: Person <person@example.test>\n',
+        )
 
-    def test_single_line_pr_body_is_parsed_as_a_commit_body_trailer(self):
-        body = 'Co-authored-by: Person <person@example.test>'
-        self.assertEqual(w.squash_body(self.primary, body, []), body)
-        self.assertEqual(w.coauthor_trailers(self.primary, [w.pr_body_message(body)]), [body])
+    def test_merge_uses_github_squash_defaults_without_message_overrides(self):
+        with patch.object(w, 'run') as run:
+            w.merge_task_pr(self.primary, '108', 'checked-head')
+        command = run.call_args.args[1:]
+        self.assertEqual(
+            command,
+            (
+                'gh', 'pr', 'merge', '108', '--squash',
+                '--match-head-commit', 'checked-head',
+            ),
+        )
+        self.assertNotIn('--subject', command)
+        self.assertNotIn('--body-file', command)
+
+    def test_publish_updates_existing_pr_coauthors_without_merging(self):
+        template = self.write_general_pr_template()
+        body = template.read_text(encoding='utf-8')
+        updated_body = body + '\nCo-authored-by: Person <person@example.test>\n'
+        task = {
+            'checked': {'base': 'base', 'head': 'checked-head'},
+            'status': 'checked',
+        }
+        old_pr = {
+            'number': 42,
+            'headRefOid': 'old-head',
+            'isCrossRepository': False,
+        }
+        current_pr = {**old_pr, 'headRefOid': 'checked-head'}
+        views = iter((
+            {'title': 'fix(auth): 인증 오류 수정', 'body': body},
+            {'title': 'fix(auth): 인증 오류 수정', 'body': updated_body},
+        ))
+        commands = []
+
+        def response(root, *args, **kwargs):
+            commands.append(args)
+            if args[:3] == ('gh', 'pr', 'view'):
+                return json.dumps(next(views))
+            return ''
+
+        args = w.argparse.Namespace(task='task', title=None, body_file=None)
+        with (
+            patch.object(w, 'owned_task', return_value=task),
+            patch.object(w, 'dirty_paths', return_value=[]),
+            patch.object(w, 'fetch_main', return_value='base'),
+            patch.object(w, 'attest'),
+            patch.object(w, 'changed_paths', return_value=['docs/guide.md']),
+            patch.object(w, 'validate_paths'),
+            patch.object(w, 'open_task_prs', side_effect=([old_pr], [current_pr])),
+            patch.object(w, 'branch', return_value='shared/task'),
+            patch.object(w, 'head', return_value='checked-head'),
+            patch.object(w, 'commit_messages', return_value=['commit']),
+            patch.object(w, 'pr_body_with_coauthors', return_value=updated_body),
+            patch.object(w, 'git') as git,
+            patch.object(w, 'update_task') as update_task,
+            patch.object(w, 'run', side_effect=response),
+        ):
+            result = w.publish(self.primary, args)
+
+        git.assert_called_once_with(
+            self.primary,
+            'push',
+            '-u',
+            'origin',
+            'shared/task',
+        )
+        self.assertTrue(any(command[:3] == ('gh', 'pr', 'edit') for command in commands))
+        self.assertFalse(any(command[:3] == ('gh', 'pr', 'merge') for command in commands))
+        self.assertFalse(any(command[:3] == ('gh', 'pr', 'create') for command in commands))
+        self.assertEqual(result, {
+            'status': 'published',
+            'pr': '42',
+            'head': 'checked-head',
+        })
+        self.assertEqual(update_task.call_args.args[2]['status'], 'published')
 
     def advance(self):
         (self.other / 'advance.md').write_text('remote update\n')
@@ -343,18 +419,20 @@ class WorkflowTests(unittest.TestCase):
     def test_contributor_architecture_only_changes_are_shared_only(self):
         paths = [
             'AGENTS.md',
+            'macos/AGENTS.md',
             'windows/AGENTS.md',
             'windows/docs/AGENTS.md',
             'website/AGENTS.md',
             '.agents/skills/version-audit/SKILL.md',
-            '.agents/skills/windows-tests/agents/openai.yaml',
-            'scripts/validate_contributor_architecture.py',
+            '.agents/skills/write-tests/agents/openai.yaml',
+            'scripts/skills/validate_contributor_architecture.py',
             'scripts/tests/test_contributor_architecture.py',
-            'scripts/validate_commit_message.py',
+            'scripts/skills/commit/validate_commit_message.py',
             'scripts/tests/test_validate_commit_message.py',
-            '.githooks/prepare-commit-msg',
+            'scripts/skills/commit/prepare_commit_msg.py',
         ]
         self.assertEqual(w.required_scopes(paths), ['shared'])
+        self.assertEqual(w.platform_for('macos/AGENTS.md'), 'shared')
         self.assertEqual(w.platform_for('windows/AGENTS.md'), 'shared')
         self.assertEqual(w.platform_for('website/AGENTS.md'), 'shared')
         self.assertEqual(w.validate_paths('shared/contributor-architecture', paths), 'shared')
@@ -379,6 +457,64 @@ class WorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(w.WorkflowError, 'commit policy'):
             w.require_valid_commit_text('PR title', 'Invalid title', subject_only=True)
 
+    def write_general_pr_template(self):
+        template = self.primary / '.github/PULL_REQUEST_TEMPLATE/general.md'
+        template.parent.mkdir(parents=True, exist_ok=True)
+        template.write_text(
+            '<!-- SIDEY_GENERAL_PR_TEMPLATE: keep -->\n\n'
+            '## PR 유형\n\n- [ ] macOS 구현\n\n'
+            '## 변경 내용\n\n설명\n\n'
+            '## 검증\n\n검증\n\n'
+            '## 확인 사항\n\n- [ ] 확인\n',
+            encoding='utf-8',
+        )
+        return template
+
+    def test_general_pr_body_accepts_filled_template_and_extra_sections(self):
+        template = self.write_general_pr_template()
+        body = template.read_text(encoding='utf-8').replace('[ ]', '[x]')
+        body += '\n## 추가 정보\n\n검토 참고 사항\n'
+        self.assertEqual(
+            w.require_pr_body(self.primary, body, ['docs/guide.md']),
+            'general',
+        )
+
+    def test_general_pr_body_rejects_asset_template_and_changed_sections(self):
+        self.write_general_pr_template()
+        with self.assertRaisesRegex(w.WorkflowError, 'preserve exactly one'):
+            w.require_pr_body(
+                self.primary,
+                '# 캐릭터 에셋 PR\n',
+                ['docs/guide.md'],
+            )
+        marker = w.GENERAL_PR_MARKER
+        missing = f'{marker}\n\n## PR 유형\n\n## 검증\n\n## 확인 사항\n'
+        with self.assertRaisesRegex(w.WorkflowError, '변경 내용'):
+            w.require_pr_body(self.primary, missing, ['docs/guide.md'])
+        reordered = (
+            f'{marker}\n\n## 변경 내용\n\n## PR 유형\n\n'
+            '## 검증\n\n## 확인 사항\n'
+        )
+        with self.assertRaisesRegex(w.WorkflowError, 'section order'):
+            w.require_pr_body(self.primary, reordered, ['docs/guide.md'])
+
+    def test_general_pr_body_file_requires_existing_utf8_file(self):
+        self.write_general_pr_template()
+        with self.assertRaisesRegex(w.WorkflowError, 'Cannot read --body-file'):
+            w.require_pr_body_file(
+                self.primary,
+                'missing.md',
+                ['docs/guide.md'],
+            )
+        invalid = self.primary / 'invalid.md'
+        invalid.write_bytes(b'\x80')
+        with self.assertRaisesRegex(w.WorkflowError, 'UTF-8'):
+            w.require_pr_body_file(
+                self.primary,
+                invalid,
+                ['docs/guide.md'],
+            )
+
     def test_local_python_checks_are_locale_independent(self):
         with patch.object(w, 'run') as run:
             w.local_checks(self.primary, 'shared')
@@ -389,6 +525,13 @@ class WorkflowTests(unittest.TestCase):
         ]
         self.assertTrue(python_commands)
         self.assertTrue(all(command[1:3] == ('-X', 'utf8') for command in python_commands))
+        self.assertIn(
+            (
+                w.sys.executable, '-X', 'utf8', '-m', 'unittest', 'discover', '-s',
+                'scripts/skills/release-notes/tests',
+            ),
+            python_commands,
+        )
 
     def test_release_manifests_run_the_matching_native_checks(self):
         self.assertEqual(w.required_scopes(['release/macos.json']), ['macos', 'shared'])
@@ -416,7 +559,7 @@ class WorkflowTests(unittest.TestCase):
     def test_platform_workflow_only_changes_do_not_require_app_review(self):
         self.assertFalse(w.app_review_required('macos', ['.github/workflows/macos.yml']))
         self.assertFalse(w.app_review_required('windows', ['.github/workflows/windows.yml']))
-        self.assertFalse(w.app_review_required('shared', ['scripts/workflow.py']))
+        self.assertFalse(w.app_review_required('shared', ['scripts/skills/workflow.py']))
 
     def test_platform_app_inputs_still_require_app_review(self):
         self.assertTrue(w.app_review_required('macos', ['macos/Sources/SIDEY/App.swift']))
@@ -429,7 +572,10 @@ class WorkflowTests(unittest.TestCase):
         every_scope = {'shared', 'macos', 'windows', 'web'}
         self.assertEqual(set(w.required_scopes(['.github/workflows/integration.yml'])),
                          every_scope)
-        self.assertEqual(set(w.required_scopes(['scripts/workflow_ci.py'])), every_scope)
+        self.assertEqual(
+            set(w.required_scopes(['scripts/skills/workflow_ci.py'])),
+            every_scope,
+        )
 
     def test_checkout_attributes_require_native_and_web_verification(self):
         self.assertEqual(set(w.required_scopes(['.gitattributes'])),

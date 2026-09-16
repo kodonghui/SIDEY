@@ -14,7 +14,11 @@ class CiWorkflowTests(unittest.TestCase):
     def test_integration_is_the_automatic_shared_validation_entrypoint(self):
         integration = self.read('integration.yml')
         self.assertIn(
-            'python3 scripts/validate_contributor_architecture.py',
+            'python3 scripts/skills/validate_contributor_architecture.py',
+            integration,
+        )
+        self.assertIn(
+            'python3 -m unittest discover -s scripts/skills/release-notes/tests',
             integration,
         )
         self.assertNotIn('--require-windows-instruction-foundation', integration)
@@ -26,6 +30,13 @@ class CiWorkflowTests(unittest.TestCase):
                 self.assertIn('  workflow_dispatch:', workflow)
                 self.assertNotIn('  pull_request:', workflow)
                 self.assertNotIn('  push:', workflow)
+
+    def test_integration_revalidates_edited_pull_request_bodies(self):
+        workflow = self.read('integration.yml')
+        self.assertIn(
+            'types: [opened, synchronize, reopened, edited, labeled, unlabeled]',
+            workflow,
+        )
 
     def test_pages_reuses_the_tested_build_for_deployment(self):
         workflow = self.read('pages.yml')

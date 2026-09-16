@@ -5,7 +5,7 @@ import sys
 import tempfile
 import unittest
 
-sys.path.insert(0, str(Path(__file__).parents[1]))
+sys.path.insert(0, str(Path(__file__).parents[1] / "skills"))
 
 from validate_contributor_architecture import validate_repository
 
@@ -104,6 +104,30 @@ class ContributorArchitectureTests(unittest.TestCase):
         self.assertIn("missing-relative-link", self.codes())
         self.assertIn("missing-script-reference", self.codes())
 
+    def test_skill_script_tree_reference_is_valid(self):
+        self.add_skill(
+            "scripted-skill",
+            body=(
+                "# Scripted skill\n\n"
+                "Run `scripts/skills/scripted-skill/helper.py`.\n"
+            ),
+        )
+        self.write(
+            "scripts/skills/scripted-skill/helper.py",
+            '"""Skill-owned helper."""\n',
+        )
+        self.assertEqual(validate_repository(self.root), [])
+
+    def test_missing_skill_script_is_reported(self):
+        self.add_skill(
+            "scripted-skill",
+            body=(
+                "# Scripted skill\n\n"
+                "Run `scripts/skills/scripted-skill/missing.py`.\n"
+            ),
+        )
+        self.assertIn("missing-script-reference", self.codes())
+
     def test_legacy_nested_windows_skill_is_rejected(self):
         self.add_skill("code-review", directory="windows/.agents/skills/code-review")
         self.assertIn("unexpected-skill-location", self.codes())
@@ -136,6 +160,34 @@ class ContributorArchitectureTests(unittest.TestCase):
         self.add_skill("calling-skill", body="# Skill\n\nAlso use `$missing-skill`.\n")
         self.assertIn("missing-skill-reference", self.codes())
 
+    def test_single_word_skill_reference_is_validated(self):
+        self.add_skill("available-skill")
+        self.write("AGENTS.md", "Use `$commit` for local commits.\n")
+        self.assertIn("missing-skill-reference", self.codes())
+
+        self.add_skill("commit")
+        self.assertEqual(validate_repository(self.root), [])
+
+    def test_powershell_variables_are_not_skill_references(self):
+        self.add_skill(
+            "powershell-guide",
+            body=(
+                "# PowerShell\n\n"
+                "```powershell\n"
+                "$tokens = $null\n"
+                "```\n"
+            ),
+        )
+        self.assertEqual(validate_repository(self.root), [])
+
+    def test_contributing_references_are_validated(self):
+        self.add_skill("commit")
+        self.write(
+            "CONTRIBUTING.md",
+            "Use [missing guidance](docs/missing.md) and `$commit`.\n",
+        )
+        self.assertIn("missing-relative-link", self.codes())
+
     def test_dangling_inline_canonical_skill_path_is_reported(self):
         self.add_skill("available-skill")
         self.write(
@@ -151,29 +203,6 @@ class ContributorArchitectureTests(unittest.TestCase):
         )
         self.assertIn("missing-script-reference", self.codes())
 
-    def test_retired_skill_references_are_reported_in_active_sources(self):
-        self.add_skill(
-            "version-audit",
-            body="# Version audit\n\nDo not invoke sidey-workflow.\n",
-        )
-        self.write("AGENTS.md", "The sidey-commit skill is retired.\n")
-        metadata = self.root / ".agents/skills/version-audit/agents/openai.yaml"
-        metadata.write_text(
-            metadata.read_text(encoding="utf-8")
-            + "# Formerly sidey-versioning.\n",
-            encoding="utf-8",
-        )
-        violations = validate_repository(self.root)
-        retired = [item for item in violations if item.code == "retired-skill-reference"]
-        self.assertEqual(len(retired), 3)
-
-    def test_retired_names_in_history_tests_and_state_are_not_active_references(self):
-        self.add_skill("version-audit")
-        self.write("docs/history/migration.md", "Removed sidey-versioning.\n")
-        self.write("scripts/tests/test_fixture.py", "OLD_NAME = 'sidey-commit'\n")
-        self.write("scripts/workflow.py", "STATE_DIRECTORY = 'sidey-workflow'\n")
-        self.assertEqual(validate_repository(self.root), [])
-
     def test_metadata_requires_explicit_implicit_invocation_policy(self):
         self.add_skill("missing-policy", implicit_policy=None)
         self.assertIn("missing-implicit-invocation-policy", self.codes())
@@ -186,30 +215,31 @@ class ContributorArchitectureTests(unittest.TestCase):
         )
         self.assertIn("missing-implicit-invocation-policy", self.codes())
 
-    def test_canonical_windows_skill_set_is_valid(self):
+    def test_canonical_cross_platform_skill_set_is_valid(self):
         for name in (
-            "windows-code-review",
-            "windows-dev-docs",
+            "code-review",
+            "write-docs",
+            "write-tests",
             "windows-powershell",
-            "windows-tests",
         ):
             self.add_skill(name)
         self.assertEqual(validate_repository(self.root), [])
 
     def test_final_style_specialist_skill_set_is_valid(self):
         for name in (
+            "commit",
+            "create-pr",
             "version-audit",
             "web-verification",
             "release-notes",
             "app-verification",
-            "windows-code-review",
-            "windows-dev-docs",
+            "code-review",
+            "write-docs",
+            "write-tests",
             "windows-powershell",
-            "windows-tests",
         ):
             self.add_skill(name)
         self.assertEqual(validate_repository(self.root), [])
-
 
 if __name__ == "__main__":
     unittest.main()
