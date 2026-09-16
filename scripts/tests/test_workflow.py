@@ -352,7 +352,7 @@ class WorkflowTests(unittest.TestCase):
     def test_platform_branches_reject_shared_changes(self):
         for name in ('macos/task', 'windows/task'):
             with self.assertRaises(w.WorkflowError):
-                w.validate_paths(name, ['docs/DECISIONS.md'])
+                w.validate_paths(name, ['docs/architecture.md'])
 
     def test_shared_commits_already_in_main_are_excluded(self):
         task = self.start(platform='macos')

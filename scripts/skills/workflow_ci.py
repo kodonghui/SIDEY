@@ -18,9 +18,6 @@ from workflow import (
 )
 
 
-REPOSITORY_WIDE_LABEL = "repository-wide"
-
-
 def verify_gate(scopes, needs):
     required = set(scopes) | {'scope', 'shared'}
     failures = {name: needs.get(name, {}).get('result', 'missing') for name in required
@@ -54,18 +51,7 @@ def verify_pr_contract(root, body, paths):
 
 
 def validate_pr_paths(branch, paths, labels):
-    label_names = {
-        label.get("name")
-        for label in labels
-        if isinstance(label, dict)
-    }
-    if REPOSITORY_WIDE_LABEL not in label_names:
-        return validate_paths(branch, paths)
-    if validate_paths(branch, []) != "shared":
-        raise WorkflowError(
-            f"{REPOSITORY_WIDE_LABEL!r} applies only to shared/* branches"
-        )
-    return "shared"
+    return validate_paths(branch, paths)
 
 
 def commit_messages(root, base, revision):
