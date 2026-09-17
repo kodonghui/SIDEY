@@ -27,6 +27,7 @@ public partial class App : Application
     private AppCoordinator? _coordinator;
     private SingleInstanceGuard? _singleInstance;
     private TrayIconService? _tray;
+    private GlobalHotkeyService? _globalShortcuts;
 #if DEBUG
     private DevelopmentUpdateService? _developmentUpdate;
 #endif
@@ -206,6 +207,7 @@ public partial class App : Application
                 I18n.Get("error.trayStart"),
                 exception));
         }
+        StartGlobalShortcuts(coordinator);
 #if DEBUG
         _developmentUpdate = DevelopmentUpdateService.Start(OnDevelopmentUpdateAccepted);
 #endif
@@ -402,6 +404,7 @@ public partial class App : Application
             StartupDiagnostics.NonFatal("failed-launch-tray-dispose", exception);
         }
         _tray = null;
+        DisposeGlobalShortcuts("failed-launch-global-shortcuts-dispose");
 
         if (_coordinator is not null)
         {
@@ -1087,6 +1090,91 @@ public partial class App : Application
         _displayTopologyRefreshTimer = null;
     }
 
+    private void StartGlobalShortcuts(AppCoordinator coordinator)
+    {
+        try
+        {
+            _globalShortcuts = GlobalHotkeyService.Start(StartupDiagnostics.NonFatal);
+            _globalShortcuts.Pressed += OnGlobalShortcutPressed;
+            StartupDiagnostics.Stage("global-shortcuts-started");
+        }
+        catch (Exception exception)
+        {
+            // Launch continues; settings show saved shortcuts as unavailable.
+            StartupDiagnostics.NonFatal("global-shortcuts-start", exception);
+        }
+        coordinator.AttachGlobalShortcuts(_globalShortcuts);
+    }
+
+    private void DisposeGlobalShortcuts(string stage)
+    {
+        if (_globalShortcuts is null)
+        {
+            return;
+        }
+
+        _globalShortcuts.Pressed -= OnGlobalShortcutPressed;
+        try
+        {
+            _globalShortcuts.Dispose();
+        }
+        catch (Exception exception)
+        {
+            StartupDiagnostics.NonFatal(stage, exception);
+        }
+        _globalShortcuts = null;
+    }
+
+    private void OnGlobalShortcutPressed(GlobalShortcutAction action)
+    {
+        if (!_shuttingDown)
+        {
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                if (!_shuttingDown)
+                {
+                    HandleGlobalShortcut(action);
+                }
+            });
+        }
+    }
+
+    private void HandleGlobalShortcut(GlobalShortcutAction action)
+    {
+        if (_coordinator is null
+            || _mainWindow?.ViewModel.TryRecordRegisteredGlobalShortcut(action) == true)
+        {
+            return;
+        }
+
+        switch (action)
+        {
+            case GlobalShortcutAction.Compose:
+                if (_composer?.IsComposerVisible == true)
+                {
+                    // The draft stays in the composer, as when it closes after losing focus.
+                    _composer.HideComposer();
+                }
+                else if (_coordinator.State.Preferences.OnboardingCompleted
+                    && _coordinator.State.Rooms.Count == 0)
+                {
+                    // The tray disables Compose without a group, so open group setup instead.
+                    HandleTrayCommand(TrayCommand.Groups);
+                }
+                else
+                {
+                    HandleTrayCommand(TrayCommand.Compose);
+                }
+                break;
+            case GlobalShortcutAction.ToggleOverlay:
+                HandleTrayCommand(TrayCommand.ToggleOverlay);
+                break;
+            case GlobalShortcutAction.ToggleQuietMode:
+                HandleTrayCommand(TrayCommand.ToggleQuietMode);
+                break;
+        }
+    }
+
     private void HandleTrayCommand(TrayCommand command)
     {
         if (_coordinator is null)
@@ -1346,6 +1434,7 @@ public partial class App : Application
             }
             _tray = null;
         }
+        DisposeGlobalShortcuts("shutdown-global-shortcuts-dispose");
         if (_composer is not null)
         {
             _composer.ViewModel.SendRequested -= OnSendRequested;

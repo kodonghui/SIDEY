@@ -55,6 +55,8 @@ public sealed partial class ComposerWindow : Window
 
     public ComposerViewModel ViewModel { get; }
 
+    public bool IsComposerVisible => _isVisible && !_isClosed;
+
     public void ApplyTheme(AppThemePreference theme)
     {
         if (!_isClosed)
