@@ -24,6 +24,7 @@ public partial class App : Application
     private OnboardingWindow? _onboardingWindow;
     private HistoryWindow? _historyWindow;
     private ComposerWindow? _composer;
+    private StatusNoticeWindow? _statusNotice;
     private AppCoordinator? _coordinator;
     private SingleInstanceGuard? _singleInstance;
     private TrayIconService? _tray;
@@ -476,6 +477,7 @@ public partial class App : Application
             var viewModel = new ComposerViewModel();
             viewModel.SendRequested += OnSendRequested;
             viewModel.TypingChanged += OnTypingChanged;
+            viewModel.GroupSettingsRequested += OnComposerGroupSettingsRequested;
             try
             {
                 StartupDiagnostics.Stage("composer-window-create-started");
@@ -487,12 +489,14 @@ public partial class App : Application
             {
                 viewModel.SendRequested -= OnSendRequested;
                 viewModel.TypingChanged -= OnTypingChanged;
+                viewModel.GroupSettingsRequested -= OnComposerGroupSettingsRequested;
                 viewModel.Dispose();
                 StartupDiagnostics.NonFatal("composer-window-create", exception);
                 return;
             }
         }
 
+        _composer.ViewModel.ApplyState(_coordinator.State);
         _composer.ShowAndFocus(
             _coordinator.State.Preferences.OverlayRegion.MonitorIdentifier);
     }
@@ -634,6 +638,18 @@ public partial class App : Application
     }
 
     private void OnSendRequested(string body) => _ = SendAsync(body);
+
+    private void OnComposerGroupSettingsRequested()
+    {
+        if (_shuttingDown)
+        {
+            return;
+        }
+
+        // Keep the draft in the hidden composer while the user sets up a group.
+        _composer?.HideComposer();
+        HandleTrayCommand(TrayCommand.Groups);
+    }
 
     private async Task SendAsync(string body)
     {
@@ -941,6 +957,8 @@ public partial class App : Application
             _mainWindow?.ApplyState(state);
             _onboardingWindow?.ApplyState(state);
             _composer?.ApplyTheme(state.Preferences.Theme);
+            _composer?.ViewModel.ApplyState(state);
+            _statusNotice?.ApplyTheme(state.Preferences.Theme);
             _historyWindow?.ApplyState(state);
             _tray?.SetState(new TrayMenuState(
                 state.Preferences.OverlayVisible,
@@ -1155,14 +1173,10 @@ public partial class App : Application
                     // The draft stays in the composer, as when it closes after losing focus.
                     _composer.HideComposer();
                 }
-                else if (_coordinator.State.Preferences.OnboardingCompleted
-                    && _coordinator.State.Rooms.Count == 0)
-                {
-                    // The tray disables Compose without a group, so open group setup instead.
-                    HandleTrayCommand(TrayCommand.Groups);
-                }
                 else
                 {
+                    // A shortcut is pressed without seeing the tray menu, so it always shows the
+                    // composer. Without a group the composer explains why it cannot send.
                     HandleTrayCommand(TrayCommand.Compose);
                 }
                 break;
@@ -1170,8 +1184,58 @@ public partial class App : Application
                 HandleTrayCommand(TrayCommand.ToggleOverlay);
                 break;
             case GlobalShortcutAction.ToggleQuietMode:
-                HandleTrayCommand(TrayCommand.ToggleQuietMode);
+                if (_onboardingWindow is null && _coordinator.State.Preferences.OnboardingCompleted)
+                {
+                    _ = ToggleQuietModeWithNoticeAsync(_coordinator);
+                }
+                else
+                {
+                    HandleTrayCommand(TrayCommand.ToggleQuietMode);
+                }
                 break;
+        }
+    }
+
+    private async Task ToggleQuietModeWithNoticeAsync(AppCoordinator coordinator)
+    {
+        // Quiet mode changes nothing on screen until a message arrives, so confirm it.
+        bool enabled = !coordinator.State.Preferences.QuietMode;
+        bool applied = false;
+        await RunCoordinatorCommandAsync(async () =>
+        {
+            await coordinator.SetQuietModeAsync(enabled);
+            applied = true;
+        });
+        if (applied && !_shuttingDown)
+        {
+            _dispatcherQueue.TryEnqueue(() => ShowQuietModeNotice(enabled));
+        }
+    }
+
+    private void ShowQuietModeNotice(bool enabled)
+    {
+        if (_shuttingDown || _coordinator is null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (_statusNotice is null)
+            {
+                _statusNotice = new StatusNoticeWindow();
+                _statusNotice.ApplyTheme(_coordinator.State.Preferences.Theme);
+            }
+
+            _statusNotice.ShowNotice(
+                I18n.Get(enabled ? "notice.quietModeOnTitle" : "notice.quietModeOffTitle"),
+                I18n.Get(enabled ? "notice.quietModeOnDetail" : "notice.quietModeOffDetail"),
+                _coordinator.State.Preferences.OverlayRegion.MonitorIdentifier,
+                belowComposer: _composer?.IsComposerVisible == true);
+        }
+        catch (Exception exception)
+        {
+            StartupDiagnostics.NonFatal("status-notice", exception);
         }
     }
 
@@ -1439,9 +1503,13 @@ public partial class App : Application
         {
             _composer.ViewModel.SendRequested -= OnSendRequested;
             _composer.ViewModel.TypingChanged -= OnTypingChanged;
+            _composer.ViewModel.GroupSettingsRequested -= OnComposerGroupSettingsRequested;
             _composer.CloseForExit();
             _composer = null;
         }
+
+        _statusNotice?.CloseForExit();
+        _statusNotice = null;
 
         _historyWindow?.Close();
         _historyWindow = null;
