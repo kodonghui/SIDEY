@@ -128,6 +128,7 @@ final class GlobalShortcutTests: XCTestCase {
     func testRecordingPausesOwnShortcutsUntilCancelled() {
         let overlay = shortcut(kVK_ANSI_O, [.control, .option])
         var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
         preferences.globalShortcuts.toggleOverlay = overlay
         let registrar = FakeGlobalHotKeyRegistrar()
         let log = ShortcutCommandLog()
