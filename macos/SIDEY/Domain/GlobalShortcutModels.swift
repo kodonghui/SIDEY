@@ -25,6 +25,36 @@ enum GlobalShortcutAction: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+/// A short confirmation for a shortcut whose result would otherwise not be visible.
+struct GlobalShortcutNotice: Equatable, Sendable {
+    let symbolName: String
+    let title: String
+    let detail: String
+
+    static let quietModeOn = GlobalShortcutNotice(
+        symbolName: "moon.fill",
+        title: "조용히 모드 켜짐",
+        detail: "새 메시지 말풍선을 숨깁니다."
+    )
+    static let quietModeOff = GlobalShortcutNotice(
+        symbolName: "moon",
+        title: "조용히 모드 꺼짐",
+        detail: "새 메시지 말풍선을 다시 표시합니다."
+    )
+    static let groupRequired = GlobalShortcutNotice(
+        symbolName: "person.2",
+        title: "보낼 그룹이 없습니다",
+        detail: "그룹을 만들거나 참가하면 보낼 수 있습니다."
+    )
+    static let waitingForGroups = GlobalShortcutNotice(
+        symbolName: "person.2",
+        title: "그룹 정보를 아직 불러오지 못했습니다",
+        detail: "그룹 정보를 불러온 뒤 보낼 수 있습니다."
+    )
+
+    var accessibilityAnnouncement: String { "\(title). \(detail)" }
+}
+
 /// Carbon hot-key modifier masks, stored as-is so a saved value maps directly to registration.
 struct GlobalShortcutModifiers: OptionSet, Hashable, Sendable {
     let rawValue: UInt32

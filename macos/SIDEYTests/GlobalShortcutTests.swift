@@ -256,6 +256,7 @@ final class GlobalShortcutTests: XCTestCase {
         let overlay = shortcut(kVK_ANSI_O, [.control, .option])
         let quiet = shortcut(kVK_ANSI_Q, [.control, .option])
         var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
         preferences.globalShortcuts.toggleOverlay = overlay
         preferences.globalShortcuts.toggleQuietMode = quiet
         let registrar = FakeGlobalHotKeyRegistrar()
@@ -266,7 +267,49 @@ final class GlobalShortcutTests: XCTestCase {
         registrar.press(overlay)
         registrar.press(quiet)
 
-        XCTAssertEqual(log.calls, ["toggleOverlay", "toggleQuietMode"])
+        XCTAssertEqual(log.calls, ["toggleOverlay", "toggleQuietMode", "showNotice"])
+    }
+
+    func testQuietModeShortcutConfirmsTheNewState() {
+        let quiet = shortcut(kVK_ANSI_Q, [.control, .option])
+        var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
+        preferences.quietModeEnabled = false
+        preferences.globalShortcuts.toggleQuietMode = quiet
+        let registrar = FakeGlobalHotKeyRegistrar()
+        let log = ShortcutCommandLog()
+        let (controller, model) = makeController(preferences: preferences, registrar: registrar, log: log)
+        log.onToggleQuietMode = { model.preferences.quietModeEnabled.toggle() }
+        controller.start()
+
+        registrar.press(quiet)
+        registrar.press(quiet)
+
+        XCTAssertEqual(log.notices, [.quietModeOn, .quietModeOff])
+        XCTAssertFalse(model.preferences.quietModeEnabled)
+    }
+
+    func testEveryShortcutOpensMainWindowBeforeOnboarding() {
+        let composer = shortcut(kVK_ANSI_K, [.control, .option])
+        let overlay = shortcut(kVK_ANSI_O, [.control, .option])
+        let quiet = shortcut(kVK_ANSI_Q, [.control, .option])
+        var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = false
+        preferences.globalShortcuts.toggleComposer = composer
+        preferences.globalShortcuts.toggleOverlay = overlay
+        preferences.globalShortcuts.toggleQuietMode = quiet
+        let registrar = FakeGlobalHotKeyRegistrar()
+        let log = ShortcutCommandLog()
+        let (controller, model) = makeController(preferences: preferences, registrar: registrar, log: log)
+        model.rooms = [Self.room()]
+        controller.start()
+
+        registrar.press(composer)
+        registrar.press(overlay)
+        registrar.press(quiet)
+
+        XCTAssertEqual(log.calls, ["openMainWindow", "openMainWindow", "openMainWindow"])
+        XCTAssertTrue(log.notices.isEmpty)
     }
 
     func testComposerShortcutClosesVisibleComposerAndOpensItOtherwise() {
@@ -308,19 +351,62 @@ final class GlobalShortcutTests: XCTestCase {
         registrar.press(composer)
 
         XCTAssertEqual(log.calls, ["openComposer", "openMainWindow"])
+        XCTAssertTrue(log.notices.isEmpty)
+    }
 
-        log.calls.removeAll()
+    func testComposerShortcutWithoutGroupOpensGroupSettingsAndExplainsWhy() {
+        let composer = shortcut(kVK_ANSI_K, [.control, .option])
+        var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
+        preferences.globalShortcuts.toggleComposer = composer
+        let registrar = FakeGlobalHotKeyRegistrar()
+        let log = ShortcutCommandLog()
+        let (controller, model) = makeController(preferences: preferences, registrar: registrar, log: log)
         model.rooms = []
+        controller.start()
+
+        // Until groups load, the notice must not claim that there are none.
+        log.groupsLoaded = false
         registrar.press(composer)
 
-        XCTAssertEqual(log.calls, ["openMainWindow"])
+        XCTAssertEqual(log.calls, ["openGroupSettings", "showNotice"])
+        XCTAssertEqual(log.notices, [.waitingForGroups])
 
-        log.calls.removeAll()
-        model.rooms = [Self.room()]
-        model.preferences.onboardingComplete = false
+        log.groupsLoaded = true
         registrar.press(composer)
 
-        XCTAssertEqual(log.calls, ["openMainWindow"])
+        XCTAssertEqual(log.calls, ["openGroupSettings", "showNotice", "openGroupSettings", "showNotice"])
+        XCTAssertEqual(log.notices, [.waitingForGroups, .groupRequired])
+        XCTAssertFalse(log.composerVisible)
+    }
+
+    func testStatusNoticeUsesTheComposerSpotOrStacksBelowIt() {
+        let visibleFrame = CGRect(x: 100, y: 40, width: 1200, height: 800)
+        let composer = OverlayComposerLayout.frame(in: visibleFrame)
+
+        let alone = StatusNoticeLayout.frame(in: visibleFrame, belowComposer: false)
+        let stacked = StatusNoticeLayout.frame(in: visibleFrame, belowComposer: true)
+
+        XCTAssertEqual(alone, CGRect(x: 500, y: 766, width: 400, height: 64))
+        XCTAssertEqual(stacked, CGRect(x: 500, y: 702, width: 400, height: 64))
+        XCTAssertEqual(stacked.maxY, composer.minY - StatusNoticeLayout.stackGap, accuracy: 0.001)
+        XCTAssertFalse(stacked.intersects(composer))
+        XCTAssertTrue(visibleFrame.contains(alone))
+    }
+
+    func testStatusNoticeNeverTakesFocusOrPointerInput() {
+        let notice = StatusNoticeWindowController()
+
+        notice.show(.quietModeOn, in: CGRect(x: 100, y: 40, width: 1200, height: 800), belowComposer: false)
+
+        XCTAssertTrue(notice.isVisible)
+        XCTAssertFalse(notice.canBecomeKey)
+        XCTAssertTrue(notice.ignoresMouseEvents)
+        XCTAssertEqual(notice.level, .floating)
+
+        notice.hide()
+
+        XCTAssertFalse(notice.isVisible)
     }
 
     private func shortcut<Code: BinaryInteger>(
@@ -407,8 +493,11 @@ private final class FakeGlobalHotKeyRegistrar: GlobalHotKeyRegistering {
 @MainActor
 private final class ShortcutCommandLog {
     var calls: [String] = []
+    var notices: [GlobalShortcutNotice] = []
     var composerVisible = false
     var opensComposer = true
+    var groupsLoaded = true
+    var onToggleQuietMode: () -> Void = {}
     var saves = 0
 
     func commands() -> GlobalShortcutCommands {
@@ -423,8 +512,17 @@ private final class ShortcutCommandLog {
                 self.composerVisible = false
             },
             openMainWindow: { self.calls.append("openMainWindow") },
+            openGroupSettings: { self.calls.append("openGroupSettings") },
+            groupsLoaded: { self.groupsLoaded },
             toggleOverlay: { self.calls.append("toggleOverlay") },
-            toggleQuietMode: { self.calls.append("toggleQuietMode") }
+            toggleQuietMode: {
+                self.calls.append("toggleQuietMode")
+                self.onToggleQuietMode()
+            },
+            showNotice: { notice in
+                self.calls.append("showNotice")
+                self.notices.append(notice)
+            }
         )
     }
 }

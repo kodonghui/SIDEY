@@ -116,13 +116,17 @@ final class AppCoordinator {
             openComposer: { [weak self] in self?.focusMessageField() },
             dismissComposer: { [weak self] in self?.overlayWindows.dismissComposer() },
             openMainWindow: { [weak self] in self?.showSettings() },
+            openGroupSettings: { [weak self] in self?.showGroupSettings() },
+            groupsLoaded: { [weak self] in self?.backendBootstrapState == .ready },
             toggleOverlay: { [weak self] in self?.toggleOverlay() },
             toggleQuietMode: { [weak self] in
                 self?.setQuietMode(!(self?.model.preferences.quietModeEnabled ?? false))
-            }
+            },
+            showNotice: { [weak self] notice in self?.showShortcutNotice(notice) }
         ),
         onPreferencesChanged: { [weak self] in self?.persistPreferences() }
     )
+    private lazy var statusNotice = StatusNoticeWindowController()
     let commerceSession = CommerceSession()
     let roomSession = RoomSessionLifetime()
     var treeMovementTask: Task<Void, Never>?
@@ -381,6 +385,18 @@ final class AppCoordinator {
     private func focusMessageField() {
         if !model.overlayVisible { setOverlayVisible(true) }
         overlayWindows.focusMessageField()
+    }
+
+    private func showShortcutNotice(_ notice: GlobalShortcutNotice) {
+        // Show the notice where the composer appears while the overlay is on screen,
+        // otherwise on the screen the pointer is on.
+        let composerVisible = overlayWindows.composerVisible
+        let pointerScreen = NSScreen.screens.first { NSMouseInRect(NSEvent.mouseLocation, $0.frame, false) }
+        guard let visibleFrame = (model.overlayVisible ? overlayWindows.overlayScreenVisibleFrame : nil)
+            ?? pointerScreen?.visibleFrame
+            ?? NSScreen.main?.visibleFrame
+        else { return }
+        statusNotice.show(notice, in: visibleFrame, belowComposer: composerVisible)
     }
 
     private func markActiveRoomRead() {

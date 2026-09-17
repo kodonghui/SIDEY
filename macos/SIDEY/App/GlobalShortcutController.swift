@@ -7,8 +7,11 @@ struct GlobalShortcutCommands {
     var openComposer: () -> Void
     var dismissComposer: () -> Void
     var openMainWindow: () -> Void
+    var openGroupSettings: () -> Void
+    var groupsLoaded: () -> Bool
     var toggleOverlay: () -> Void
     var toggleQuietMode: () -> Void
+    var showNotice: (GlobalShortcutNotice) -> Void
 }
 
 /// Keeps the user-assigned global shortcuts registered, reports their state to settings and
@@ -133,6 +136,12 @@ final class GlobalShortcutController {
     }
 
     private func handlePress(_ action: GlobalShortcutAction) {
+        // A shortcut is pressed without seeing the menu, so every press shows a result.
+        // Before onboarding the main window shows what to do next.
+        guard model.preferences.onboardingComplete else {
+            commands.openMainWindow()
+            return
+        }
         switch action {
         case .toggleComposer:
             toggleComposer()
@@ -140,6 +149,8 @@ final class GlobalShortcutController {
             commands.toggleOverlay()
         case .toggleQuietMode:
             commands.toggleQuietMode()
+            // Quiet mode changes nothing on screen until a message arrives, so confirm it.
+            commands.showNotice(model.preferences.quietModeEnabled ? .quietModeOn : .quietModeOff)
         }
     }
 
@@ -148,12 +159,16 @@ final class GlobalShortcutController {
             commands.dismissComposer()
             return
         }
-        if model.preferences.onboardingComplete, model.activeRoom != nil {
-            commands.openComposer()
-            if commands.isComposerVisible() { return }
+        guard model.activeRoom != nil else {
+            // The composer belongs to the user's character in an active group, so point to
+            // group settings instead. Until groups load, do not claim that there are none.
+            commands.openGroupSettings()
+            commands.showNotice(commands.groupsLoaded() ? .groupRequired : .waitingForGroups)
+            return
         }
-        // Without a group, before onboarding or while the overlay cannot appear yet,
-        // the main window shows what to do next.
+        commands.openComposer()
+        if commands.isComposerVisible() { return }
+        // The overlay cannot appear yet, for example while the session is restoring.
         commands.openMainWindow()
     }
 
