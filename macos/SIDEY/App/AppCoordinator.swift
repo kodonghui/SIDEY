@@ -74,6 +74,18 @@ final class AppCoordinator {
             },
             onStopCharacterSounds: { [weak self] in
                 self?.model.characterImpactAudio.stopAll()
+            },
+            onBeginGlobalShortcutRecording: { [weak self] action in
+                self?.globalShortcutController.beginRecording(action)
+            },
+            onRecordGlobalShortcut: { [weak self] action, shortcut in
+                self?.globalShortcutController.record(shortcut, for: action)
+            },
+            onCancelGlobalShortcutRecording: { [weak self] action in
+                self?.globalShortcutController.cancelRecording(action)
+            },
+            onClearGlobalShortcut: { [weak self] action in
+                self?.globalShortcutController.clear(action)
             }
         ),
         onClose: { [weak self] in self?.settingsDidClose() }
@@ -95,6 +107,21 @@ final class AppCoordinator {
         canCheckForUpdates: { [weak self] in self?.updateController.canCheckForUpdates ?? false },
         onOpenSettings: { [weak self] in self?.showSettings() },
         onQuit: { NSApplication.shared.terminate(nil) }
+    )
+    private lazy var globalShortcutController = GlobalShortcutController(
+        model: model,
+        registrar: CarbonGlobalHotKeyRegistrar(),
+        commands: GlobalShortcutCommands(
+            isComposerVisible: { [weak self] in self?.overlayWindows.composerVisible ?? false },
+            openComposer: { [weak self] in self?.focusMessageField() },
+            dismissComposer: { [weak self] in self?.overlayWindows.dismissComposer() },
+            openMainWindow: { [weak self] in self?.showSettings() },
+            toggleOverlay: { [weak self] in self?.toggleOverlay() },
+            toggleQuietMode: { [weak self] in
+                self?.setQuietMode(!(self?.model.preferences.quietModeEnabled ?? false))
+            }
+        ),
+        onPreferencesChanged: { [weak self] in self?.persistPreferences() }
     )
     let commerceSession = CommerceSession()
     let roomSession = RoomSessionLifetime()
@@ -189,6 +216,7 @@ final class AppCoordinator {
 
         mainThreadProbe.start()
         statusItemController.install()
+        globalShortcutController.start()
         overlayWindows.restore(preference: model.preferences.overlayRegion)
         model.launchAtLogin = launchAtLoginController.isEnabled
         model.preferences.launchAtLogin = model.launchAtLogin
@@ -342,6 +370,7 @@ final class AppCoordinator {
     }
 
     private func settingsDidClose() {
+        globalShortcutController.cancelRecording()
         NSApplication.shared.setActivationPolicy(.accessory)
     }
 
