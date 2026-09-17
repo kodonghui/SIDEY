@@ -1,6 +1,6 @@
-name: Validate Windows
+name: SIDEY CI (Windows build and tests)
 
-# Automatic PR and main validation is owned by validate-change.yml.
+# ci.yml owns automatic pull request and main validation.
 on:
   workflow_dispatch:
 
@@ -8,11 +8,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: validate-windows-${{ github.ref }}
+  group: windows-build-and-tests-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
+    name: Windows build and tests
     runs-on: windows-latest
     timeout-minutes: 20
     defaults:

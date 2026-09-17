@@ -12,7 +12,7 @@ These instructions apply to `windows/**`. Read the repository-root `AGENTS.md` f
 
 ## Build and validation
 
-The `Windows validation` job in `.github/workflows/validate-change.yml` is the canonical automatic check. Start with the narrowest affected test, then run the non-installing solution checks from `windows/` so the .NET CLI applies `windows/global.json` when the change can affect the application:
+The `Windows build and tests` job in `.github/workflows/ci.yml` is the canonical automatic check. Start with the narrowest affected test, then run the non-installing solution checks from `windows/` so the .NET CLI applies `windows/global.json` when the change can affect the application:
 
 ```powershell
 Push-Location windows

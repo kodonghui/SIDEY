@@ -552,9 +552,25 @@ public sealed class DistributionSourceTests
         Assert.Empty(misplacedTests);
 
         string integration = File.ReadAllText(RepositoryPath(
-            ".github", "workflows", "validate-change.yml"));
+            ".github", "workflows", "ci.yml"));
         Assert.Contains(
             "./scripts/windows/tests/Test-SelfContainedPublish.ps1",
+            integration,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            "Test-FrameworkDependentPublish.ps1",
+            integration,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            "Test-PrerequisiteInstaller.ps1",
+            integration,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            "Install-WindowsPrerequisites.ps1",
+            integration,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            "--self-contained false",
             integration,
             StringComparison.Ordinal);
         Assert.Contains(
@@ -579,8 +595,8 @@ public sealed class DistributionSourceTests
     }
 
     [Theory]
-    [InlineData("validate-windows.yml")]
-    [InlineData("publish-windows-release.yml")]
+    [InlineData("windows-build-and-tests.yml")]
+    [InlineData("windows-release.yml")]
     public void WorkflowsValidatePublishedFilesWithoutLaunchingTheGui(string workflowName)
     {
         string workflow = File.ReadAllText(RepositoryPath(".github", "workflows", workflowName));
