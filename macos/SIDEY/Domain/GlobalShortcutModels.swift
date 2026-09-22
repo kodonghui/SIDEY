@@ -5,6 +5,7 @@ enum GlobalShortcutAction: String, CaseIterable, Identifiable, Sendable {
     case toggleComposer
     case toggleOverlay
     case toggleQuietMode
+    case playFirework
 
     var id: String { rawValue }
 
@@ -13,6 +14,7 @@ enum GlobalShortcutAction: String, CaseIterable, Identifiable, Sendable {
         case .toggleComposer: "메시지 작성 창 열기·닫기"
         case .toggleOverlay: "오버레이 보이기·숨기기"
         case .toggleQuietMode: "조용히 모드 켜기·끄기"
+        case .playFirework: "폭죽 위로 쏘기"
         }
     }
 
@@ -21,6 +23,7 @@ enum GlobalShortcutAction: String, CaseIterable, Identifiable, Sendable {
         case .toggleComposer: "메시지 입력창을 열고, 열려 있으면 작성 중인 내용을 그대로 두고 닫습니다."
         case .toggleOverlay: "픽셀 월드를 화면에 표시하거나 숨깁니다."
         case .toggleQuietMode: "메시지 본문 말풍선을 숨기는 조용히 모드를 켜거나 끕니다."
+        case .playFirework: "현재 그룹에 폭죽을 쏩니다. 기본 조합은 ⇧⌘F8이며 변경하거나 해제할 수 있습니다."
         }
     }
 }
@@ -225,22 +228,27 @@ enum GlobalShortcutStatus: Equatable, Sendable {
     case rejected(GlobalShortcutRejection)
 }
 
-/// Per-device assignments. Every action starts unassigned.
+/// Per-device assignments. Existing actions stay unassigned; fireworks have a configurable default.
 struct GlobalShortcutAssignments: Codable, Equatable, Sendable {
     var toggleComposer: GlobalShortcut?
     var toggleOverlay: GlobalShortcut?
     var toggleQuietMode: GlobalShortcut?
+    static let defaultFirework = GlobalShortcut(keyCode: UInt32(kVK_F8), modifiers: [.command, .shift])
+    var playFirework: GlobalShortcut? = Self.defaultFirework
 
     enum CodingKeys: String, CodingKey {
         case toggleComposer
         case toggleOverlay
         case toggleQuietMode
+        case playFirework
     }
 
     init() {}
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        // Decode saved bindings first so a new default never steals an existing combination.
+        playFirework = nil
         // A damaged, no-longer-valid or duplicated value leaves only that action unassigned.
         for action in GlobalShortcutAction.allCases {
             guard let shortcut = try? values.decodeIfPresent(GlobalShortcut.self, forKey: Self.codingKey(for: action)),
@@ -248,6 +256,19 @@ struct GlobalShortcutAssignments: Codable, Equatable, Sendable {
             else { continue }
             self[action] = shortcut
         }
+        // Missing means an older release; explicit null means the user disabled it.
+        if !values.contains(.playFirework), Self.defaultFirework.rejection(for: .playFirework, among: self) == nil {
+            playFirework = Self.defaultFirework
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encodeIfPresent(toggleComposer, forKey: .toggleComposer)
+        try values.encodeIfPresent(toggleOverlay, forKey: .toggleOverlay)
+        try values.encodeIfPresent(toggleQuietMode, forKey: .toggleQuietMode)
+        // Encoding null is intentional: disabled must not become default on the next launch.
+        try values.encode(playFirework, forKey: .playFirework)
     }
 
     subscript(action: GlobalShortcutAction) -> GlobalShortcut? {
@@ -256,6 +277,7 @@ struct GlobalShortcutAssignments: Codable, Equatable, Sendable {
             case .toggleComposer: toggleComposer
             case .toggleOverlay: toggleOverlay
             case .toggleQuietMode: toggleQuietMode
+            case .playFirework: playFirework
             }
         }
         set {
@@ -263,6 +285,7 @@ struct GlobalShortcutAssignments: Codable, Equatable, Sendable {
             case .toggleComposer: toggleComposer = newValue
             case .toggleOverlay: toggleOverlay = newValue
             case .toggleQuietMode: toggleQuietMode = newValue
+            case .playFirework: playFirework = newValue
             }
         }
     }
@@ -272,6 +295,7 @@ struct GlobalShortcutAssignments: Codable, Equatable, Sendable {
         case .toggleComposer: .toggleComposer
         case .toggleOverlay: .toggleOverlay
         case .toggleQuietMode: .toggleQuietMode
+        case .playFirework: .playFirework
         }
     }
 }

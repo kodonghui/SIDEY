@@ -125,6 +125,12 @@ final class AppCoordinator {
             toggleQuietMode: { [weak self] in
                 self?.setQuietMode(!(self?.model.preferences.quietModeEnabled ?? false))
             },
+            playFirework: { [weak self] in
+                guard let self else { return }
+                if !self.playfulPulse(kind: 3, showShortcutFeedback: true) {
+                    self.showPlayfulShortcutFailure()
+                }
+            },
             showNotice: { [weak self] notice in self?.showShortcutNotice(notice) }
         ),
         onPreferencesChanged: { [weak self] in self?.persistPreferences() }
@@ -388,6 +394,11 @@ final class AppCoordinator {
     private func focusMessageField() {
         if !model.overlayVisible { setOverlayVisible(true) }
         overlayWindows.focusMessageField()
+    }
+
+    func showPlayfulShortcutFailure() {
+        showShortcutNotice(GlobalShortcutNotice(symbolName: "exclamationmark.circle",
+            title: "폭죽을 쏘지 못했습니다", detail: model.errorMessage ?? "잠시 후 다시 시도해 주세요."))
     }
 
     private func showShortcutNotice(_ notice: GlobalShortcutNotice) {

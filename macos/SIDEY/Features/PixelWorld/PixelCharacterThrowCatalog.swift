@@ -25,7 +25,7 @@ enum PixelCharacterThrowCatalog {
 
     static func supports(objectID: String?) -> Bool {
         guard let objectID else { return false }
-        return ["personal_poop", "personal_missile"].contains(objectID) || objectID == fallbackObjectID || CommerceCatalog.products.contains {
+        return ["personal_poop", "personal_missile", "personal_air_pang"].contains(objectID) || objectID == fallbackObjectID || CommerceCatalog.products.contains {
             $0.kind == .throwable && ($0.catalogItemID == objectID || $0.renderAssetID == objectID)
         }
     }
@@ -103,7 +103,7 @@ final class PixelCharacterThrowTextureStore {
                 fallbackColor: .systemGray
             )
             : []
-        let personalKind: UInt8? = objectID == "personal_poop" ? 1 : (objectID == "personal_missile" ? 2 : nil)
+        let personalKind: UInt8? = objectID == "personal_poop" ? 1 : (objectID == "personal_missile" ? 2 : (objectID == "personal_air_pang" ? 5 : nil))
         let personalTexture = personalKind.map { PlayfulCustomization.shared.projectileTexture(kind: $0) }
         let result = PixelCharacterThrowTextures(
             throwFrames: Array(actions[PixelCharacterThrowCatalog.throwFrames]),

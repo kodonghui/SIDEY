@@ -77,12 +77,21 @@ struct ProfileSettingsView: View {
                     Text("기존 투척물").tag(0)
                     Text("똥 던지기").tag(1)
                     Text("미사일 던지기").tag(2)
+                    Text("공기팡 던지기").tag(5)
                 }
                 Button("폭죽을 위로 쏘기", action: actions.onPlayFirework)
                     .disabled(!model.activeRoomRealtimeAvailable)
                 Picker("내 캐릭터 이미지", selection: $personalSkin) {
                     Text("기존 캐릭터").tag("default")
                     Text("페페").tag("pepe")
+                    Text("아구몬").tag("agumon")
+                    Text("파피몬").tag("gabumon")
+                    Text("텐타몬").tag("tentomon")
+                    Text("팔몬").tag("palmon")
+                    Text("쉬라몬").tag("gomamon")
+                    Text("피요몬").tag("biyomon")
+                    Text("파닥몬").tag("patamon")
+                    Text("가트몬").tag("gatomon")
                     Text("내 PNG (이 컴퓨터만)").tag("custom")
                 }
                 .onChange(of: personalSkin) { _, _ in actions.onPersonalSkinChanged() }
@@ -96,7 +105,7 @@ struct ProfileSettingsView: View {
                     } catch { personalImageError = error.localizedDescription }
                 }
                 if let personalImageError { Text(personalImageError).foregroundStyle(.red) }
-                Text("장난은 대화 기록에 남지 않습니다. 같은 개인 버전끼리 새 효과와 페페를 볼 수 있습니다. 내 PNG 파일은 전송하지 않습니다.")
+                Text("장난은 대화 기록에 남지 않습니다. 같은 개인 버전끼리 새 효과와 추가 캐릭터를 볼 수 있습니다. 내 PNG 파일은 전송하지 않습니다.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if showsCosmeticEquipment {

@@ -11,6 +11,7 @@ struct GlobalShortcutCommands {
     var groupsLoaded: () -> Bool
     var toggleOverlay: () -> Void
     var toggleQuietMode: () -> Void
+    var playFirework: () -> Void
     var showNotice: (GlobalShortcutNotice) -> Void
 }
 
@@ -147,6 +148,8 @@ final class GlobalShortcutController {
             toggleComposer()
         case .toggleOverlay:
             commands.toggleOverlay()
+        case .playFirework:
+            commands.playFirework()
         case .toggleQuietMode:
             commands.toggleQuietMode()
             // Quiet mode changes nothing on screen until a message arrives, so confirm it.

@@ -642,7 +642,7 @@ extension AppCoordinator {
     }
 
     @discardableResult
-    func playfulPulse(kind: UInt8) -> Bool {
+    func playfulPulse(kind: UInt8, showShortcutFeedback: Bool = false) -> Bool {
         guard kind == 3 else { return false }
         guard model.activeRoomRealtimeAvailable, let room = model.activeRoom,
               let userID = model.currentUserID, let backend else {
@@ -661,10 +661,20 @@ extension AppCoordinator {
         let event = CharacterPulseEvent(id: PlayfulEventTag.make(kind: kind, skin: PlayfulCustomization.shared.wireSkin),
                                         roomID: room.id, userID: userID)
         PlayfulCustomization.shared.remember(event.id, roomID: event.roomID, userID: userID, channel: .pulse)
-        overlayWindows.playCharacterPulse(event)
         Task {
-            do { try await backend.broadcastCharacterPulse(roomID: room.id, eventID: event.id) }
-            catch { model.errorMessage = "장난 전송 실패: \(error.localizedDescription)" }
+            do {
+                let delivered = try await backend.broadcastCharacterPulse(roomID: room.id, eventID: event.id)
+                guard delivered else {
+                    model.errorMessage = "그룹 연결이 끊어져 폭죽을 보내지 못했습니다."
+                    if showShortcutFeedback { showPlayfulShortcutFailure() }
+                    return
+                }
+                guard model.activeRoom?.id == room.id, model.currentUserID == userID else { return }
+                overlayWindows.playCharacterPulse(event)
+            } catch {
+                model.errorMessage = "장난 전송 실패: \(error.localizedDescription)"
+                if showShortcutFeedback { showPlayfulShortcutFailure() }
+            }
         }
         return true
     }
@@ -687,7 +697,7 @@ extension AppCoordinator {
 
         let kind = PlayfulCustomization.shared.throwKind
         let event = CharacterThrowEvent(
-            id: (1...2).contains(kind)
+            id: [1, 2, 5].contains(kind)
                 ? PlayfulEventTag.make(kind: kind, skin: PlayfulCustomization.shared.wireSkin) : UUID(),
             roomID: room.id,
             actorUserID: actorUserID,

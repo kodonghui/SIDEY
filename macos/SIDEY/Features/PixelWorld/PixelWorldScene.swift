@@ -772,7 +772,9 @@ final class PixelWorldScene: SKScene {
             )
         }
         guard let first = textures.rotationFrames.first else { return }
-        let projectileNode = SKSpriteNode(texture: first, size: CGSize(width: 32, height: 32))
+        let personal = PlayfulEventTag.decode(event.id, channel: .projectile) != nil
+        let extent: CGFloat = personal ? min(64, min(size.width, size.height) / 1.42) : 32
+        let projectileNode = SKSpriteNode(texture: first, size: CGSize(width: extent, height: extent))
         projectileNode.texture?.filteringMode = .nearest
         projectileNode.zPosition = 100
         projectileNode.isHidden = true
@@ -823,6 +825,11 @@ final class PixelWorldScene: SKScene {
                 x: inverse * inverse * projectile.startPoint.x + 2 * inverse * progress * control.x + progress * progress * end.x,
                 y: inverse * inverse * projectile.startPoint.y + 2 * inverse * progress * control.y + progress * progress * end.y
             )
+            if PlayfulEventTag.decode(projectile.event.id, channel: .projectile) != nil {
+                // Accommodate missile rotation without clipping its larger square corners.
+                projectile.node.position = PlayfulEffectLayout.center(projectile.node.position,
+                    extent: projectile.node.size.width * 1.42, bounds: size)
+            }
             let textures = PixelCharacterThrowTextureStore.shared.textures(
                 for: projectile.event.sourceCharacterID,
                 throwableID: projectile.event.throwableID
@@ -870,12 +877,13 @@ final class PixelWorldScene: SKScene {
 
     private func playUpwardFirework(from origin: CGPoint) {
         guard children.filter({ $0.name == "personal-firework" }).count < 32 else { return }
-        guard let layout = PlayfulFireworkLayout.make(origin: origin, bounds: size) else { return }
+        let launchOrigin = PlayfulEffectLayout.center(origin, extent: 24, bounds: size)
+        guard let layout = PlayfulFireworkLayout.make(origin: launchOrigin, bounds: size) else { return }
         let height = layout.rise
         let radius = layout.radius
-        let rocket = SKSpriteNode(color: .systemYellow, size: CGSize(width: 4, height: 12))
+        let rocket = SKSpriteNode(color: .systemYellow, size: CGSize(width: 8, height: 24))
         rocket.name = "personal-firework"
-        rocket.position = origin
+        rocket.position = launchOrigin
         rocket.zPosition = 102
         addChild(rocket)
         rocket.run(.sequence([
@@ -883,9 +891,10 @@ final class PixelWorldScene: SKScene {
             .run { [weak self, weak rocket] in
                 guard let self, let rocket else { return }
                 let colors: [NSColor] = [.systemPink, .systemYellow, .systemCyan, .systemGreen]
-                for index in 0..<24 {
+                let available = max(0, 64 - self.children.filter { $0.name == "personal-firework" }.count)
+                for index in 0..<min(24, available) {
                     let angle = CGFloat(index) * .pi * 2 / 24
-                    let spark = SKSpriteNode(color: colors[index % colors.count], size: CGSize(width: 4, height: 4))
+                    let spark = SKSpriteNode(color: colors[index % colors.count], size: CGSize(width: 8, height: 8))
                     spark.name = "personal-firework"
                     spark.position = rocket.position
                     spark.zPosition = 102
@@ -907,6 +916,7 @@ final class PixelWorldScene: SKScene {
     }
 
     private func playImpact(at point: CGPoint, sourceCharacterID: String, throwableID: String?) {
+        guard children.filter({ $0.name == "throwable-impact" }).count < 64 else { return }
         let textures = PixelCharacterThrowTextureStore.shared.textures(
             for: sourceCharacterID,
             throwableID: throwableID
@@ -914,17 +924,19 @@ final class PixelWorldScene: SKScene {
         let frames = textures.impactFrames
         let durations = PixelCharacterThrowStyle.impactFrameDurations(for: textures.objectID)
         guard let first = frames.first else { return }
-        let node = SKSpriteNode(
-            texture: first,
-            size: CGSize(
-                width: PixelCharacterThrowStyle.impactPointSize,
-                height: PixelCharacterThrowStyle.impactPointSize
-            )
-        )
-        node.position = point
+        let personal = textures.objectID.hasPrefix("personal_")
+        let extent = personal ? min(96, min(size.width, size.height)) : PixelCharacterThrowStyle.impactPointSize
+        let node = SKSpriteNode(texture: first, size: CGSize(width: extent, height: extent))
+        node.position = personal ? PlayfulEffectLayout.center(point, extent: extent, bounds: size) : point
         node.name = "throwable-impact"
         node.zPosition = 101
         addChild(node)
+        if textures.objectID == "personal_air_pang" {
+            node.setScale(0.35)
+            node.run(.sequence([.group([.scale(to: 1, duration: 0.35), .fadeOut(withDuration: 0.35)]),
+                                .removeFromParent()]))
+            return
+        }
         let poses = zip(frames, durations).map { texture, duration in
             SKAction.animate(with: [texture], timePerFrame: duration)
         }

@@ -73,6 +73,7 @@ final class GlobalShortcutTests: XCTestCase {
         let restored = try JSONDecoder().decode(AppPreferences.self, from: data)
 
         XCTAssertEqual(restored, value)
+        XCTAssertEqual(restored.globalShortcuts.playFirework, GlobalShortcutAssignments.defaultFirework)
         XCTAssertNil(restored.globalShortcuts.toggleOverlay)
     }
 
@@ -121,7 +122,7 @@ final class GlobalShortcutTests: XCTestCase {
         XCTAssertEqual(model.globalShortcutStatuses[.toggleQuietMode], .unavailable)
         XCTAssertNil(model.globalShortcutStatuses[.toggleOverlay])
         XCTAssertEqual(model.preferences.globalShortcuts.toggleQuietMode, quiet)
-        XCTAssertEqual(Set(registrar.active.keys), [composer])
+        XCTAssertEqual(Set(registrar.active.keys), [composer, GlobalShortcutAssignments.defaultFirework])
         XCTAssertEqual(log.saves, 0)
     }
 
@@ -151,7 +152,7 @@ final class GlobalShortcutTests: XCTestCase {
         registrar.press(overlay)
 
         XCTAssertNil(model.recordingGlobalShortcutAction)
-        XCTAssertEqual(Set(registrar.active.keys), [overlay])
+        XCTAssertEqual(Set(registrar.active.keys), [overlay, GlobalShortcutAssignments.defaultFirework])
         XCTAssertEqual(model.globalShortcutStatuses[.toggleOverlay], .active)
         XCTAssertEqual(log.calls, ["toggleOverlay"])
         XCTAssertEqual(log.saves, 0)
@@ -174,7 +175,7 @@ final class GlobalShortcutTests: XCTestCase {
         XCTAssertNil(model.recordingGlobalShortcutAction)
         XCTAssertEqual(model.preferences.globalShortcuts.toggleComposer, combo)
         XCTAssertEqual(model.globalShortcutStatuses[.toggleComposer], .active)
-        XCTAssertEqual(Set(registrar.active.keys), [combo])
+        XCTAssertEqual(Set(registrar.active.keys), [combo, GlobalShortcutAssignments.defaultFirework])
         XCTAssertEqual(log.saves, 1)
     }
 
@@ -195,7 +196,7 @@ final class GlobalShortcutTests: XCTestCase {
         XCTAssertNil(model.recordingGlobalShortcutAction)
         XCTAssertEqual(model.preferences.globalShortcuts.toggleComposer, previous)
         XCTAssertEqual(model.globalShortcutStatuses[.toggleComposer], .rejected(.unavailable))
-        XCTAssertEqual(Set(registrar.active.keys), [previous])
+        XCTAssertEqual(Set(registrar.active.keys), [previous, GlobalShortcutAssignments.defaultFirework])
         XCTAssertEqual(log.saves, 0)
         XCTAssertEqual(GlobalShortcutRejection.unavailable.message, "다른 앱이 이미 사용 중이라 등록할 수 없어요.")
     }
@@ -227,7 +228,7 @@ final class GlobalShortcutTests: XCTestCase {
 
         XCTAssertEqual(model.preferences.globalShortcuts.toggleComposer, previous)
         XCTAssertEqual(model.globalShortcutStatuses[.toggleOverlay], .active)
-        XCTAssertEqual(Set(registrar.active.keys), [previous, overlay])
+        XCTAssertEqual(Set(registrar.active.keys), [previous, overlay, GlobalShortcutAssignments.defaultFirework])
         XCTAssertFalse(registrar.attempts.contains(singleModifier))
         XCTAssertFalse(registrar.attempts.contains(spotlight))
         XCTAssertEqual(log.saves, 0)
@@ -248,7 +249,7 @@ final class GlobalShortcutTests: XCTestCase {
 
         XCTAssertNil(model.preferences.globalShortcuts.toggleQuietMode)
         XCTAssertNil(model.globalShortcutStatuses[.toggleQuietMode])
-        XCTAssertTrue(registrar.active.isEmpty)
+        XCTAssertEqual(Set(registrar.active.keys), [GlobalShortcutAssignments.defaultFirework])
         XCTAssertTrue(log.calls.isEmpty)
         XCTAssertEqual(log.saves, 1)
     }
@@ -309,7 +310,8 @@ final class GlobalShortcutTests: XCTestCase {
         registrar.press(overlay)
         registrar.press(quiet)
 
-        XCTAssertEqual(log.calls, ["openMainWindow", "openMainWindow", "openMainWindow"])
+        registrar.press(GlobalShortcutAssignments.defaultFirework)
+        XCTAssertEqual(log.calls, ["openMainWindow", "openMainWindow", "openMainWindow", "openMainWindow"])
         XCTAssertTrue(log.notices.isEmpty)
     }
 
@@ -408,6 +410,54 @@ final class GlobalShortcutTests: XCTestCase {
         notice.hide()
 
         XCTAssertFalse(notice.isVisible)
+    }
+
+    func testFireworkDefaultMigrationPreservesOldBindingsAndExplicitDisable() throws {
+        let migrated = try JSONDecoder().decode(GlobalShortcutAssignments.self, from: Data("{}".utf8))
+        XCTAssertEqual(migrated.playFirework, shortcut(kVK_F8, [.command, .shift]))
+        let explicitOff = try JSONDecoder().decode(GlobalShortcutAssignments.self, from: Data(#"{"playFirework":null}"#.utf8))
+        XCTAssertNil(explicitOff.playFirework)
+        let restoredOff = try JSONDecoder().decode(GlobalShortcutAssignments.self, from: JSONEncoder().encode(explicitOff))
+        XCTAssertNil(restoredOff.playFirework)
+        let priorBinding = try encodedJSON(GlobalShortcutAssignments.defaultFirework)
+        let conflicting = try JSONDecoder().decode(GlobalShortcutAssignments.self,
+            from: Data("{\"toggleComposer\":\(priorBinding)}".utf8))
+        XCTAssertEqual(conflicting.toggleComposer, GlobalShortcutAssignments.defaultFirework)
+        XCTAssertNil(conflicting.playFirework)
+    }
+
+    func testFireworkShortcutCanBeReassignedAndRestoredWithoutDefaultTakingOver() throws {
+        var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
+        let registrar = FakeGlobalHotKeyRegistrar()
+        let log = ShortcutCommandLog()
+        let (controller, model) = makeController(preferences: preferences, registrar: registrar, log: log)
+        controller.start()
+        let custom = shortcut(kVK_F9, [.control, .shift])
+        controller.beginRecording(.playFirework)
+        controller.record(custom, for: .playFirework)
+        registrar.press(GlobalShortcutAssignments.defaultFirework)
+        XCTAssertTrue(log.calls.isEmpty)
+        registrar.press(custom)
+        XCTAssertEqual(log.calls, ["playFirework"])
+        let restored = try JSONDecoder().decode(AppPreferences.self, from: JSONEncoder().encode(model.preferences))
+        XCTAssertEqual(restored.globalShortcuts.playFirework, custom)
+    }
+
+    func testFireworkShortcutRoutesToExistingActionAndCanBeCleared() {
+        var preferences = AppPreferences.defaults
+        preferences.onboardingComplete = true
+        let registrar = FakeGlobalHotKeyRegistrar()
+        let log = ShortcutCommandLog()
+        let (controller, model) = makeController(preferences: preferences, registrar: registrar, log: log)
+        controller.start()
+        registrar.press(GlobalShortcutAssignments.defaultFirework)
+        XCTAssertEqual(log.calls, ["playFirework"])
+        controller.clear(.playFirework)
+        registrar.press(GlobalShortcutAssignments.defaultFirework)
+        XCTAssertEqual(log.calls, ["playFirework"])
+        XCTAssertNil(model.preferences.globalShortcuts.playFirework)
+        XCTAssertEqual(log.saves, 1)
     }
 
     private func shortcut<Code: BinaryInteger>(
@@ -520,6 +570,7 @@ private final class ShortcutCommandLog {
                 self.calls.append("toggleQuietMode")
                 self.onToggleQuietMode()
             },
+            playFirework: { self.calls.append("playFirework") },
             showNotice: { notice in
                 self.calls.append("showNotice")
                 self.notices.append(notice)

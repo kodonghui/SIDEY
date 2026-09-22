@@ -10,10 +10,10 @@ final class PlayfulCustomization {
     static let skinKey = "personal.playful.skin"
     private var cachedTextures: [String: SKTexture] = [:]
     private var roomSkins: [UUID: [UUID: UInt8]] = [:]
-    var wireSkin: UInt8 { UserDefaults.standard.string(forKey: Self.skinKey) == "pepe" ? 1 : 0 }
+    var wireSkin: UInt8 { PlayfulSkinCatalog.wireID(for: UserDefaults.standard.string(forKey: Self.skinKey) ?? "default") }
     var throwKind: UInt8 { Self.validatedThrowKind(UserDefaults.standard.integer(forKey: Self.throwKey)) }
     nonisolated static func validatedThrowKind(_ value: Int) -> UInt8 {
-        (1...2).contains(value) ? UInt8(value) : 0
+        [1, 2, 5].contains(value) ? UInt8(value) : 0
     }
 
     func remember(_ eventID: UUID, roomID: UUID, userID: UUID, channel: PlayfulEventTag.Channel) {
@@ -26,14 +26,14 @@ final class PlayfulCustomization {
     func characterTexture(roomID: UUID?, member: PixelWorldMember) -> SKTexture? {
         let selection = member.isCurrentUser
             ? UserDefaults.standard.string(forKey: Self.skinKey) ?? "default"
-            : ((roomID.flatMap { roomSkins[$0]?[member.id] } ?? 0) == 1 ? "pepe" : "default")
-        guard selection != "default" else { return nil }
+            : PlayfulSkinCatalog.name(for: roomID.flatMap { roomSkins[$0]?[member.id] } ?? 0)
+        guard selection != "default", selection == "custom" || PlayfulSkinCatalog.wireID(for: selection) > 0 else { return nil }
         if let cached = cachedTextures[selection] { return cached }
         let url: URL?
         if selection == "custom" { url = try? customURL() }
         else {
-            url = Bundle.main.url(forResource: "pepe", withExtension: "png", subdirectory: "PersonalCharacters")
-                ?? Bundle.main.url(forResource: "pepe", withExtension: "png")
+            url = Bundle.main.url(forResource: selection, withExtension: "png", subdirectory: "PersonalCharacters")
+                ?? Bundle.main.url(forResource: selection, withExtension: "png")
         }
         guard let url, let image = NSImage(contentsOf: url) else { return nil }
         let texture = SKTexture(image: image)
@@ -99,6 +99,18 @@ final class PlayfulCustomization {
             NSColor.black.setFill()
             NSRect(x: 8, y: 7, width: 1, height: 2).fill()
             NSRect(x: 15, y: 7, width: 1, height: 2).fill()
+        } else if kind == 5 {
+            // A hollow ring remains legible on bright and dark desktops.
+            NSColor(calibratedRed: 0.2, green: 0.55, blue: 0.75, alpha: 0.9).setStroke()
+            let outer = NSBezierPath(ovalIn: NSRect(x: 2, y: 2, width: 20, height: 20))
+            outer.lineWidth = 3
+            outer.stroke()
+            NSColor.white.setStroke()
+            let inner = NSBezierPath(ovalIn: NSRect(x: 4, y: 4, width: 16, height: 16))
+            inner.lineWidth = 2
+            inner.stroke()
+            NSColor.systemCyan.setFill()
+            NSRect(x: 0, y: 10, width: 4, height: 2).fill()
         } else {
             NSColor.systemOrange.setFill()
             NSRect(x: 0, y: 10, width: 7, height: 4).fill()

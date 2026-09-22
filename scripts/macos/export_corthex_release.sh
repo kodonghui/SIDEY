@@ -29,7 +29,9 @@ test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$PLIST")" = app.
 test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleDisplayName' "$PLIST")" = corthex-sidey
 test "$(/usr/libexec/PlistBuddy -c 'Print :SIDEYAuthURLScheme' "$PLIST")" = sidey
 test "$(/usr/libexec/PlistBuddy -c 'Print :SIDEYReleaseChannel' "$PLIST")" = production
-find "$APP/Contents/Resources" -name pepe.png -print | grep . >/dev/null
+for character in pepe agumon gabumon tentomon palmon gomamon biyomon patamon gatomon; do
+  find "$APP/Contents/Resources" -name "$character.png" -print | grep . >/dev/null
+done
 codesign --verify --deep --strict "$APP"
 mkdir -p "$EXPORT_DIR"
 ditto -c -k --norsrc --noextattr --noqtn --noacl --keepParent "$APP" "$EXPORT_DIR/corthex-sidey-macOS-arm64.zip"
