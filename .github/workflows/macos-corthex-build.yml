@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: false
       - name: Native Direct, App Store, and recording tests
         run: ./scripts/macos/tests/test_native.sh
@@ -19,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: false
       - name: Build personal Apple Silicon app
         run: sh ./scripts/macos/export_corthex_release.sh
@@ -32,3 +34,4 @@ jobs:
           path: build/corthex-macos/*
           retention-days: 7
           if-no-files-found: error
+
