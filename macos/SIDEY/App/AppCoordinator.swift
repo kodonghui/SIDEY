@@ -3,6 +3,7 @@ import AppKit
 @MainActor
 final class AppCoordinator {
     let model: AppModel
+    var playfulAnnouncedRoomID: UUID?
 
     let preferencesStore: PreferencesStore
     private let legacyMigrator: LegacySettingsMigrator
@@ -61,6 +62,8 @@ final class AppCoordinator {
             onRemoveRoomMember: { [weak self] roomID, userID in self?.removeRoomMember(roomID, userID: userID) },
             onLeaveRoom: { [weak self] roomID in self?.leaveRoom(roomID) },
             onDeleteRoom: { [weak self] roomID in self?.deleteRoom(roomID) },
+            onPlayFirework: { [weak self] in _ = self?.playfulPulse(kind: 3) },
+            onPersonalSkinChanged: { [weak self] in self?.schedulePersonalSkinAnnouncement() },
             onCharacterSoundEffectsChanged: { [weak self] enabled in
                 guard let self else { return }
                 self.model.preferences.characterSoundEffectsEnabled = enabled

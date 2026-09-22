@@ -5,6 +5,8 @@ final class RoomSessionLifetime {
     var switchPipeline: RoomSwitchPipeline!
     var bootstrapTask: Task<Void, Never>?
     var eventTask: Task<Void, Never>?
+    var skinAnnouncementTask: Task<Void, Never>?
+    var skinAnnouncementGeneration = UUID()
     var typingTask: Task<Void, Never>?
     var bubbleExpiryTask: Task<Void, Never>?
     var typingLease = TypingLease()
@@ -14,6 +16,9 @@ final class RoomSessionLifetime {
     func cancel() {
         bootstrapTask?.cancel()
         eventTask?.cancel()
+        skinAnnouncementTask?.cancel()
+        skinAnnouncementTask = nil
+        skinAnnouncementGeneration = UUID()
         typingTask?.cancel()
         bubbleExpiryTask?.cancel()
         bootstrapTask = nil

@@ -24,6 +24,10 @@ final class SparkleUpdateController: AppUpdateChecking {
         releaseChannel: AppReleaseChannel = .resolve(),
         startingUpdater: Bool = true
     ) {
+#if CORTHEX_CUSTOM_BUILD
+        // Personal builds must not replace themselves with the official release.
+        controller = nil
+#else
         if releaseChannel == .production {
             controller = SPUStandardUpdaterController(
                 startingUpdater: startingUpdater,
@@ -33,6 +37,7 @@ final class SparkleUpdateController: AppUpdateChecking {
         } else {
             controller = nil
         }
+#endif
     }
 
     var canCheckForUpdates: Bool {

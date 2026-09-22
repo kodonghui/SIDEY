@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ProfileSettingsView: View {
+    @AppStorage(PlayfulCustomization.throwKey) private var personalThrow = 0
+    @AppStorage(PlayfulCustomization.skinKey) private var personalSkin = "default"
+    @State private var personalImageError: String?
     @Bindable var model: AppModel
     let actions: SettingsActions
     let storeAvailability: StoreAvailability
@@ -67,6 +70,35 @@ struct ProfileSettingsView: View {
                 }
             }
 
+            Divider()
+            VStack(alignment: .leading, spacing: 10) {
+                Text("개인 버전 · 장난과 캐릭터").font(.headline)
+                Picker("친구를 클릭할 때", selection: $personalThrow) {
+                    Text("기존 투척물").tag(0)
+                    Text("똥 던지기").tag(1)
+                    Text("미사일 던지기").tag(2)
+                }
+                Button("폭죽을 위로 쏘기", action: actions.onPlayFirework)
+                    .disabled(!model.activeRoomRealtimeAvailable)
+                Picker("내 캐릭터 이미지", selection: $personalSkin) {
+                    Text("기존 캐릭터").tag("default")
+                    Text("페페").tag("pepe")
+                    Text("내 PNG (이 컴퓨터만)").tag("custom")
+                }
+                .onChange(of: personalSkin) { _, _ in actions.onPersonalSkinChanged() }
+                Button("내 PNG 선택…") {
+                    do {
+                        if try PlayfulCustomization.shared.importPNG() {
+                            personalSkin = "custom"
+                            actions.onPersonalSkinChanged()
+                            personalImageError = nil
+                        }
+                    } catch { personalImageError = error.localizedDescription }
+                }
+                if let personalImageError { Text(personalImageError).foregroundStyle(.red) }
+                Text("장난은 대화 기록에 남지 않습니다. 같은 개인 버전끼리 새 효과와 페페를 볼 수 있습니다. 내 PNG 파일은 전송하지 않습니다.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             if showsCosmeticEquipment {
                 Divider()
                 ProfileCosmeticEquipmentSection(

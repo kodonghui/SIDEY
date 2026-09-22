@@ -1,0 +1,34 @@
+name: CORTHEX SIDEY macOS personal build
+on:
+  push:
+    branches: [macos/corthex-sidey-build]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-tests:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Native Direct, App Store, and recording tests
+        run: ./scripts/macos/tests/test_native.sh
+  package:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build personal Apple Silicon app
+        run: sh ./scripts/macos/export_corthex_release.sh
+      - name: Bundle installation entrypoint
+        run: |
+          cp scripts/macos/Install-Mac.command build/corthex-macos/Install-Mac.command
+          chmod +x build/corthex-macos/Install-Mac.command
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corthex-sidey-macOS-arm64
+          path: build/corthex-macos/*
+          retention-days: 7
+          if-no-files-found: error

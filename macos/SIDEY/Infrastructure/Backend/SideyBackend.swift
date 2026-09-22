@@ -143,10 +143,11 @@ actor SideyBackend {
         ).execute()
     }
 
-    func broadcastCharacterPulse(roomID: UUID, eventID: UUID) async throws {
+    @discardableResult
+    func broadcastCharacterPulse(roomID: UUID, eventID: UUID) async throws -> Bool {
         guard roomID == activeRoomID,
               let roomChannels = subscribedChannels(roomID: roomID)
-        else { return }
+        else { return false }
         _ = try await client.rpc(
             "broadcast_room_event",
             params: BroadcastRoomEventParameters(
@@ -156,6 +157,7 @@ actor SideyBackend {
                 eventID: eventID
             )
         ).execute()
+        return true
     }
 
     func broadcastCharacterThrow(roomID: UUID, eventID: UUID, targetUserID: UUID) async throws {

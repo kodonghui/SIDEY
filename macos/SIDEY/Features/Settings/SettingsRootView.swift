@@ -28,6 +28,9 @@ struct SettingsActions {
     var onLeaveRoom: (UUID) -> Void
     var onDeleteRoom: (UUID) -> Void
 
+    var onPlayFirework: () -> Void = {}
+    var onPersonalSkinChanged: () -> Void = {}
+
     var onCharacterSoundEffectsChanged: (Bool) -> Void = { _ in }
     var onCharacterImpact: (String, TimeInterval) -> Void = { _, _ in }
     var onStopCharacterSounds: () -> Void = {}

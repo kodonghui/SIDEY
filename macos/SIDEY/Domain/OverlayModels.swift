@@ -234,7 +234,7 @@ struct CharacterThrowEvent: Equatable, Identifiable, Sendable {
         self.actorUserID = actorUserID
         self.targetUserID = targetUserID
         self.sourceCharacterID = sourceCharacterID
-        self.throwableID = throwableID
+        self.throwableID = PlayfulEventTag.decode(id, channel: .projectile)?.objectID ?? throwableID
     }
 }
 

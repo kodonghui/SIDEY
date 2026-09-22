@@ -259,6 +259,10 @@ extension AppCoordinator {
             break
         }
         if model.activeRoom?.id == roomID, model.groupOperation == .idle { return }
+        roomSession.skinAnnouncementTask?.cancel()
+        roomSession.skinAnnouncementTask = nil
+        roomSession.skinAnnouncementGeneration = UUID()
+        playfulAnnouncedRoomID = nil
         overlayWindows.dismissComposer()
         overlayWindows.invalidateThrowInteraction()
         typingChanged(false)
@@ -407,6 +411,8 @@ extension AppCoordinator {
     }
 
     func applyBackendSnapshot(_ snapshot: BackendSnapshot, currentUserID: UUID?) {
+        let previousRoomID = model.activeRoom?.id
+        let previousMemberIDs = Set(model.activeRoom?.members.map(\.userID) ?? [])
         if let activeRoomID = model.activeRoom?.id,
            !snapshot.rooms.contains(where: { $0.id == activeRoomID }) {
             overlayWindows.dismissComposer()
@@ -414,6 +420,10 @@ extension AppCoordinator {
             model.clearBubbles()
         }
         model.apply(snapshot: snapshot, currentUserID: currentUserID)
+        if previousRoomID != model.activeRoom?.id ||
+            !Set(model.activeRoom?.members.map(\.userID) ?? []).isSubset(of: previousMemberIDs) {
+            schedulePersonalSkinAnnouncement()
+        }
         migrateTreeMovementIfNeeded()
     }
 
@@ -455,7 +465,14 @@ extension AppCoordinator {
         case .messagesReplaced(let roomID, let messages):
             model.replaceMessages(roomID: roomID, with: messages)
         case .presence(let roomID, let userID, let state):
+            let previousPresence = model.pixelWorldMembers.first(where: { $0.id == userID })?.presence
             model.updatePresence(roomID: roomID, userID: userID, state: state)
+            if roomID == model.activeRoom?.id, userID != model.currentUserID,
+               (previousPresence == nil || previousPresence == .offline || previousPresence == .reconnecting),
+               state != .offline, state != .reconnecting {
+                // A returning existing member has an empty transient skin cache too.
+                schedulePersonalSkinAnnouncement()
+            }
             overlayWindows.refreshThrowHotspots()
         case .typing(let roomID, let userID, let active):
             model.updateTyping(roomID: roomID, userID: userID, active: active)
@@ -468,6 +485,7 @@ extension AppCoordinator {
                     uptime: ProcessInfo.processInfo.systemUptime
                   )
             else { return }
+            PlayfulCustomization.shared.remember(event.id, roomID: event.roomID, userID: event.userID, channel: .pulse)
             overlayWindows.playCharacterPulse(event)
         case .characterThrow(let event):
             guard event.roomID == model.activeRoom?.id,
@@ -479,12 +497,23 @@ extension AppCoordinator {
                     uptime: ProcessInfo.processInfo.systemUptime
                   )
             else { return }
+            PlayfulCustomization.shared.remember(event.id, roomID: event.roomID, userID: event.actorUserID, channel: .projectile)
             overlayWindows.playCharacterThrow(event)
         case .connection(let status):
             let previousStatus = backendConnectionStatus
             backendConnectionStatus = status
             model.connectionState = status.isReady ? .online : .connecting
             model.setActiveRoomRealtimeConnected(status.activeRoomTransportConnected)
+            if status.isReady, roomSession.skinAnnouncementTask == nil,
+               let roomID = model.activeRoom?.id, playfulAnnouncedRoomID != roomID {
+                schedulePersonalSkinAnnouncement()
+            }
+            if !status.activeRoomTransportConnected {
+                playfulAnnouncedRoomID = nil
+                roomSession.skinAnnouncementTask?.cancel()
+                roomSession.skinAnnouncementTask = nil
+                roomSession.skinAnnouncementGeneration = UUID()
+            }
             if previousStatus?.activeRoomTransportConnected == true,
                !status.activeRoomTransportConnected {
                 overlayWindows.invalidateThrowInteraction()
@@ -568,6 +597,78 @@ extension AppCoordinator {
         Task { try? await backend.broadcastCharacterPulse(roomID: room.id, eventID: event.id) }
     }
 
+    func schedulePersonalSkinAnnouncement() {
+        playfulAnnouncedRoomID = nil
+        roomSession.skinAnnouncementTask?.cancel()
+        let generation = UUID()
+        roomSession.skinAnnouncementGeneration = generation
+        guard let roomID = model.activeRoom?.id else { return }
+        roomSession.skinAnnouncementTask = Task { [weak self] in
+            // Coalesce fast selections and leave the existing one-second pulse cooldown intact.
+            for attempt in 0..<3 {
+                do { try await Task.sleep(for: .milliseconds(1050)) }
+                catch { return }
+                guard !Task.isCancelled, let self, self.model.activeRoom?.id == roomID,
+                      self.roomSession.skinAnnouncementGeneration == generation else { return }
+                do {
+                    if try await self.sendPersonalSkinAnnouncement(roomID: roomID, generation: generation) { break }
+                } catch {
+                    guard !Task.isCancelled, self.model.activeRoom?.id == roomID,
+                          self.roomSession.skinAnnouncementGeneration == generation else { return }
+                    // Only the final attempt reports a failure; do not mark it delivered.
+                    if attempt == 2 { self.model.errorMessage = "캐릭터 알림 전송 실패: \(error.localizedDescription)" }
+                }
+            }
+            guard let self, self.roomSession.skinAnnouncementGeneration == generation else { return }
+            self.roomSession.skinAnnouncementTask = nil
+        }
+    }
+
+    func sendPersonalSkinAnnouncement(roomID: UUID, generation: UUID) async throws -> Bool {
+        guard !Task.isCancelled, model.activeRoomRealtimeAvailable, model.activeRoom?.id == roomID,
+              roomSession.skinAnnouncementGeneration == generation,
+              let userID = model.currentUserID, let backend,
+              roomSession.pulseCooldown.accept(roomID: roomID, userID: userID,
+                                               uptime: ProcessInfo.processInfo.systemUptime) else { return false }
+        let eventID = PlayfulEventTag.make(kind: 4, skin: PlayfulCustomization.shared.wireSkin)
+        let sent = try await backend.broadcastCharacterPulse(roomID: roomID, eventID: eventID)
+        guard sent, !Task.isCancelled, model.activeRoomRealtimeAvailable, model.activeRoom?.id == roomID,
+              roomSession.skinAnnouncementGeneration == generation else { return false }
+        // Delivery is acknowledged by the RPC, never by task creation or local animation.
+        playfulAnnouncedRoomID = roomID
+        PlayfulCustomization.shared.remember(eventID, roomID: roomID, userID: userID, channel: .pulse)
+        overlayWindows.playCharacterPulse(CharacterPulseEvent(id: eventID, roomID: roomID, userID: userID))
+        return true
+    }
+
+    @discardableResult
+    func playfulPulse(kind: UInt8) -> Bool {
+        guard kind == 3 else { return false }
+        guard model.activeRoomRealtimeAvailable, let room = model.activeRoom,
+              let userID = model.currentUserID, let backend else {
+            model.errorMessage = "그룹 연결 후 다시 시도해 주세요."
+            return false
+        }
+        guard !model.characterStunState.isStunned(userID) else {
+            model.errorMessage = "캐릭터가 쉬는 동안에는 장난을 보낼 수 없습니다."
+            return false
+        }
+        guard roomSession.pulseCooldown.accept(roomID: room.id, userID: userID,
+                                               uptime: ProcessInfo.processInfo.systemUptime) else {
+            model.errorMessage = "잠시 후 다시 눌러 주세요. 장난은 1초마다 보낼 수 있습니다."
+            return false
+        }
+        let event = CharacterPulseEvent(id: PlayfulEventTag.make(kind: kind, skin: PlayfulCustomization.shared.wireSkin),
+                                        roomID: room.id, userID: userID)
+        PlayfulCustomization.shared.remember(event.id, roomID: event.roomID, userID: userID, channel: .pulse)
+        overlayWindows.playCharacterPulse(event)
+        Task {
+            do { try await backend.broadcastCharacterPulse(roomID: room.id, eventID: event.id) }
+            catch { model.errorMessage = "장난 전송 실패: \(error.localizedDescription)" }
+        }
+        return true
+    }
+
     func characterThrowRequested(targetUserID: UUID) {
         if let id = model.currentUserID, model.characterStunState.isStunned(id) { return }
         guard model.activeRoomRealtimeAvailable,
@@ -584,8 +685,10 @@ extension AppCoordinator {
               )
         else { return }
 
+        let kind = PlayfulCustomization.shared.throwKind
         let event = CharacterThrowEvent(
-            id: UUID(),
+            id: (1...2).contains(kind)
+                ? PlayfulEventTag.make(kind: kind, skin: PlayfulCustomization.shared.wireSkin) : UUID(),
             roomID: room.id,
             actorUserID: actorUserID,
             targetUserID: targetUserID,
@@ -595,11 +698,13 @@ extension AppCoordinator {
         overlayWindows.playCharacterThrow(event)
         guard let backend else { return }
         Task {
-            try? await backend.broadcastCharacterThrow(
-                roomID: room.id,
-                eventID: event.id,
-                targetUserID: targetUserID
-            )
+            do {
+                try await backend.broadcastCharacterThrow(
+                    roomID: room.id, eventID: event.id, targetUserID: targetUserID
+                )
+            } catch {
+                model.errorMessage = "투척 전송 실패: \(error.localizedDescription)"
+            }
         }
     }
 

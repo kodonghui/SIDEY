@@ -373,6 +373,7 @@ final class PixelWorldScene: SKScene {
                 node.position = geometry.point(for: initial)
             }
             let tangent = agents[member.id]?.trackPosition ?? geometry.trackRange.lowerBound
+            node.personalTexture = PlayfulCustomization.shared.characterTexture(roomID: roomID, member: member)
             node.apply(
                 member: member,
                 bubbles: activeBubbles[member.id] ?? [],
@@ -397,8 +398,14 @@ final class PixelWorldScene: SKScene {
             let key = CharacterPulseKey(roomID: characterPulse.roomID, userID: characterPulse.userID)
             if lastPulseEventIDs[key] != characterPulse.id {
                 lastPulseEventIDs[key] = characterPulse.id
-                node.playPulse(peakScale: renderingConfiguration.pulsePeakScale)
-                recordPreviewEvent(.pulse(characterPulse.userID))
+                switch PlayfulEventTag.decode(characterPulse.id, channel: .pulse)?.kind {
+                case 3:
+                    if suspendedReasons.isEmpty { playUpwardFirework(from: node.position) }
+                case 4: break // Skin announcements carry no pulse animation.
+                default:
+                    node.playPulse(peakScale: renderingConfiguration.pulsePeakScale)
+                    recordPreviewEvent(.pulse(characterPulse.userID))
+                }
             }
         }
         if let characterThrow, characterThrow.roomID == roomID {
@@ -450,6 +457,7 @@ final class PixelWorldScene: SKScene {
             agents[agent.id] = agent
             node.position = geometry.point(for: agent.trackPosition)
             let moving = abs(agent.velocity) > 2 && agent.idleRemaining <= 0 && !stoppedIDs.contains(agent.id)
+            node.personalTexture = PlayfulCustomization.shared.characterTexture(roomID: currentRoomID, member: member)
             node.updateMotion(member: member, moving: moving, velocity: agent.velocity, edge: edge)
             node.updatePresentationLayout(
                 tangentPosition: agent.trackPosition,
@@ -821,6 +829,11 @@ final class PixelWorldScene: SKScene {
             ).rotationFrames
             let frame = Int(max(0, elapsed - PixelCharacterThrowStyle.releaseDelay) / PixelCharacterThrowStyle.rotationFrameInterval)
             projectile.node.texture = textures[frame % textures.count]
+            if PlayfulEventTag.decode(projectile.event.id)?.kind == 2 {
+                let dx = 2 * inverse * (control.x - projectile.startPoint.x) + 2 * progress * (end.x - control.x)
+                let dy = 2 * inverse * (control.y - projectile.startPoint.y) + 2 * progress * (end.y - control.y)
+                projectile.node.zRotation = atan2(dy, dx)
+            }
             if progress < 1 {
                 survivors.append(projectile)
             } else {
@@ -855,8 +868,39 @@ final class PixelWorldScene: SKScene {
         projectiles = survivors
     }
 
+    private func playUpwardFirework(from origin: CGPoint) {
+        guard children.filter({ $0.name == "personal-firework" }).count < 32 else { return }
+        guard let layout = PlayfulFireworkLayout.make(origin: origin, bounds: size) else { return }
+        let height = layout.rise
+        let radius = layout.radius
+        let rocket = SKSpriteNode(color: .systemYellow, size: CGSize(width: 4, height: 12))
+        rocket.name = "personal-firework"
+        rocket.position = origin
+        rocket.zPosition = 102
+        addChild(rocket)
+        rocket.run(.sequence([
+            .moveBy(x: 0, y: height, duration: 0.65),
+            .run { [weak self, weak rocket] in
+                guard let self, let rocket else { return }
+                let colors: [NSColor] = [.systemPink, .systemYellow, .systemCyan, .systemGreen]
+                for index in 0..<24 {
+                    let angle = CGFloat(index) * .pi * 2 / 24
+                    let spark = SKSpriteNode(color: colors[index % colors.count], size: CGSize(width: 4, height: 4))
+                    spark.name = "personal-firework"
+                    spark.position = rocket.position
+                    spark.zPosition = 102
+                    self.addChild(spark)
+                    spark.run(.sequence([.group([
+                        .moveBy(x: cos(angle) * radius, y: sin(angle) * radius - min(18, radius / 2), duration: 0.8),
+                        .fadeOut(withDuration: 0.8)
+                    ]), .removeFromParent()]))
+                }
+            }, .removeFromParent()
+        ]))
+    }
+
     private func removeImpactEffects() {
-        children.filter { $0.name == "throwable-impact" }.forEach {
+        children.filter { $0.name == "throwable-impact" || $0.name == "personal-firework" }.forEach {
             $0.removeAllActions()
             $0.removeFromParent()
         }
@@ -938,6 +982,14 @@ private final class PixelCharacterNode: SKNode {
     private let presentation = SKNode()
     private let spritePulseAnchor = SKNode()
     private let sprite = SKSpriteNode()
+    var personalTexture: SKTexture? {
+        didSet {
+            if oldValue !== personalTexture {
+                sprite.removeAction(forKey: Self.animationKey)
+                currentMotion = nil
+            }
+        }
+    }
     private let ambientSparkleLayer = SKNode()
     private let pulseSparkleLayer = SKNode()
     private let nameplateLayer = SKNode()
@@ -1203,7 +1255,7 @@ private final class PixelCharacterNode: SKNode {
     }
 
     private func playActionFrames(_ frames: [SKTexture], duration: TimeInterval) {
-        guard !frames.isEmpty else { return }
+        guard !frames.isEmpty, personalTexture == nil else { return }
         actionUntil = ProcessInfo.processInfo.systemUptime + duration
         sprite.removeAction(forKey: Self.animationKey)
         currentMotion = nil
@@ -1244,6 +1296,11 @@ private final class PixelCharacterNode: SKNode {
         if stunStartedAt != nil { requested = .offline }
         setDozeVisible(stunStartedAt == nil && member.presence == .away)
         setAmbientSparklesActive(stunStartedAt == nil && PixelSparkleVisibilityPolicy.showsAmbient(for: member.presence))
+        if let personalTexture {
+            sprite.removeAction(forKey: Self.animationKey)
+            sprite.texture = personalTexture
+            return
+        }
         if stunStartedAt != nil {
             // Use the approved two sleeping frames without changing Presence tint or labels.
             sprite.removeAction(forKey: Self.animationKey)
